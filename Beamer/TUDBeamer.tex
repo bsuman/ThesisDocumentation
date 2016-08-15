@@ -34,7 +34,6 @@
 \usepackage{times}
 \usepackage[T1]{fontenc}
 
-
 % Setup TikZ
 
 \usepackage{tikz}
@@ -86,7 +85,7 @@
 \begin{columns}
     \begin{column}{0.25\textwidth}
     \centering
-    \begin{figure}
+    \begin{figure}[!ht]
 			\includegraphics[width=0.90\textwidth]{PrinterI}
 			\caption{State of the art $3$D Printers}
 			\label{Fig:State of the art $3$D Printers}
@@ -110,7 +109,7 @@
 \begin{columns}
     \begin{column}{0.50\textwidth}
     \centering
-    \begin{figure}
+    \begin{figure}[!ht]
 			\includegraphics[width=0.90\textwidth]{SillyImage}
 			\caption{Distribution Myth}
 			\label{Fig:MythI}
@@ -130,20 +129,20 @@
 \section{Solution}
 
 \subsection{Where is the distribution of the workload done?}
-\begin{frame}
+\begin{frame} {Infrastructure for distribution}
 \begin{columns}
   \begin{column}{0.50\textwidth}
   \centering
-    \begin{figure}
+	\begin{figure}[!ht]
 			\includegraphics[width=0.90\textwidth]{DistributeIII}
-			\caption{Distributed Systems [AS=Autonomous Systems, CSS=Communication Subsystem]}
+			\caption{Distributed System}
 			\label{Fig:DistributeIII}
 		\end{figure}
 	\end{column}
 	\begin{column}{0.50\textwidth}
   \begin{itemize}
-		\item The distribution of the workload is done amongst the nodes of the cluster.
-		\item A cluster is a \textbf{\textit{distributed system}} if the workstations are connected to each other by a network and primarily communicate via message passing.(see Fig: \ref{DistributeIII})
+		\item The distribution of the workload is done amongst the nodes of the cluster
+		\item A cluster is a \textbf{\textit{distributed system}} if the workstations are connected to each other by a network and primarily communicate via message passing
 	\end{itemize} 
 	\end{column}
 \end{columns}
@@ -153,7 +152,7 @@
 \begin{columns}
   \begin{column}{0.50\textwidth}
   \centering
-    \begin{figure}
+    \begin{figure}[!ht]
 			\includegraphics[width=0.90\textwidth]{ArchitectureI}
 			\caption{Distributed Systems Architecture}
 			\label{Fig:ArchitectureI}
@@ -161,18 +160,51 @@
 	\end{column}
 	\begin{column}{0.50\textwidth}
 	\begin{itemize}
-	\item The distributed system used to implement the solution consists of $3$ nodes - a master nodes and two slave nodes (See Fig: \ref{ArchitectureI})
-	\item The nodes are connected via the Fraunhofer network
+	\item The distributed system used to implement the solution consists of $3$ nodes - a master node and two slave nodes
+	\item The nodes are connected via local(Fraunhofer) network
 	\item All the nodes also have access to a shared network file system
 	\end{itemize}	
 	\end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Task Submission \& Distribution}
+\begin{columns}
+  \begin{column}{0.50\textwidth}
+  \centering
+    \begin{figure}[!ht]
+			\includegraphics[width=0.90\textwidth]{ArchitectureII}
+			\caption{Task Submission}
+			\label{Fig:ArchitectureII}
+		\end{figure}
+	\end{column}
+	\begin{column}{0.50\textwidth}
+	\begin{itemize}
+	\item The submission of the task is done at the master node
+	\item The master node is responsible for the division of the submitted task into sub-tasks
+	\end{itemize}	
+	\end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Sub-Task Computation \& Partial Results Reporting}
+\begin{columns}
+  \begin{column}{0.50\textwidth}
+  \centering
+    \begin{figure}[!ht]
+			\includegraphics[width=0.90\textwidth]{ArchitectureIII}
+			\caption{Sub-Task Computation}
+			\label{Fig:ArchitectureIII}
+		\end{figure}
+	\end{column}
+	\begin{column}{0.50\textwidth}
+	\begin{itemize}
+	\item The slave nodes perform the computation locally
+	\item The output of the computation performed by the slaves is then reported back to the master node
+	\item The master node may perform final computation using the received partial output from the slaves and provide the user with the final output
+	\end{itemize}	
+	\end{column}
+\end{columns}
 \end{frame}
 
 \subsection{How is the distribution done?}
@@ -180,38 +212,109 @@
 \begin{columns}
    \begin{column}{0.50\textwidth}
     \centering
-    \begin{figure}
+    \begin{figure}[!ht]
 			\includegraphics[width=0.30\textwidth]{DistributeI}
 			\caption{Distribute Single Large Print Object}
 			\label{Fig:DistributeI}
 		\end{figure}
-		\begin{figure}
+		\begin{figure}[!ht]
 			\includegraphics[width=0.70\textwidth]{DistributeII}
-			\caption{Distribute Multiple Print Object}
+			\caption{Distribute Multiple Print Objects}
 			\label{Fig:DistributeII}
 		\end{figure}
    \end{column}
-  
 	\begin{column}{0.50\textwidth}
     \centering
     \begin{itemize}
-		\item Distribute one large print object computation amongst the workstations (see Figure:\ref{Fig:DistributeI})
-		\item Distribute multiple print object computation amongst the workstations (see Figure:\ref{Fig:DistributeII})
+		\item Distribute one large print object computation amongst the workstations 
+		\item Distribute multiple print objects computation amongst the workstations
 		\end{itemize} 
     \end{column}
   \end{columns}
   \end{frame}
 
 \begin{frame}{Chosen distribution}
-Multiple print objects will be distributed amongst the workstations i.e. each workstation performs computation on one or more inputs
+    \begin{itemize}
+		\item Multiple print objects will be distributed amongst the workstations i.e. each workstation performs computation on one or more inputs
+		\item The distribution of the workload and the collection of partial results is done by using functionality offered by MPI(Message Passing Interface)
+		\end{itemize}
 \end{frame}
 
-\begin{frame}{Who distributes the workload?}
-\begin{itemize}
-\item Streaming architecture
-\item Design decisions for distribution 
-\end{itemize} 
+\subsection{Who distributes the workload?}
+\begin{frame}{Current Component Architecture}
+\begin{block}{Streaming Architecture}
+	\begin{figure}[!ht]
+		\includegraphics[width=0.9\textwidth]{StreamingArchitectureI}
+		\caption{Cuttlefish- Streaming Architecture}
+		\label{Fig:StreamingArchitectureI}
+	\end{figure}
+\end{block}
+	\begin{itemize}
+		\item Streaming architecture of cuttlefish- enables to perform the computation serially in a chunk-wise manner for each print object. 
+		\item Goal: To retain the architecture and provide distinguished components to handle the distribution of sub-tasks and collection of the partial results.
+	\end{itemize} 
 \end{frame}
+
+\begin{frame}{Modified Component Architecture- I}
+\begin{block}{Streaming Architecture- Master Printing Software }
+	\begin{figure}[!ht]
+		\includegraphics[width=0.9\textwidth]{StreamingArchitectureII}
+		\caption{Cuttlefish Streaming Architecture- Master}
+		\label{Fig:StreamingArchitectureII}
+	\end{figure}
+\end{block}
+	\begin{itemize}
+		\item The components of the printing software are decided depending on the rank of the node 
+		\item Master node(rank=0 in the cluster) runs the \textit{\textbf{Master Printing Software}} with a minimum of $5$ components as shown in the above figure. 
+		\item Additional components introduced-\textbf{ \textit{Master Distributor}} \& \textbf{\textit{Master Merger}}
+	\end{itemize} 
+\end{frame}
+
+\begin{frame}{Master Distributor}
+	\begin{itemize}
+		\item Computes the cost function used to perform a \textit{fair} distribution amongst the slaves
+		\item Each slave node is allocated print jobs as per the cost function
+		\item Distribution of the print object is done through writing the main\_conf.json file per slave node containing the object files 
+	\end{itemize} 
+\end{frame}
+
+\begin{frame}{Cost function}
+\begin{itemize}
+	\item Each print job \textit{i}, compute the minimum bounding box(\begin{math}b_{min}^i\end{math}) and maximum bounding box(\begin{math}b_{max}^i\end{math})
+	\item Using \begin{math}b_{min}^i\end{math} and \begin{math}b_{max}^i\end{math}, calculate the width(w), height(h),and length(l)
+	\begin{itemize}
+		\item w=\begin{math}(b_{max}^i).y-(b_{min}^i).y\end{math} 
+		\item h=\begin{math}(b_{max}^i).z-(b_{min}^i).z\end{math}
+		\item l=\begin{math}(b_{max}^i).x-(b_{min}^i).x\end{math}
+	\end{itemize}
+	\item Volume of the object \begin{math}V^i= w*h*l\end{math}
+	\item Total Volume(for cluster size n-1)=\begin{math}\sum\limits_{1}^{n-1}{V^i}\end{math}
+	\item Threshold=\begin{math}(\sum\limits_{1}^{n-1}{V^i})/(n-1)\end{math}
+	\item Each slave node is allocated print jobs until the sum of the allocated print job volumes does not exceed the calculate threshold
+\end{itemize}
+\end{frame}		
+
+\begin{frame}{Master Merger}
+	\begin{itemize}
+		\item Collects the partial output from the slaves
+		\item De-serializes the partial output and merges the partial slices to construct full slices  
+	\end{itemize} 
+\end{frame}
+
+\begin{frame}{Modified Component Architecture- II}
+\begin{block}{Streaming Architecture- Slave Printing Software }
+	\begin{figure}[!ht]
+		\includegraphics[width=0.9\textwidth]{StreamingArchitectureIII}
+		\caption{Cuttlefish Streaming Architecture- Slave}
+		\label{Fig:StreamingArchitectureII}
+	\end{figure}
+\end{block}
+	\begin{itemize}
+		\item Nodes with rank$>$$0$ are slave nodes which run the \textit{\textbf{Slave Printing Software}}
+		\item Additional components introduced-\textbf{ \textit{Slave Reporter}}
+	\end{itemize} 
+\end{frame}
+
 
 \subsection{Gentle Reminder of the Goals}
 \section{Current Challenges}
