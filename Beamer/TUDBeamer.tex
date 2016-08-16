@@ -45,7 +45,7 @@
 
 \title[Distributed $3$D-Print Driver] 
 {%
- Distributed $3$D-Print Driver
+ Distributed \textbf{$3$}D-Print Driver
  %
 }
 
@@ -96,8 +96,8 @@
     \begin{itemize}
 			\item Today's $3$D Printers allow for multi-material high resolution prints(today up to 7 materials can be combined in a single printout)
 			\item Multiple objects in varying size can be printed at a go
-			\item Voxel-level material assignment enables to reproduce an object's color, shape, texture, gloss,and translucency
-			\item Larger print objects are composed of huge number of voxels( can easily cross \begin{math}10^{12}\end{math} per object)
+			\item Voxel-level material assignment enables to reproduce an object's color, shape, texture, gloss,and translucency with high-fidelity
+			\item Larger print objects are composed of huge number of voxels( can easily cross \begin{math}10^{12}\end{math} voxels per object)
 		\end{itemize} 
     \end{column}
   \end{columns}
@@ -107,14 +107,14 @@
 
 \begin{frame}[t]{Why do we need a distributed $3$D Print Driver?}
 \begin{columns}
-    \begin{column}{0.50\textwidth}
+    \begin{column}{0.45\textwidth}
     \centering
     \begin{figure}[!ht]
 			\includegraphics[width=0.90\textwidth]{SillyImage}
 			\label{Fig:MythI}
 		\end{figure}
     \end{column}
-    \begin{column}{0.50\textwidth}
+    \begin{column}{0.55\textwidth}
     \centering
     \begin{itemize}
     \item Bigger prints require large amount of computational effort 
@@ -226,8 +226,8 @@
 	\begin{column}{0.50\textwidth}
     \centering
     \begin{itemize}
-		\item Distribution of one large print object computation amongst the workstations 
-		\item Distribution of multiple print objects computation amongst the workstations
+		\item Distribution of one large print object amongst the workstations 
+		\item Distribution of multiple print objects amongst the workstations
 		\end{itemize} 
     \end{column}
   \end{columns}
@@ -235,7 +235,7 @@
 
 \begin{frame}{Chosen distribution}
     \begin{itemize}
-		\item Multiple print objects will be distributed amongst the workstations i.e. each workstation performs computation on one or more inputs
+		\item Multiple print objects will be distributed amongst the workstations i.e. each workstation performs computation on one or more whole inputs
 		\item The distribution of the workload and the collection of partial results is done through MPI(Message Passing Interface)
 		\end{itemize}
 \end{frame}
@@ -250,8 +250,8 @@
 	\end{figure}
 \end{block}
 	\begin{itemize}
-		\item Cuttlefish Streaming architecture enables to perform the computation serially in a chunk-wise manner for each print object. 
-		\item Goal: To retain the architecture and provide distinguished components to handle the distribution of sub-tasks and collection of the partial results.
+		\item Cuttlefish Streaming architecture enables to perform the computation serially in a chunk-wise manner for each print object 
+		\item Goal: To retain the architecture and provide distinguished components to handle the distribution of sub-tasks and collection of the partial results
 	\end{itemize} 
 \end{frame}
 
@@ -287,8 +287,8 @@
 		\item l=\begin{math}(b_{max}^i).x-(b_{min}^i).x\end{math}
 	\end{itemize}
 	\item Volume of the object \begin{math}V^i= w*h*l\end{math}
-	\item Total Volume(for cluster size n-1)=\begin{math}\sum\limits_{i=1}^{n-1}{V^i}\end{math}
-	\item Threshold=\begin{math}(\sum\limits_{i=1}^{n-1}{V^i})/(n-1)\end{math}
+	\item Total Volume(k objects)=\begin{math}\sum\limits_{i=1}^{k}{V^i}\end{math}
+	\item Threshold (for cluster size n-1)=\begin{math}(\sum\limits_{i=1}^{k}{V^i})/(n-1)\end{math}
 	\item Each slave node is allocated objects until the sum of the allocated object volume does not exceed the calculated threshold
 \end{itemize}
 \end{frame}		
@@ -316,7 +316,7 @@
 
 \begin{frame}{Slave Reporter}
 	\begin{itemize}
-		\item Each Slave node after performing the computation has chunk-wise partial output inform of slices 
+		\item Each Slave node after performing the computation has chunk-wise partial output in form of slices 
 		\item Slave reporter component serializes the slices and sends the data to the master
 		\item The serialized data is currently written to the shared network file system and the slave sends the path to the master
 	\end{itemize} 
@@ -337,7 +337,7 @@ Cases that need to be addressed while merging unequal number of slices
 \begin{frame}{Implementation of multiple cost functions}
 \begin{itemize}
 \item Distribution of the workload among the slaves needs to be fair 
-\item Various parameters other than the volume of the objects can be used to determine the division of workload  
+\item Various parameters other than the volume of the object can be used to determine the division of workload  
 \item Design and implement additional cost functions 
 \end{itemize} 
 \end{frame}
@@ -347,7 +347,7 @@ Cases that need to be addressed while merging unequal number of slices
 	\begin{itemize}
 		\item Sub-Tasks are currently distributed through writing the main\_conf.json file for each slave
 		\item This leads to redundant execution of FileParserPJ, PrintJobOrganizer and PrintJobPreprocessor at the slave
-		\item Serialized PrintJob can be instead sent to the slave nodes which would then de-serialize and proceed with the computation 
+		\item Serialized PrintJob can be instead sent to the slave nodes which would then be de-serialized and proceed with the computation 
 	\end{itemize} 
 \end{frame}
 
@@ -356,12 +356,12 @@ Cases that need to be addressed while merging unequal number of slices
 	\begin{itemize}
 		\item Partial Output from the slave is currently reported to the master through writing serialized slices to a file 
 		\item Serialization of the slices to bytes which can be directly sent to the master through MPI\_SEND call
-		\item Similarly at the Master, buffering of the received bytes and de-Serialization to partial slices needs to implemented
+		\item Similarly at the Master, buffering of the received bytes and de-serialization to partial slices needs to implemented
 	\end{itemize} 
 \end{frame}
 
 \subsection{Evaluation}
-\begin{frame}{Performance Gain and management over-head}
+\begin{frame}{Performance Gain and Management Overhead}
 	\begin{itemize}
 		\item Evaluation of the various designs by comparing the performance gains
 		\item Evaluation of the design by comparing the overhead (in terms of extra operations performed (reading/writing to file) or synchronization)
@@ -375,7 +375,7 @@ Cases that need to be addressed while merging unequal number of slices
 	\begin{itemize}
 		\item Large computations can be performed on a cluster of nodes by dividing the task to sub-tasks 
 		\item Primary goal is to achieve higher resource utilization along with better performance by reducing the computation time
-		\item Supporting the streaming architecture of cuttlefish, develop an elegant solution to achieve the goal
+		\item Develop an elegant solution to achieve the goal as well as maintaining the cuttlefish streaming architecture 
 		\item To get an overall understanding of the benefits as well as challenges of distributed computing  
 	\end{itemize} 
 \end{frame}
