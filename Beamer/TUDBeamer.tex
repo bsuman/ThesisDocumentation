@@ -45,7 +45,7 @@
 
 \title[Distributed $3$D-Print Driver] 
 {%
- Distributed $\textbf{3}$D-Print Driver
+ Distributed $3$D-Print Driver
  %
 }
 
@@ -94,10 +94,10 @@
     \begin{column}{0.75\textwidth}
     \centering
     \begin{itemize}
-			\item Today's $3$D Printers allow for multi-material high resolution prints
-			\item Simultaneously multiple objects in varying size can be printed
+			\item Today's $3$D Printers allow for multi-material high resolution prints(today up to 7 materials can be combined in a single printout)
+			\item Multiple objects in varying size can be printed at a go
 			\item Voxel-level material assignment enables to reproduce an object's color, shape, texture, gloss,and translucency
-			\item Larger print objects are composed of large number of voxels( can easily cross \begin{math}10^{12}\end{math} per object)
+			\item Larger print objects are composed of huge number of voxels( can easily cross \begin{math}10^{12}\end{math} per object)
 		\end{itemize} 
     \end{column}
   \end{columns}
@@ -111,7 +111,6 @@
     \centering
     \begin{figure}[!ht]
 			\includegraphics[width=0.90\textwidth]{SillyImage}
-			\caption{Distribution Myth}
 			\label{Fig:MythI}
 		\end{figure}
     \end{column}
@@ -119,8 +118,9 @@
     \centering
     \begin{itemize}
     \item Bigger prints require large amount of computational effort 
-    \item To fully utilize computational capacity of the work-stations, distribution of the workload is needed  
-    \item To allow the distribution of the workload, a distributed printer-driver is required  
+    \item Single workstation is limited in terms of resources  
+		\item Cuttlefish processes the input in a serial fashion leading to increased computation time for higher number of models
+    \item Distributed computing is one way of achieving better performance for large computations 
 		\end{itemize} 
     \end{column}
   \end{columns}
@@ -142,7 +142,7 @@
 	\begin{column}{0.50\textwidth}
   \begin{itemize}
 		\item The distribution of the workload is done amongst the nodes of the cluster
-		\item A cluster is a \textbf{\textit{distributed system}} if the workstations are connected to each other by a network and primarily communicate via message passing
+		\item A \textbf{\textit{distributed system}} is a cluster of AS where each AS is connected to other by a network and primarily communicate via message passing
 	\end{itemize} 
 	\end{column}
 \end{columns}
@@ -226,8 +226,8 @@
 	\begin{column}{0.50\textwidth}
     \centering
     \begin{itemize}
-		\item Distribute one large print object computation amongst the workstations 
-		\item Distribute multiple print objects computation amongst the workstations
+		\item Distribution of one large print object computation amongst the workstations 
+		\item Distribution of multiple print objects computation amongst the workstations
 		\end{itemize} 
     \end{column}
   \end{columns}
@@ -236,7 +236,7 @@
 \begin{frame}{Chosen distribution}
     \begin{itemize}
 		\item Multiple print objects will be distributed amongst the workstations i.e. each workstation performs computation on one or more inputs
-		\item The distribution of the workload and the collection of partial results is done by using functionality offered by MPI(Message Passing Interface)
+		\item The distribution of the workload and the collection of partial results is done through MPI(Message Passing Interface)
 		\end{itemize}
 \end{frame}
 
@@ -250,7 +250,7 @@
 	\end{figure}
 \end{block}
 	\begin{itemize}
-		\item Streaming architecture of cuttlefish- enables to perform the computation serially in a chunk-wise manner for each print object. 
+		\item Cuttlefish Streaming architecture enables to perform the computation serially in a chunk-wise manner for each print object. 
 		\item Goal: To retain the architecture and provide distinguished components to handle the distribution of sub-tasks and collection of the partial results.
 	\end{itemize} 
 \end{frame}
@@ -265,7 +265,7 @@
 \end{block}
 	\begin{itemize}
 		\item The components of the printing software are decided depending on the rank of the node 
-		\item Master node(rank=0 in the cluster) runs the \textit{\textbf{Master Printing Software}} with a minimum of $5$ components as shown in the above figure. 
+		\item Master node(rank=0 in the cluster) runs the \textit{\textbf{Master Printing Software}} with the components as shown in the above figure. 
 		\item Additional components introduced-\textbf{ \textit{Master Distributor}} \& \textbf{\textit{Master Merger}}
 	\end{itemize} 
 \end{frame}
@@ -273,14 +273,13 @@
 \begin{frame}{Master Distributor}
 	\begin{itemize}
 		\item Computes the cost function used to perform a \textit{fair} distribution amongst the slaves
-		\item Each slave node is allocated print jobs as per the cost function
-		\item Distribution of the print object is done through writing the main\_conf.json file per slave node containing the object files 
+		\item Distribution of the sub-task is done through writing the main\_conf.json file per slave node  
 	\end{itemize} 
 \end{frame}
 
 \begin{frame}{Cost function}
 \begin{itemize}
-	\item Each print job \textit{i}, compute the minimum bounding box(\begin{math}b_{min}^i\end{math}) and maximum bounding box(\begin{math}b_{max}^i\end{math})
+	\item For each object \textit{i}, compute the minimum bounding box(\begin{math}b_{min}^i\end{math}) and maximum bounding box(\begin{math}b_{max}^i\end{math})
 	\item Using \begin{math}b_{min}^i\end{math} and \begin{math}b_{max}^i\end{math}, calculate the width(w), height(h),and length(l)
 	\begin{itemize}
 		\item w=\begin{math}(b_{max}^i).y-(b_{min}^i).y\end{math} 
@@ -288,9 +287,9 @@
 		\item l=\begin{math}(b_{max}^i).x-(b_{min}^i).x\end{math}
 	\end{itemize}
 	\item Volume of the object \begin{math}V^i= w*h*l\end{math}
-	\item Total Volume(for cluster size n-1)=\begin{math}\sum\limits_{1}^{n-1}{V^i}\end{math}
-	\item Threshold=\begin{math}(\sum\limits_{1}^{n-1}{V^i})/(n-1)\end{math}
-	\item Each slave node is allocated print jobs until the sum of the allocated print job volumes does not exceed the calculate threshold
+	\item Total Volume(for cluster size n-1)=\begin{math}\sum\limits_{i=1}^{n-1}{V^i}\end{math}
+	\item Threshold=\begin{math}(\sum\limits_{i=1}^{n-1}{V^i})/(n-1)\end{math}
+	\item Each slave node is allocated objects until the sum of the allocated objects does not exceed the calculated threshold
 \end{itemize}
 \end{frame}		
 
@@ -311,18 +310,74 @@
 \end{block}
 	\begin{itemize}
 		\item Nodes with rank$>$$0$ are slave nodes which run the \textit{\textbf{Slave Printing Software}}
-		\item Additional components introduced-\textbf{ \textit{Slave Reporter}}
+		\item Additional component introduced-\textbf{ \textit{Slave Reporter}}
 	\end{itemize} 
 \end{frame}
 
+\begin{frame}{Slave Reporter}
+	\begin{itemize}
+		\item Each Slave node after performing the computation has chunk-wise partial output inform of slices 
+		\item Slave reporter component serializes the slices and sends the data to the master
+		\item The serialized data is currently written to the shared network file system and the slave sends the path to the master
+	\end{itemize} 
+\end{frame}
 
-\subsection{Gentle Reminder of the Goals}
-\section{Current Challenges}
+\section{Current Task}
+\subsection{Merging of the sub-slices}
+\begin{frame}{Unequal number of slices introduces some challenges}
+Cases that need to be addressed while merging unequal number of slices  
+	\begin{itemize}
+		\item One/ Many slaves report last chunk with less number of slices
+		\item Some slave nodes finish computation earlier as the object size is smaller leading to only remaining slaves reporting the pending slices. So the master needs to be aware of this information so as to merge the slices correctly
+	\end{itemize} 
+\end{frame}
+
 \section{Pending Work}
-\section*{Summary}
+\subsection{Fair Distribution}
+\begin{frame}{Implementation of multiple cost functions}
+\begin{itemize}
+\item Distribution of the workload among the slaves needs to be fair 
+\item Various parameters other than the volume of the objects can be used to determine the division of workload  
+\item Design and implement additional cost functions 
+\end{itemize} 
+\end{frame}
 
+\subsection{Sub-task distribution}
+\begin{frame}{Serialize \& De-serialize Print Jobs }
+	\begin{itemize}
+		\item Sub-Tasks are currently distributed through writing the main\_conf.json file for each slave
+		\item This leads to redundant execution of FileParserPJ, PrintJobOrganizer and PrintJobPreprocessor at the slave
+		\item Serialized PrintJob can be instead sent to the slave nodes which would then de-serialize and proceed with the computation 
+	\end{itemize} 
+\end{frame}
+
+\subsection{Partial Output collection}
+\begin{frame}{Serialize \& De-serialize Slices }
+	\begin{itemize}
+		\item Partial Output from the slave is currently reported to the master through writing serialized slices to a file 
+		\item Serialization of the slices to bytes which can be directly sent to the master through MPI\_SEND call
+		\item Similarly at the Master, buffering of the received bytes and de-Serialization to partial slices needs to implemented
+	\end{itemize} 
+\end{frame}
+
+\subsection{Evaluation}
+\begin{frame}{Performance Gain and management over-head}
+	\begin{itemize}
+		\item Evaluation of the various designs by comparing the performance gains
+		\item Evaluation of the design by comparing the overhead (in terms of extra operations performed (reading/writing to file) or synchronization)
+		\item Checking if the generated full slices at the master are correct and try a sample print
+	\end{itemize} 
+\end{frame}
+
+\section*{Summary}
 \begin{frame}
   \frametitle<presentation>{Summary}
+	\begin{itemize}
+		\item Large computations can be performed on a cluster of nodes by dividing the task to sub-tasks 
+		\item Primary goal is to achieve higher resource utilization along with better performance by reducing the computation time
+		\item Supporting the streaming architecture of cuttlefish, develop an elegant solution to achieve the goal
+		\item To get an overall understanding of the benefits as well as challenges of distributed computing  
+	\end{itemize} 
 \end{frame}
 
 \appendix
