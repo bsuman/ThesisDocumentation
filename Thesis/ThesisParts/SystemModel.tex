@@ -7,7 +7,6 @@ The pipeline along with streaming architecture has a component-based architectur
 The pipeline performs the following fundamental steps in a serial fashion irrespective of the components forming the pipeline \ref{fig:TypicalCuttlefishSteps}. After the voxelization process, all the further processing happens in a chunk-wise manner. 
 
 \begin{figure}[ht!]
-\centering
 \includegraphics[scale=0.6]{TypicalCuttlefishSteps.PNG}
 \caption{Cuttlefish pipeline component functionality}
 \label{fig:TypicalCuttlefishSteps}
@@ -30,7 +29,106 @@ The pipeline performs the following fundamental steps in a serial fashion irresp
 
 \end{itemize} 
 
+The input given to the printer driver is a main configuration file called as main\_conf.json and has json data describing various input fields. The main configuration file enlists the files describing the printer specification, component configuration, geometry, texture, logger type and output folder path. The printer specification file consists of the details related to the resolution of the printer, print volume, material names and unique identifier for each material, ICC profile etc. The component configuration enlists the components forming the pipeline and configuration parameters for each component. Listing \ref{lst:CC} is an example of the BitmapProducerObjet component configuration description. \newline
+
+\begin{lstlisting}[language=json,label={lst:CC},caption={BitmapProducerObjet Component Configuration}]
+{
+	"type":"BitmapProducerObjet",
+  "OutputPath": "Output/",
+  "PrinterTextFileName": "printer_config.txt",
+  "computeType":"multi-threaded",
+  "pitchRequirement": "32",
+	"unusedMaterial":"VeroClear"
+}
+\end{lstlisting}
+
+The \textit{type} field denotes the name of the component and \textit{computeType} sets the component to run in a single-threaded or multi-threaded fashion. \textit{OutputPath} is used to set the path at which the component generates the bitmaps and \textit{pitchRequirement} value is used to make the bitmap width a multiple of the specified number. The component which parses the input main configuration file creates a \textit{printingSoftware} for the given component configuration. 
+
 \section{System Model for distributed Cuttlefish}
- 
+
+Before understanding the architecture of the distributed cuttlefish printer driver it is necessary to understand the architecture of the cluster, referred to as a distributed system, on which the driver is supposed to run. Distributed system consists of autonomous systems (AS) connected through network which interact (if necessary) through message passing and most importantly give the user an illusion of being single large system \cite{DCE}. The main goal of distributed system is to connect the users and the available infrastructure i.e. IT resources in a transparent, open, cost-effective, reliable as well as scalable way. Transparency in distributed computing environment (DCE) means that the user is unaware of the underlying system complexities in terms of location of the AS, heterogeneity of the system hardware, concurrency and replication of the AS mainly to provide reliability and fault tolerance. Scalability refers to the property by which the number of AS in the DCE can be increased (scaled in) or decreased(scaled out) so as to provide best suited infrastructure to handle the fluctuating load (i.e. the amount of work to be done).The shared resources of the distributed system can be broadly classified as physical resources and virtual resources. The Figure\ref{fig:TypesOfResourceSharing} details the resources included in the two categorizes. 
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{TypesOfResourceSharing.PNG}
+\caption{Distributed System Shared Resource Classification}
+\label{fig:TypesOfResourceSharing}
+\end{figure}
+  
+Distributed Computing is a vast domain which consists of various different types of computing environments like utility computing (grid computing and cloud computing), cluster computing, peer-to-peer computing and Jungle computing (figure \ref{fig:DistributedComputingEnv}). 
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{DistributedComputingEnv.PNG}
+\caption{Distributed Computing Environment}
+\label{fig:DistributedComputingEnv}
+\end{figure}
+
+Each of the computing environment forming the part of the DCE is described briefly-
+\begin{itemize}
+\item \textbf{Peer-to-Peer computing}- Each node in the DCE acts as both client and server, providing as well as consuming part of the system resources. Peers are machines simply connected to the internet where in each peer can freely join and leave the DCE without affecting the whole system, implying no particular role(either master or slave) for a peer making such a system self-organizing (figure \ref{fig:P2P}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{P2P.PNG}
+\caption{Peer-to-Peer system}
+\label{fig:P2P}
+\end{figure}
+
+\item \textbf{Utility computing}- Utility computing is based on a model for service provisioning, which allows the users (consumers) to pay the providers for using the service only when they need to. It emphasizes on a business model, by which services provide make available the requested/paid resources to the costumers. All grid/cloud platforms are regarded as utility service providers. Grid computing is to enable coordinated resource sharing and problem solving in dynamic, multi-institutional virtual organizations where as cloud computing is a computing paradigm that involves outsourcing of computing resources with the capabilities of expendable resource scalability, on-demand provisioning with little or no up-front IT infrastructure investment costs. Cloud computing offers its benefits through
+three types of service or delivery models namely infrastructure-as-a-service (IaaS), platform-as-a-service(PaaS) and software-as-a-Service (SaaS) 
+
+\item \textbf{Cluster Computing}- A cluster comprises a set of independent or stand-alone computers and a network interconnecting them. It
+works cooperatively together as a single integrated computing resource. A cluster is local in that all of its component subsystems are supervised within a single administrative domain, usually residing in a single room and managed as a single computer system. The components of a cluster are connected to each other through fast local area networks. 
+
+\item \textbf{Jungle Computing}- It is the combination of one or more DCEs enlisted above resulting in a highly diverse, distributed and non-uniform high performance computing environments (figure \ref{fig:JungleComputing}).  
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{JungleComputing.PNG}
+\caption{Jungle Computing}
+\label{fig:JungleComputing}
+\end{figure}
+
+\end{itemize}
+
+The distributed cuttlefish printer driver is developed using a cluster of the computers(nodes) which are heterogeneous in their hardware as well as software configuration and are connected via the Fraunhofer network. The initial set up used during the development had three nodes out of which one node is the master node and remaining nodes are the slave nodes. The names master and slave depict a predetermined role the nodes have and type of work they do. The nodes also have access to a shared networked file system (figure \ref{fig:CuttlefishCluster}).
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{CuttlefishCluster.PNG}
+\caption{Cluster setup}
+\label{fig:CuttlefishCluster}
+\end{figure}
+\end{itemize}
+
+As mentioned earlier, the role of the node determines the type of work they do.The master node is the computer in the cluster where the user submits his request, namely the main configuration file (figure \ref{fig:Step1}). 
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{Step1.PNG}
+\caption{User submits the request}
+\label{fig:Step1}
+\end{figure}
+
+The master node then performs some computation and distributes the sub-tasks to be performed by the slave nodes (figure \ref{fig:Step2}). 
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{Step2.PNG}
+\caption{Master distributes the sub-tasks}
+\label{fig:Step2}
+\end{figure}
+
+The slave nodes perform the assigned tasks and report back to the master (figure \ref{fig:Step3}). The cluster nodes follow a classic \textit{master-slave} communication paradigm. 
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{Step3.PNG}
+\caption{Slaves report the partial output}
+\label{fig:Step3}
+\end{figure}
+
+
 
 
