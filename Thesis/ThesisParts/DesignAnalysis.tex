@@ -3,7 +3,7 @@ An algorithm is the idea behind a program. An algorithm can be implemented in mu
 
 \section{Application of distributed computing}
 
-As discussed in section \ref{sysMod}, the task submitted by the user to the master node is divided into sub-tasks and distributed among the slaves nodes of the cluster. The slave nodes perform the allocated work and report the partial output which is merged at the master node. The flowchart \ref{lst:FC} summarizes the process. The \textit{MasterPrintingSoftware} follows the steps denoted in the left branch of the flow chart where as the \textit{SlavePrintingSoftware} follows the steps of denoted in the right branch of the flow chart. The \textit{MasterPrintingSoftware} and \textit{SlavePrintingSoftware} design decisions include:
+As discussed in section \ref{sysMod}, the task submitted by the user to the master node is divided into sub-tasks and distributed among the slave nodes of the cluster. The slave nodes perform the allocated work and report the partial output which is merged at the master node. The flowchart \ref{lst:FC} summarizes the process. The \textit{MasterPrintingSoftware} follows the steps denoted in the left branch of the flow chart where as the \textit{SlavePrintingSoftware} follows the steps of denoted in the right branch of the flow chart. The \textit{MasterPrintingSoftware} and \textit{SlavePrintingSoftware} design decisions include:
 \begin{enumerate}
 \item Format of the sub-tasks allocated to the slaves nodes
 \item Distribution of sub-tasks by the master
@@ -11,11 +11,11 @@ As discussed in section \ref{sysMod}, the task submitted by the user to the mast
 \item Merging of the partial output 
 \end{enumerate}
 
-Each of the design possible from the combinations of the above decisions yields a different behavior of the component responsible for that particular task. The following section describes the two designs in detail implemented through the thesis.  
+Each of the design possible from the various combinations of the above decisions yields a different behavior of the component responsible for that particular task. The following section describes the two designs implemented through the thesis in detail.  
 
 \section{Prototype I- Input/Output using NFS }
 
-Prototype I is the base prototype wherein the nodes communicate amongst each other the input and the partial output using the shared networked file system. The synchronization amongst the nodes is done via message passing. 
+Prototype I is the base prototype wherein the nodes communicate amongst each other the input and the partial output using the shared network file system. The synchronization amongst the nodes is done via message passing. 
 
 \subsection{Master sub-task creation and distribution}
 User submits the job to the master node using a configuration file in \textit{JSON} format. The JSON document contains a member called as \textit{PrintObjectFiles} whose member values indicate the geometry, texture, orientation etc of the object to be printed. The \textit{FileParserPJ} component of \textit{MasterPrintingSoftware} parses the input and converts it into an internal mesh representation called as the print object, with each having it's own unique identifier. The print objects are grouped together into a print job. Each print job is the organized in the print tray and then passed to the \textit{MasterDistributor} component which is in charge of sub-task creation and distribution. The sub-tasks distributed by the component can be already created print jobs or they can be in the same format as the received input i.e. configuration file. In this prototype, the \textit{MasterDistributor} creates a configuration file for each slave with the exactly same format as the configuration file parsed by the \textit{FileParserPJ} with a few changes i.e. the \textit{PrintObjectFiles} contains details of only the print models allocated to that particular slave and the \textit{OutputFolder} value is the folder location for the slave to write the partial output. In the figure \ref{fig:MasterConfigurationFile}, the configuration file received by the master node has the \textit{PrintObjectFiles} containing four inputs models which are distributed by the master as seen in the figure \ref{fig:Slave1ConfigurationFile} for the slave with rank 1 and figure \ref{fig:Slave2ConfigurationFile} for slave with rank 2. 
@@ -53,17 +53,66 @@ This prototype is possible only if the cluster nodes have read/write permission 
 The pros of distributing the sub-tasks through the configuration file are:
 \begin{itemize}
 \item \textbf{Design simplicity}: The most important aspect of this design is it's simplicity as the \textit{SlavePrintingSoftware} pipeline does not need to be modified greatly which means that it is almost similar to running a single instance of the non-distributed version of the 3D Printing pipeline. 
-\item \textbf{Lower Communication Overhead}: Slave nodes are blocked until the master communicates the configuration file path to each slave. Communication of the file path is faster as it very less number of bytes to be exchanged among the nodes as compared to the number of bytes to be sent when print jobs are distributed .
-\item \textbf{Faster Disk I/O}: The configuration file read and writes i.e. disk I/O (both at the master and slave) are much faster than sending the print job as series of bytes. It is almost simpler implementation as communicating the print jobs as series of bytes would require defining a protocol for packing and unpacking of the print jobs with an additional effort at both master and slave nodes.
+\item \textbf{Lower Communication Overhead}: Slave nodes are blocked until the master communicates the configuration file path to each slave. Communication of the file path is faster as it is less number of bytes to be exchanged among the nodes as compared to the number of bytes to be sent when print jobs are distributed .
+\item \textbf{Faster Disk I/O}: The configuration file read and writes i.e. disk I/O (both at the master and slave) are much faster than sending the print job as series of bytes. It is simpler implementation as communicating the print jobs as series of bytes would require defining a protocol for packing and unpacking of the print jobs with an additional effort of performing the packing at master and unpacking at the slave nodes.
 \item \textbf{No serialization and deserialization}: As the configuration files are in JSON format, there are very efficient library functions which allow to read and write the files with ease. As the format of the files is very standard, there is no need for serialization and deserialization of the files even if the nodes have varying underlying system architecture.        
 \end{itemize}
 
 The cons of distributing the sub-tasks via configuration file are: 
 \begin{itemize}
 \item \textbf{Dependency on shared network file system}: This prototype has a strong requirement that the nodes have a shared network file system and each node must have read access to the model texture/geometry file along with write access to the output folder to dump the partial output. If the print jobs are communicated as stream of bytes, it is possible to get rid of this requirement.
-\item \textbf{Performance overhead}: The configuration file , model geometry and texture files are parsed twice, once by the master to create the prints jobs needed for cost computation and once by the slaves for actual computation. This leads to redundant execution of the \textit{FileParserPj} and \textit{PrintJobOrganizer} at both master and slave nodes which accumulates to a significant performance overhead.
+\item \textbf{Performance overhead}: The configuration file, model geometry and texture files are parsed twice, once by the master to create the prints jobs needed for cost computation and once by the slaves for actual computation. This leads to redundant execution of the \textit{FileParserPj} and \textit{PrintJobOrganizer} at both master and slave nodes which accumulates to a significant performance overhead.
 \item \textbf{Disk I/O performance limited by network bandwidth}: As the files are read and written to the shared network file system, the network bandwidth limits the speed of the disk I/O. With increase in number of slave nodes, the load at the master to write the configuration file per slave increases which may become a performance bottleneck. 
 \end{itemize}
+
+\subsubsection{Sub-Task Distribution}
+
+The sub-tasks are distributed by the \textit{MasterDistributor} component based on a cost function. The goal of the distribution is to allocate equal work to each slave i.e. none of the slaves are over-worked and all of them finish the work almost at the same time. One of the main reasons which makes it important to achieve load balancing is to ensure better utilization of the cluster resources as, a cluster as whole will perform well only if each of the nodes do equal work leading to no node being the bottleneck. 
+
+The cost function used for distribution of the tasks evaluates the cost of each work item and allocation of work item among the slave nodes is done such a way that total cost of allocated work items is equal for each node. The cost for each work item may vary depending on the work item, for example for print objects, the size or the print volume of the print objects could be seen as cost of the work item, or priority assigned to the print objects can another way to evaluate the cost. 
+\newline
+\textbf{Naive cost function implementation }\\
+Each print object \begin{math}O_{i}\end{math} has a bounding box. The minimum bounding box (\begin{math}b_{min}^i\end{math})and maximum bounding box(\begin{math}b_{max}^i\end{math})is calculated. Using \begin{math}b_{min}^i\end{math} and \begin{math}b_{max}^i\end{math}, the width(\textit{w}), height(\textit{h}),and length(\textit{l}) of each print object is calculated as per equation \ref{eq:length}
+
+\begin{equation}
+\label{eq:length}
+\begin{aligned}
+w=(b_{max}^i).y-(b_{min}^i).y \\
+h=(b_{max}^i).z-(b_{min}^i).z \\
+l=(b_{max}^i).x-(b_{min}^i).x \\
+\end{aligned}
+\end{equation}
+
+The volume (\begin{math}V^i\end{math}) of the print object \begin{math}O_{i}\end{math} is calculated using the equation \ref{eq:volume}.
+
+\begin{equation}
+\label{eq:volume}
+V^i= w*h*l
+\end{equation}
+
+The total sum of the volumes of \textit{k} print objects calculated using equation \ref{eq:Sum} 
+
+\begin{equation}
+\label{eq:Sum}
+Total Volume =\sum\limits_{i=1}^{k}{V^i}
+\end{equation}
+
+Threshold (for each node in a cluster of size n-1) calculated using equation \ref{eq:threshold} is used for allocating the sub-tasks to the slaves. The cluster size considered is n-1 as the master is not allocated any sub-task and is hence excluded from the cluster of slaves.
+
+\begin{equation}
+\label{eq:threshold}
+Threshold =(\sum\limits_{i=1}^{k}{V^i})/(n-1)
+\end{equation}
+
+The allocation of the sub-tasks is done using the greedy approach which is as follows: 
+\begin{itemize}
+\item sort the list of volumes calculated using equation \ref{eq:volume} in descending order
+\item allocate the each slave the object as per the sorted volume list in a round-robin fashion until the allocated volume sum for the node is greater than or equal to the threshold. If threshold already reached then the node is skipped. 
+\item the allocation stops when each node has consumed the threshold or all the print objects are assigned.
+\end{itemize}
+
+This greedy approach is known to give a \begin{math} \frac{7}{6} \end{math}-approximation to the optimal solution of the optimization version \cite{pp2016}.
+
 
 \subsection{Slave Partial Output}
 
