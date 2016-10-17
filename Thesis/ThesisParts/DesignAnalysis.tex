@@ -67,12 +67,12 @@ The cons of distributing the sub-tasks via configuration file are:
 
 \subsubsection{Sub-Task Distribution}
 
-The sub-tasks are distributed by the \textit{MasterDistributor} component based on a cost function. The goal of the distribution is to allocate equal work to each slave i.e. none of the slaves are over-worked and all of them finish the work almost at the same time. One of the main reasons which makes it important to achieve load balancing is to ensure better utilization of the cluster resources as, a cluster as whole will perform well only if each of the nodes do equal work leading to no node being the bottleneck. 
+The sub-tasks are distributed by the \textit{MasterDistributor} component based on a cost function. The goal of the distribution is to allocate equal work to each slave i.e. none of the slaves are over-worked and all of them finish the work almost at the same time. One of the main reasons which makes it important to achieve load balancing is to ensure better utilization of the cluster resources, a cluster as a whole will perform well only if each of the nodes do equal work leading to none of the nodes being the bottleneck. 
 
-The cost function used for distribution of the tasks evaluates the cost of each work item and allocation of work item among the slave nodes is done such a way that total cost of allocated work items is equal for each node. The cost for each work item may vary depending on the work item, for example for print objects, the size or the print volume of the print objects could be seen as cost of the work item, or priority assigned to the print objects can another way to evaluate the cost. 
+The cost function used for distribution of the tasks evaluates the cost of each work item and allocation of work item among the slave nodes is done such a way that total cost of allocated work items is equal for each node. The cost for each work item may vary depending on the work item, for example for print objects, the size or the print volume of the print objects could be seen as cost of the work item, or priority assigned to the print objects can be another way to evaluate the cost. 
 \newline
-\textbf{Naive cost function implementation }\\
-Each print object \begin{math}O_{i}\end{math} has a bounding box. The minimum bounding box (\begin{math}b_{min}^i\end{math})and maximum bounding box(\begin{math}b_{max}^i\end{math})is calculated. Using \begin{math}b_{min}^i\end{math} and \begin{math}b_{max}^i\end{math}, the width(\textit{w}), height(\textit{h}),and length(\textit{l}) of each print object is calculated as per equation \ref{eq:length}
+\textbf{Naive cost function implementation }\newline
+Each print object \begin{math}O_{i}\end{math} has a bounding box. The minimum bounding box (\begin{math}b_{min}^i\end{math}) and maximum bounding box(\begin{math}b_{max}^i\end{math}) is calculated. Using \begin{math}b_{min}^i\end{math} and \begin{math}b_{max}^i\end{math}, the width(\textit{w}), height(\textit{h}), and length(\textit{l}) of each print object is calculated as per equation \ref{eq:length}
 
 \begin{equation}
 \label{eq:length}
@@ -97,25 +97,77 @@ The total sum of the volumes of \textit{k} print objects calculated using equati
 Total Volume =\sum\limits_{i=1}^{k}{V^i}
 \end{equation}
 
-Threshold (for each node in a cluster of size n-1) calculated using equation \ref{eq:threshold} is used for allocating the sub-tasks to the slaves. The cluster size considered is n-1 as the master is not allocated any sub-task and is hence excluded from the cluster of slaves.
+Threshold (for each node in a cluster of size \textit{n-1}) calculated using equation \ref{eq:threshold} is used for allocating the sub-tasks to the slaves. The cluster size considered is \textit{n-1} as the master is not allocated any sub-task and is hence excluded from the cluster of slaves.
 
 \begin{equation}
 \label{eq:threshold}
 Threshold =(\sum\limits_{i=1}^{k}{V^i})/(n-1)
 \end{equation}
 
-The allocation of the sub-tasks is done using the greedy approach which is as follows: 
-\begin{itemize}
-\item sort the list of volumes calculated using equation \ref{eq:volume} in descending order
-\item allocate the each slave the object as per the sorted volume list in a round-robin fashion until the allocated volume sum for the node is greater than or equal to the threshold. If threshold already reached then the node is skipped. 
-\item the allocation stops when each node has consumed the threshold or all the print objects are assigned.
-\end{itemize}
+The allocation of the sub-tasks is done using the greedy approach. To the beginning,the list of volumes calculated using equation \ref{eq:volume} is sorted in the  descending order. Then the allocation of the object as per the sorted volume list in a round-robin fashion to each slave is done until the allocated total volume  for the node is greater than or equal to the threshold. If the threshold is already reached for the node,then the node is skipped. The allocation of the print object stops when each node\textquotesingle s capacity has been consumed or all the print objects are assigned. The listing \ref{lst:ppga} summarizes the distribution logic.
+
+\begin{lstlisting}[language=C++,label={lst:ppga},caption={Distribute Tasks- Greedy Approach}]
+DistributeTasks(VolList,threshold,NumNodes)
+{
+	std::sort(VolList.begin(), VolList.end(),std::greater<>()); // sort in descending order
+	int listOfSum(NumNodes-1)={0};
+	int vlSize= VolList.size();
+	int nodeInd= 1;
+	int allocatedIndexList(NumNodes-1);
+	for (size_t ind = 0; ind < vlSize;)
+	{
+			if (listOfSum[nodeInd] < threshold)
+			{
+				sumList[nodeInd] = sumList[nodeInd] + tempList[ind];
+				indList[nodeInd].push_back(ind);
+				ind++;
+			}
+			
+			if (nodeInd == NumNodes-1)
+				nodeInd = 0;
+			else 
+				nodeInd++;
+	}
+}
+\end{lstlisting}
 
 This greedy approach is known to give a \begin{math} \frac{7}{6} \end{math}-approximation to the optimal solution of the optimization version \cite{pp2016}.
 
-
 \subsection{Slave Partial Output}
 
+The \textit{SlaveReporter} component receives the container of \textit{slices} whose size is equal to the \textit{chunk} size, as input from the previous component in the pipeline. At each of the slaves, the container actually contains the partial \textit{slices} which are sent to the master for merging.  Each slice internally stores the width, height and the buffer which contains the material id of the assigned material at each \textit{(x,y)} coordinate. As the cluster may contain heterogeneous machines with varying system architecture, to ensure proper interpretation of the slices at the master, the slices are serialized. \textit{Serialization} of the slices includes serializing the width, height (unsigned integers to same size), buffer to an output stream (std::ostream). The behavior of the \textit{SlaveReporter} component is summarized in the figure \ref{fig:SlaveReporterActivityDiagram}. \newline
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.8]{SlaveReporterActivityDiagram.PNG}
+\caption{\textit{SlaveReporter} Activity Diagram}
+\label{fig:SlaveReporterActivityDiagram}
+\end{figure}
+
+\textbf{Analysis of component behavior} \newline
+
+The \textit{SlaveReporter} component is multi-threaded and uses a synchronized queue for inter-thread communication. The \textit{runInternal} method of each component is the main thread of execution i.e. the cuttlefish process whereas in the first run of this method a worker thread is created which executes asynchronously to perform certain tasks. The main thread interacts with the other components whereas the worker thread interacts only with the main thread and worker threads of \textit{MasterPrintingSoftware-MasterMerger} component. \newline
+The interaction between the main thread and the worker thread can be viewed as the classic producer consumer problem, see figure \ref{fig:ProducerConsumerProblem}, where in the main thread produces the partial slices which are consumed by the worker thread and serialized. Each chunk of partial slices is one work item produced by the main thread and inserted in the buffer. Depending on the type of buffer, there might be varying number of synchronization points between the threads. In the current design, the buffer is implemented as a queue of limited size i.e. a bounded buffer. As the buffer is of fixed size, there are two conditions which lead to blocking either the main thread or the worker thread. As the main thread acts as the producer, it blocks when the buffer is full (i.e. slow consumer) and waits on a condition indicating at least one free slot. The worker thread acts as the consumer and blocks when there is no work item to consume and waits until there is at least one full slot. \newline
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{ProducerConsumerProblem.PNG}
+\caption{Producer-Consumer Problem}
+\label{fig:ProducerConsumerProblem}
+\end{figure}
+
+The worker thread performs the task of serialization and once each chunk of slices is serialized it communicates with worker thread of \textit{MasterPrintingSoftware-MasterMerger} component, the chunk size- it acts as a way of synchronization of the worker threads between the components. The worker thread sends some meta-data  only for the first chunk of slices which includes slice height, slice width, chunk size, total number of slices.This meta-data is used by the main thread of \textit{MasterPrintingSoftware-MasterMerger} component for creating full slices.
+
+The pros of \textit{SlaveReporter} component design:
+\begin{itemize}
+\item \textbf{Separation of concerns}: The main thread is responsible for assigning the work to the worker thread and returns to continue with execution of the pipeline with the next chunk whereas the worker thread is responsible for communication and serialization.  
+\item \textbf{Asynchronous communication}: The worker thread performs the blocking calls for synchronization with worker threads of \textit{MasterPrintingSoftware-MasterMerger} component. As it does so asynchronously, the communication never leads to blocking the main thread. Both the main thread and worker thread execute in parallel.
+\end{itemize} 
+
+The cons of \textit{SlaveReporter} component design:
+\begin{itemize}
+\item \textbf{Synchronization Overhead}: The main thread and the worker thread need to synchronize access to the shared buffer so as to avoid race condition along with blocking calls on buffer full/ empty condition. The size of the buffer influences the performance of the solution i.e. if unlimited buffer is used the producer will never block whereas if no buffer is used there is no need for explicit synchronization as producer produces only one item and the consumer consumes it after it is produced.
+\item \textbf{Increased implementation complexity}: Synchronization between the threads leads to added implementation complexity and if not managed properly might lead to deadlock. 
+\end{itemize} 
 
 \subsection{Partial Output Merging at Master} 
 
