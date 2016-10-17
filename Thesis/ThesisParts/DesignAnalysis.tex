@@ -11,6 +11,47 @@ As discussed in section \ref{sysMod}, the task submitted by the user to the mast
 \item Merging of the partial output 
 \end{enumerate}
 
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance=2.75cm] 
+\node (start) [startstop] {Start};
+\node (dec1) [decision,below of=start ,yshift=-0.75cm]{ Is master node?};
+\node (Min1) [io, below left of=dec1 , xshift= -2cm] {Input main configuration file};
+\node (Sin1) [io,below right of=dec1 , xshift= 2cm] {Receive sub-tasks from Master};
+\node (Mpro1) [process, below of=Min1] {Parse Input, Create sub-tasks, Distribute Sub-tasks};
+\node (Mpro2) [process, below of=Mpro1 ,yshift=-0.5cm] {Receive meta-data, compute full slice height, width, offset};
+\node (Mpro3) [process, below of=Mpro2 ,yshift=-0.5cm] {Receive partial slices and merge to full slice};
+\node (Mdec1) [decision,below of=Mpro3, yshift=-0.5cm]{ Is last slice?};
+\node (Spro1) [process, below of=Sin1] {Perform computation and generate chunk-wise slices };
+\node (Sdec1) [decision,below of=Spro1, yshift=-0.5cm]{ Is first chunk?};
+\node (Spro2) [process, below left of=Sdec1,xshift= -1cm] {Send meta-data to the master};
+\node (Spro3) [process, below of=Sdec1,yshift=-1cm ] {Send the partial slice to the master};
+\node (Sdec2) [decision,below of=Spro3, yshift=-0.5cm]{ Is last chunk?};
+\node (Mend) [startstop,below of= Mdec1 , yshift=-1.5cm] {End};
+\node (Send) [startstop,below of=Sdec2, yshift=-1.25cm ] {End};
+
+\draw [arrow] (start) -- (dec1);
+\draw [arrow] (dec1) -| node {yes}(Min1);
+\draw [arrow] (dec1) -| node {no}(Sin1);
+\draw [arrow] (Min1) -- (Mpro1);
+\draw [arrow] (Mpro1) -- (Mpro2);
+\draw [arrow] (Mpro2) -- (Mpro3);
+\draw [arrow] (Mpro3) -- (Mdec1);
+\draw [arrow] (Mdec1.west) -|node {no} ++(-0.5,0)|-(Mpro3.west);
+\draw [arrow] (Mdec1) -- node {yes}(Mend);
+\draw [arrow] (Sin1) -- (Spro1);
+\draw [arrow] (Spro1) -- (Sdec1);
+\draw [arrow] (Sdec1) -| node {yes}(Spro2);
+\draw [arrow] (Sdec1) -- node {no}(Spro3);
+\draw [arrow] (Spro2) -| (Spro3);
+\draw [arrow] (Spro3) -- (Sdec2);
+\draw [arrow] (Sdec2.east)-|node {no} ++(0.5,0)|-(Spro1.east);
+\draw [arrow] (Sdec2) -- node {yes}(Send);
+\end{tikzpicture}
+\caption{Distributed Printer Driver Flow Chart}
+\label{lst:FC}
+\end{figure}
+
 Each of the design possible from the various combinations of the above decisions yields a different behavior of the component responsible for that particular task. The following section describes the two designs implemented through the thesis in detail.  
 
 \section{Prototype I- Input/Output using NFS }
@@ -173,46 +214,6 @@ The cons of \textit{SlaveReporter} component design:
 
 \section{Prototype II- Input/Output independent of NFS }
 
-\begin{figure}
-\centering
-\begin{tikzpicture}[node distance=2.75cm] 
-\node (start) [startstop] {Start};
-\node (dec1) [decision,below of=start ,yshift=-0.75cm]{ Is master node?};
-\node (Min1) [io, below left of=dec1 , xshift= -2cm] {Input main configuration file};
-\node (Sin1) [io,below right of=dec1 , xshift= 2cm] {Receive sub-tasks from Master};
-\node (Mpro1) [process, below of=Min1] {Parse Input, Create sub-tasks, Distribute Sub-tasks};
-\node (Mpro2) [process, below of=Mpro1 ,yshift=-0.5cm] {Receive meta-data, compute full slice height, width, offset};
-\node (Mpro3) [process, below of=Mpro2 ,yshift=-0.5cm] {Receive partial slices and merge to full slice};
-\node (Mdec1) [decision,below of=Mpro3, yshift=-0.5cm]{ Is last slice?};
-\node (Spro1) [process, below of=Sin1] {Perform computation and generate chunk-wise slices };
-\node (Sdec1) [decision,below of=Spro1, yshift=-0.5cm]{ Is first chunk?};
-\node (Spro2) [process, below left of=Sdec1,xshift= -1cm] {Send meta-data to the master};
-\node (Spro3) [process, below of=Sdec1,yshift=-1cm ] {Send the partial slice to the master};
-\node (Sdec2) [decision,below of=Spro3, yshift=-0.5cm]{ Is last chunk?};
-\node (Mend) [startstop,below of= Mdec1 , yshift=-1.5cm] {End};
-\node (Send) [startstop,below of=Sdec2, yshift=-1.25cm ] {End};
-
-\draw [arrow] (start) -- (dec1);
-\draw [arrow] (dec1) -| node {yes}(Min1);
-\draw [arrow] (dec1) -| node {no}(Sin1);
-\draw [arrow] (Min1) -- (Mpro1);
-\draw [arrow] (Mpro1) -- (Mpro2);
-\draw [arrow] (Mpro2) -- (Mpro3);
-\draw [arrow] (Mpro3) -- (Mdec1);
-\draw [arrow] (Mdec1.west) -|node {no} ++(-0.5,0)|-(Mpro3.west);
-\draw [arrow] (Mdec1) -- node {yes}(Mend);
-\draw [arrow] (Sin1) -- (Spro1);
-\draw [arrow] (Spro1) -- (Sdec1);
-\draw [arrow] (Sdec1) -| node {yes}(Spro2);
-\draw [arrow] (Sdec1) -- node {no}(Spro3);
-\draw [arrow] (Spro2) -| (Spro3);
-\draw [arrow] (Spro3) -- (Sdec2);
-\draw [arrow] (Sdec2.east)-|node {no} ++(0.5,0)|-(Spro1.east);
-\draw [arrow] (Sdec2) -- node {yes}(Send);
-\end{tikzpicture}
-\caption{Distributed Printer Driver Flow Chart}
-\label{lst:FC}
-\end{figure}
 
 
 
