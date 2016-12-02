@@ -340,12 +340,12 @@ So to summarize the information sent by the master node to each slave node:
 
 \subsection{Serialization and Deserialization of Data}
 
-The nodes forming the cluster used for distributed computing may not always be homogenous, which means that each node may be different in terms of the system architecture, computation capacity and memory. Due to such heterogeneity, the representation of the user defined data types (i.e. in our case objects) may vary as the "endianness" of the nodes might differ \cite{ObSerDeser}. To ensure that each node interprets the data correctly, the objects are "flattened" to stream of bytes or a string before sending it the destination, also known as serialization of the objects. At the destination node, the received stream of bytes are "unflattened" to reconstruct the objects, which is known as deserialization \cite{yadav2016system}. 
+The nodes forming the cluster used for distributed computing may not always be homogenous, which means that each node may be different in terms of the system architecture, computation capacity and memory. Due to such heterogeneity, the representation of the user defined data types (i.e. in our case objects) may vary as the "endianness" of the nodes might differ \cite{ObSerDeser}. To ensure that each node interprets the data correctly, the objects are "flattened" to stream of bytes or a string before sending it the destination, also known as serialization of the objects. At the destination node, the received stream of bytes are "unflattened" to reconstruct the objects, which is known as deserialization \cite{yadav2016system}. The Figure \ref{fig:SerDeser} summarizes the serialization and deserialization process used in cluster computing.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[scale=0.85]{MasterMergerComponent.PNG}
-\caption{\textit{MasterMerger} Component- Activity Diagram}
-\label{fig:MasterMergerComponent}
+\includegraphics[scale=0.65]{SerDeser.PNG}
+\caption{Serialization and Deserialization}
+\label{fig:SerDeser}
 \end{figure}
   
