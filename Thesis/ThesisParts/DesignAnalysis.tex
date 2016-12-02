@@ -114,7 +114,8 @@ The sub-tasks are distributed by the \textit{MasterDistributor} component based 
 
 The cost function used for distribution of the tasks evaluates the cost of each work item and allocation of work item among the slave nodes is done such a way that total cost of allocated work items is equal for each node. The cost for each work item may vary depending on the work item, for example for print objects, the size or the print volume of the print objects could be seen as cost of the work item, or priority assigned to the print objects can be another way to evaluate the cost. 
 \newline
-\textbf{Naive cost function implementation }\newline
+
+\subsubsection{Naive cost function implementation }\label{costFunc}
 Each print object \textit{\begin{math}O_{i}\end{math}} has an axis-aligned bounding box \textit{\begin{math} B(O_{i}) \end{math}}. The minimum bounding box-\textit{min(B(\begin{math}O_{i}\end{math}))} and maximum bounding box-\textit{max(B(\begin{math}O_{i}\end{math}))} is calculated. Using \textit{min(B(\begin{math}O_{i}\end{math}))} and \textit{max(B(\begin{math}O_{i}\end{math}))}, the width(\textit{W}), height(\textit{H}), and length(\textit{L}) of each print object is calculated as per equation \ref{eq:length}
 
 \begin{equation}
@@ -302,11 +303,43 @@ As discussed in the Section \ref{protoI}, the prototype I functions only if ther
 \item Format of the work item allocated to the slaves
 \end{itemize}  
 
+<<<<<<< HEAD
 The architecture of the distributed cuttlefish pipeline remains almost the same with two minor changes, the \textit{MasterDistributor} component is replaced by another component called as \textit{MasterPJDistributor} in the \textit{MasterPrintingSoftware}, and in the \textit{SlavePrintingSoftware}, the component \textit{SlavePJCollector} replaces the components \textit{FileParserPJ} and \textit{PrintJobOrganizer}. These changes in the printing software are explained in the following subsections. \newline 
+=======
+The architecture of the distributed cuttlefish pipeline remains almost same with two minor changes, the \textit{MasterDistributor} component is replaced by another component called as \textit{MasterPJDistributor} in the \textit{MasterPrintingSoftware}, and in the \textit{SlavePrintingSoftware}, the component \textit{SlavePJCollector} replaces the components \textit{FileParserPJ} and \textit{PrintJobOrganizer}.\newline 
 
-The algorithm for performing the distributed computing progresses in the same fashion as described in the Figure \ref{lst:FC}. The configuration file submitted as input by the user to the cuttlefish application consists of a tag called as \textit{DistributionPrototype} whose value indicates the distribution prototype to be used. The valid values for this tag are 1 for prototype I and 2 for prototype II. The master node parses the configuration file and depending on the value for the \textit{DistributionPrototype} creates the components of \textit{MasterPrintingSoftware} and sends the prototype value to the slave nodes. The slave nodes wait to receive the prototype value and then add the components of \textit{SlavePrintingSoftware} depending on the received value. \newline
+\subsection{Selection of the prototype}
 
-The \textit{MasterPrintingSoftware} starts with the steps similar to prototype I i.e. parse the configuration file provided by the user and create the print job. The components responsible for doing these tasks namely, \textit{FileParserPJ} and \textit{PrintJobOrganizer}, remain unchanged. The print job is then passed to the \textit{MasterPJDistributor} component. From this point onwards the behavior of the pipeline varies for prototype II. The \textit{MasterPJDistributor} component is responsible for distributing the print jobs to the slave nodes instead of writing the configuration files per slave node. The cost function used to distribute the load amongst the nodes is the same as prototype I. The difference is the format in which the work load is assigned to the slave nodes. For each slave, the print job containing the print objects which are distributed using the cost function are created. Each newly created print job is a set of the print objects such that, the sum of the volumes of the print object bounding boxes is less than or equal to the threshold calculated using the cost function. The goal of the cost function is to have equal work load for each slave node so that each one of them finishes the chunk-wise computation almost at the same time. \newline
+The algorithm for performing the distributed computing progresses in the same fashion as described in the Figure \ref{lst:FC}. The configuration file submitted as input by the user to the cuttlefish application consists of a tag called as \textit{DistributionPrototype} whose value indicates the distribution prototype to be used. The valid values for this tag are 1 for prototype I and 2 for prototype II. The master node parses the configuration file and depending on the value of the \textit{DistributionPrototype} tag, it creates the components of \textit{MasterPrintingSoftware} and sends the prototype value to the slave nodes. The slave nodes wait to receive the prototype value and then add the components of \textit{SlavePrintingSoftware} depending on the received value. \newline
 
+In the prototype I, the slave nodes receive the path where they could find the configuration file containing the information about of the assigned print models, texture information, component configuration for the printing pipeline and the printer specification. Just sending the prototype value is not sufficient for the slave nodes to create the \textit{SlavePrintingSoftware}. The master needs to send to each slave node all the information which was earlier contained in the main configuration file along with the information from the other files included in the main configuration file. So master should send the JSON data describing the component configuration and printer specification. Each slave node after receiving the prototype value decides what is the next information that it should wait for from the master node. For prototype I, the slave nodes wait for the main configuration file path and for prototype II, they wait for the component configuration and the printer specification description. The component configuration description depends on the user's choice of components and the configuration of each component. As the description may vary, the master first sends the size of the data followed by the data describing the component configuration. Similar to the component configuration, the printer specification description depends on the printer settings provided by the user via the printer specification file. As description of the printer specification is subject to vary depending on the available 3D printer, size of the data is sent to the slave nodes followed by the data describing the printer specification.    
+>>>>>>> 0e9181b2d5c0a0b4bdedd9e209deb02f6e52c3b7
 
+\subsection{Distribution of the work load to the slave nodes}
 
+After communicating the information related to the prototype, component configuration and printer specification, the next step for the master node is to create the work load for each slave. The \textit{MasterPrintingSoftware} starts with the steps similar to prototype I i.e. parse the configuration file provided by the user and create the print job. The components responsible for doing these tasks namely, \textit{FileParserPJ} and \textit{PrintJobOrganizer}, remain unchanged. The print job is then passed to the \textit{MasterPJDistributor} component. From this point onwards the behavior of the pipeline varies for prototype II. The \textit{MasterPJDistributor} component is responsible for distributing the print jobs to the slave nodes instead of writing the configuration files per slave node. The cost function used to distribute the load amongst the nodes is the same as prototype I. The difference is the format in which the work load is assigned to the slave nodes. For each slave, a new print job containing the print objects (distributed as per the cost function) is created. Each newly created print job is a set of the print objects such that, the sum of the volumes of the print object bounding boxes is less than or equal to the threshold calculated using the cost function. The goal of the cost function is to have equal work load for each slave node so that each one of them finishes the chunk-wise computation almost at the same time. \newline
+
+The steps performed by \textit{MasterPJDistributor} component are as follows: 
+\begin{enumerate}
+\item The \textit{PrintJobOrganizer} creates the print job and passes the print job to the \textit{MasterPJDistributor} component. 
+\item In the \textit{MasterPJDistributor} component, the cost function is calculated using the print object bounding boxes. The calculation of the cost function is same as described in the subsection \ref{costFunc}.
+\item Using the threshold calculated in the step 2, the distribution of the print objects is done such that sum of the volumes of the print object bounding boxes (assigned to each slave) is less than or equal to the threshold.
+\item The set of print objects assigned to each slave is then packed into a print job per slave. 
+\item The print job is then serialized to a stream of bytes and sent to the slaves. As the size of the print job may vary, the size of the serialized print job is sent to the respective slave first followed by the print job data. 
+\item Each print object has texture information which is used to generate the desired appearance. The texture data is stored in the master node GPU memory when the print job is created. For the slave nodes to perform the computation and generate the partial slices correctly, the slave nodes need the texture information which should be sent by the master. The texture data size may also vary per print object and hence, the size of serialized texture data is sent first followed by the serialized texture data.   
+\end{enumerate}
+
+So to summarize the information sent by the master node to each slave node:
+\begin{itemize}
+\item prototype value indicating the chosen distribution type
+\item size of the component configuration description 
+\item component configuration description
+\item size of the printer specification description 
+\item printer specification description
+\item size of the serialized print job 
+\item serialized print job 
+\item for each print object in the print job, size of texture data and texture data  
+\end{itemize}
+
+\subsection{Serialization of data}
+Serialization is 
