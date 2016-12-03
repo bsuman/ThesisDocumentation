@@ -175,7 +175,7 @@ DistributeTasks(VolList,threshold,NumNodes)
 }
 \end{lstlisting}
 
-\subsection{Slave Partial Output}
+\subsection{Slave Partial Output} \label{SRepoComp}
 
 The \textit{SlaveReporter} component receives the container of \textit{slices} whose size is equal to the \textit{chunk} size, as input from the previous component in the pipeline. At each of the slaves, the container actually contains the partial \textit{slices} which are sent to the master for merging.  Each slice internally stores the width, height and the buffer which contains the material id of the assigned material at varying \textit{(x,y)} coordinate. As the cluster may contain heterogeneous machines with varying system architecture, to ensure proper interpretation of the slices at the master, the slices are serialized. \textit{Serialization} of the slices includes serializing the width, height (unsigned integers to same size), buffer to an output stream (std::ostream). The behavior of the \textit{SlaveReporter} component is summarized in the Figure \ref{fig:SlaveReporterActivityDiagram}. \newline
 \begin{figure}[ht!]
@@ -212,7 +212,7 @@ The disadvantages of \textit{SlaveReporter} component design are:
 \item \textbf{Increased implementation complexity}: Synchronization between the threads leads to added implementation complexity and if not managed properly might lead to deadlock. 
 \end{itemize} 
 
-\subsection{Partial Output Merging at Master} 
+\subsection{Partial Output Merging at Master} \label{MMComp}
 
 The partial slices serialized by the slaves are de-serialized at the \textit{MasterMerger} component. The \textit{MasterMerger} component creates a worker thread per slave node in the cluster which interacts with the worker thread created by the \textit{SlaveReporter} component. The main thread of the \textit{MasterMerger} component synchronizes with worker threads at various points during the execution. The worker threads of \textit{MasterMerger} component first wait to receive the meta-data information from the \textit{SlaveReporter} component worker thread. After they have received the slice height, width, total number of slices and chunk size, they synchronize with the main thread and indicate the receipt of the meta-data. The worker threads then wait to receive the chunk size of the serialized data from the worker threads of \textit{SlaveReporter} component, the receipt of the chunk size is the indication that slices are serialized and ready for deserialization. On receiving the chunk size, they start with deserialization of the slices and create a container of deserialized partial slices. \newline
 
@@ -338,7 +338,31 @@ So to summarize the information sent by the master node to each slave node:
 \item for each print object in the print job, size of texture data and texture data  
 \end{itemize}
 
-\subsection{Serialization and Deserialization of Data}
+\subsection{Work Load Collection and Computation}
+
+At the slave nodes, the first step performed is receiving the type of distribution i.e. the prototype value set by the user via the configuration file submitted to the master node. After it receives the prototype value, the slave node decides which is the next information it should wait for. For prototype II, the slave nodes wait for the component configuration. Each slave node in the cluster receives the same component configuration from the master. As the component configuration is set by the user and the size of the JSON string describing the component configuration may vary in size, the slave nodes first receive the size of the string and allocate the buffer of the appropriate size to receive the actual component configuration string. Followed by the component configuration, the slave nodes waits to receive the printer specification, similar to component configuration information, first the size of the JSON string holding the printer specification followed by the actual string. \newline   
+
+The slave nodes then proceed to create the printing software containing the needed components. Similar to the prototype I, the \textit{SlavePrintingSoftware} does not contain any output component. As the work load received by the slaves nodes in the prototype II is a print job, The components \textit{FileParserPJ} and \textit{PrintJobOrganizer} are not included in the \textit{SlavePrintingSoftware}, instead a new component called as the \textit{SlavePJCollector} is included. The \textit{SlavePJCollector} component receives the size of the serialized print job sent by the master and allocated the buffer to receive the actual serialized print job as stream of bytes. It then deserializes the received data to create the print job. For each print object contained in the print job, it waits to receive the texture information. The slaves receive the size of the texture data, allocate the buffer for the texture data and then receive the texture data. The received texture data is then deserialized and saved in the memory of the node. The rest of pipeline remains unchanged until the \textit{SlaveReporter} component.\newline
+
+The \textit{SlaveReporter} component, similar to the prototype I, receives the partial slices and reports them to the master node. As the nodes within the cluster do no have a shared network file system, the slices which are reported to the master node are in form of stream of bytes instead of files written to the disk. The value of the selected distribution type is set at the time \textit{SlavePrintingSoftware} creation as \textit{persistent} data- it is a piece of information accessible by all the components of the pipeline. \textit{SlaveReporter} fetches the prototype value from the persistent storage before it proceeds with rest of the computation. \newline
+
+The \textit{SlaveReporter} component sends the meta-data information which is the partial slice height, width, total number of slices for the assigned work load and first chunk size. For the prototype II, it skips sending the path where the master node would find the partial slice file. For each chunk of partial slices to be sent to the master, the slave begins by informing the size of the chunk followed by serialization of the slices. Through serialization of the slices it converts the slices to stream of bytes. The size of the serialized slice is sent to the master which allows the master to allocate the buffer of appropriate size and then send the serialized slice data. The \textit{SlaveReporter} component design remains unchanged and is as described in the subsection \ref{SRepoComp}.
+
+\subsection{Creation of the full slices}
+
+At the master node, after assigning the work load to the slave nodes, the \textit{MasterMerger} component is executed. It is in charge of collecting the partial slices from the slave nodes and merging them to form full slices. The \textit{MasterMerger} component, similar to the \textit{SlaveReporter} component, fetches the prototype value from the persistent storage which is saved when the instance of the \textit{MasterPrintingSoftware} is created. There is no huge difference in how the component performs the merging of the partial slices but rather how it receives the partial slices from the slave nodes. The component design remains unchanged and is as described in the subsection \ref{MMComp}. Each worker thread begins by receiving the meta-data information from their respective slave node. For the prototype II, the worker thread does not receive the path where the partial slices files are written by the slave. After receiving the chunk size, the worker threads receive the size of the stream of bytes slice-wise, allocate the buffer and receive the stream of bytes. They then deserialize the stream of bytes to partial slice and store them in the partial slice container. The rest of the steps until the merging of partial slices to full slice and passing them to the output component remains unchanged.
+
+The information communicated between the master and slave nodes is summarized in the Figure \ref{fig:ProtoII}.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[scale=0.85]{ProtoII_SequenceDiagram.PNG}
+\caption{Communication between slave and master nodes}
+\label{fig:ProtoII}
+\end{figure}
+
+
+\section{Serialization and Deserialization of Data}
 
 The nodes forming the cluster used for distributed computing may not always be homogenous, which means that each node may be different in terms of the system architecture, computation capacity and memory. Due to such heterogeneity, the representation of the user defined data types (i.e. in our case objects) may vary as the "endianness" of the nodes might differ \cite{ObSerDeser}. To ensure that each node interprets the data correctly, the objects are "flattened" to stream of bytes or a string before sending it the destination, also known as serialization of the objects. At the destination node, the received stream of bytes are "unflattened" to reconstruct the objects, which is known as deserialization \cite{yadav2016system}. The Figure \ref{fig:SerDeser} summarizes the serialization and deserialization process used in cluster computing.
 
