@@ -389,4 +389,16 @@ The nodes forming the cluster used for distributed computing may not always be h
 \caption{Serialization and Deserialization}
 \label{fig:SerDeser}
 \end{figure}
+
+\section{Communication medium}
+
+The cluster nodes are connected via network and communicate through message passing. The communication protocol for passing the messages via the network can be TCP/UDP, Message Passing Interface(MPI), REST(Representational State Transfer) or HTTP(Hypertext Transfer Protocol). Irrespective of the protocol used, the two prototypes must function without any need for implementation or logical modifications. To achieve this and to provide the user the convenience of choosing the desired communication protocol, the user can set the protocol of choice through the configuration file which would be used to generate the communicator using the set value as underlying protocol. The implementation details of how the messages are sent or received are abstracted away as the communicator provides basic communication primitives are the functions of the interface. The Figure \ref{fig:CommAbs} summarizes the process of how the communicator is selected.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[scale=0.65]{Communication_Abstraction.PNG}
+\caption{Serialization and Deserialization}
+\label{fig:CommAbs}
+\end{figure}
+
   
