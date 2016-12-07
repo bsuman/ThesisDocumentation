@@ -61,28 +61,148 @@ The user submits the job to the master node using a configuration file in JSON f
 
 The arrangement of the print objects on the print tray is done using a simple approach. For each print object the bounding box is calculated and the print object bounding boxes are sorted in the descending order i.e. largest to smallest. The whole print tray is seen as one big cell which contains the partitioned cells holding the print objects. For the first object i.e. is the one with the largest bounding box, the cell which fits the object is found and placed in the cell representing the print tray whose volume is equal to the print volume. The print volume is calculated by multiplying the height, width and length of the print tray. After placing the smaller cell, the larger print tray cell is split thus creating multiple smaller cells which can be chosen for the remaining objects. For each print object, the placement is recorded by the offset values of the cell in which it is placed starting from the origin. \\    
 
-The sub-tasks distributed by the component can be already created print jobs or they can be in the same format as the received input i.e. configuration file. In this prototype, the \textit{MasterDistributor} creates a configuration file for each slave with the exactly same format as the configuration file parsed by the \textit{FileParserPJ} with a few changes i.e. the \textit{PrintObjectFiles} contains details of only the print models allocated to that particular slave and the \textit{OutputFolder} value is the folder location for the slave to write the partial output. In the Figure \ref{fig:MasterConfigurationFile}, the configuration file received by the master node has the \textit{PrintObjectFiles} containing four inputs models which are distributed by the master as seen in the Figure \ref{fig:Slave1ConfigurationFile} for the slave with rank 1 and Figure \ref{fig:Slave2ConfigurationFile} for slave with rank 2. 
+The sub-tasks distributed by the component can be already created print jobs or they can be in the same format as the received input i.e. configuration file. In this prototype, the \textit{MasterDistributor} creates a configuration file for each slave with the exactly same format as the configuration file parsed by the \textit{FileParserPJ} with a few changes i.e. the \textit{PrintObjectFiles} contains details of only the print models allocated to that particular slave and the \textit{OutputFolder} value is the folder location for the slave to write the partial output. In the Listing \ref{lst:MCF}, the configuration file received by the master node has the \textit{PrintObjectFiles} containing four inputs models which are distributed by the master as seen in the Listing \ref{lst:SCF2} for the slave with rank 1 and Listing \ref{lst:SCF} for slave with rank 2. 
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[scale=0.6]{MasterConfigurationFile.png}
-\caption{Master Configuration file}
-\label{fig:MasterConfigurationFile}
-\end{figure}
+\begin{lstlisting}[label={lst:MCF},caption={Configuration file submitted by the user }]
+{
+   "ComponentConfiguration": "//pc2215/SharedFolder/layered_halftoner_CMYK_PrintJob.json",
+   "PrinterSpecs": "//pc2215/SharedFolder/printer_specs_layer_profile_CMYK.json",
+   "PrintObjectFiles": 
+	  [
+			{
+			"GeometryFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/Head_Level3.obj",
+			"TextureFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/HeadColour.jpg",
+			"fixRotation": false
+			},
+			{
+			"GeometryFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/Head_Level3.obj",
+			"TextureFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/HeadColour.jpg",
+			"fixRotation": false
+			},			{
+			"GeometryFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/Head_Level3.obj",
+			"TextureFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/HeadColour.jpg",
+			"fixRotation": false
+			},
+			{
+			"GeometryFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/Head_Level3.obj",
+			"TextureFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/HeadColour.jpg",
+			"fixRotation": false
+			}
+		],
+   "OutputFolder":"//pc2215/SharedFolder/MRepo/3DPrinterDriver/",
+   "Loggers": 
+	  [
+        {
+          "type": "ScreenLogger",
+          "verbosity": "INFO"  
+        },
+        {
+          "type": "FileLogger",
+          "verbosity": "TRACE",
+          "OutputPath": "text.log"  
+        }
+    ],
+	"gnuPlotPath":"",
+  "validationFileName": "validation.json",
+	"DistributionPrototype": "1",
+	"CommunicatorType":"NetworkCommMPI"
+}
+\end{lstlisting}
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[scale=0.6]{Slave1ConfigurationFile.png}
-\caption{Slave 1 Configuration file}
-\label{fig:Slave1ConfigurationFile}
-\end{figure}
+\begin{lstlisting}[label={lst:SCF},caption={Slave Configuration file Node 2 }]
+{
+   "ComponentConfiguration": "//pc2215/SharedFolder/layered_halftoner_CMYK_PrintJob.json",
+   "PrinterSpecs": "//pc2215/SharedFolder/printer_specs_layer_profile_CMYK.json",
+   "CommunicatorType": "NetworkCommMPI",
+   "DistributionPrototype": "1",
+   "Loggers":
+		[
+        {
+            "type": "ScreenLogger",
+            "verbosity": "INFO"
+        },
+        {
+            "type": "FileLogger",
+            "verbosity": "TRACE",
+            "OutputPath": "text.log"
+        }
+    ],
+   "gnuPlotPath": "",
+   "validationFileName": "validation.json",
+   "OutputFolder": "//pc2215/SharedFolder/MRepo/3DPrinterDriver/DistributedComputing/Node_2/",
+   "PrintObjectFiles":
+		[
+        {
+            "GeometryFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/Head_Level3.obj",
+            "TextureFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/HeadColour.jpg",
+            "fixRotation": false
+        },
+        {
+            "GeometryFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/Head_Level3.obj",
+            "TextureFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/HeadColour.jpg",
+            "fixRotation": false
+        }
+    ]
+}
+\end{lstlisting}
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[scale=0.6]{Slave2ConfigurationFile.png}
-\caption{Slave 2 Configuration file}
-\label{fig:Slave2ConfigurationFile}
-\end{figure}
+\begin{lstlisting}[label={lst:SCF2},caption={Slave Configuration file Node 1 }]
+{
+   "ComponentConfiguration": "//pc2215/SharedFolder/layered_halftoner_CMYK_PrintJob.json",
+   "PrinterSpecs": "//pc2215/SharedFolder/printer_specs_layer_profile_CMYK.json",
+   "CommunicatorType": "NetworkCommMPI",
+   "DistributionPrototype": "1",
+   "Loggers":
+		[
+        {
+            "type": "ScreenLogger",
+            "verbosity": "INFO"
+        },
+        {
+            "type": "FileLogger",
+            "verbosity": "TRACE",
+            "OutputPath": "text.log"
+        }
+    ],
+    "gnuPlotPath": "",
+    "validationFileName": "validation.json",
+    "OutputFolder": "//pc2215/SharedFolder/MRepo/3DPrinterDriver/DistributedComputing/Node_1/",
+    "PrintObjectFiles":
+		 [
+        {
+            "GeometryFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/Head_Level3.obj",
+            "TextureFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/HeadColour.jpg",
+            "fixRotation": false
+        },
+        {
+            "GeometryFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/Head_Level3.obj",
+            "TextureFile": "//pc2215/SharedFolder/3DModels/Head/HeadMTL/HeadColour.jpg",
+            "fixRotation": false
+        }
+    ]
+}
+\end{lstlisting}
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[scale=0.6]{MasterConfigurationFile.png}
+%\caption{Master Configuration file}
+%\label{fig:MasterConfigurationFile}
+%\end{figure}
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[scale=0.6]{Slave1ConfigurationFile.png}
+%\caption{Slave 1 Configuration file}
+%\label{fig:Slave1ConfigurationFile}
+%\end{figure}
+
+%\begin{figure}[ht!]
+%\centering
+%\includegraphics[scale=0.6]{Slave2ConfigurationFile.png}
+%\caption{Slave 2 Configuration file}
+%\label{fig:Slave2ConfigurationFile}
+%\end{figure}
 
 This prototype is possible only if the cluster nodes have read/write permission to the shared network file system where the geometry, texture files and input/output folders are stored /created. The \textit{MasterDistributor} creates a unique path for each slave using the rank of the slave and writes the configuration file to this path. It then communicates to the slave only the path where the slave can find the configuration file. The sequence diagram in the Figure \ref{fig:SequenceDiagram1} summarizes the communication between the master and the slaves.  
 
@@ -138,7 +258,7 @@ The total sum of the volumes of \textit{k} print objects calculated using equati
 
 \begin{equation}
 \label{eq:Sum}
-\begin{math} V_{Total} \end{math} =\sum\limits_{i=1}^{k}{V^i}
+V_{Total} =\sum\limits_{i=1}^{k}{V^i}
 \end{equation}
 
 Threshold (for each node in a cluster of size \textit{n-1}) calculated using equation \ref{eq:threshold} is used for allocating the sub-tasks to the slaves. The cluster size considered is \textit{n-1} as the master is not allocated any sub-task and is hence excluded from the cluster of slaves.
@@ -174,6 +294,25 @@ DistributeTasks(VolList,threshold,NumNodes)
 	}
 }
 \end{lstlisting}
+
+The solution found using the greedy approach is 4/3- approximation to the optimal solution of the optimization, when the distribution is done among two nodes.  The approximation can be estimated using the Equation \ref{eq:App1}, where \textit{k} is the number of subsets created through partition\cite{app}. For \textit{n-1} slave nodes in a cluster of size \textit{n}, the number of partitions done is equal to the number of slave nodes. By replacing \textit{k} with \textit{n-1}, we get the Equation \ref{eq:App2}. As the number of slave nodes increases in the cluster, the solution found using this approach has better approximation to the optimal solution as seen in the Figure \ref{fig:AppG}.
+
+\begin{equation}
+\label{eq:App1}
+A = \frac{k+2}{k+1} 
+\end{equation}
+
+\begin{equation}
+\label{eq:App2}
+A =\frac{n+1}{n}
+\end{equation}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.6]{Approximation_graph.png}
+\caption{Greedy Approach Solution Analysis}
+\label{fig:AppG}
+\end{figure}
 
 \subsection{Slave Partial Output} \label{SRepoComp}
 
@@ -275,7 +414,7 @@ The total number of full slices is the maximum value from the received total num
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.85]{MasterMergerComponent.PNG}
+\includegraphics[scale=0.75]{MasterMergerComponent.png}
 \caption{\textit{MasterMerger} Component- Activity Diagram}
 \label{fig:MasterMergerComponent}
 \end{figure}
@@ -369,19 +508,19 @@ The advantages of the prototype II are:
 \begin{itemize}
 \item \textbf{Independence from the shared network file system}: The prototype II does not require the cluster nodes to have a shared network file system which makes it possible to perform distributed computing in a cluster of nodes connected via network. 
 \item \textbf{Avoids redundant execution of certain components at the slave nodes}: The workload assigned to the slave nodes in the cluster are print jobs. As there is no configuration file to be parsed by the slave nodes (as done in the prototype I), the slave nodes do not need to run the \textit{FileParserPJ} and \textit{PrintJobOrganizer} components again. This improves the performance of the \textit{SlavePrintingSoftware} significantly if the geometry and texture files of the input print models are huge.   
-\item \textbf{Lesser overhead due to no disk I/O}: For each slave node, the master node had to create the configuration file as input which were parsed at the slave nodes.The slave nodes had to write the serialized slices to the disk which were then again read and deserialized by the master node. The amount of disk I/O increase with increase in the cluster size for the prototype I. In prototype II, the input and the output is communicated as stream of bytes which helps to avoid disk I/O.
+\item \textbf{Lesser overhead due to no disk I/O}: For each slave node, the master node had to create the configuration file per slave node and communicate the path.The slave nodes had to write the serialized slices to the disk which were then again read and deserialized by the master node. The amount of disk I/O increases with the increase in the cluster size for the prototype I. In prototype II, the input and the output is communicated as stream of bytes which helps to avoid disk I/O.
 \end{itemize}
 
 The disadvantages of the prototype II are: 
 \begin{itemize}
-\item \textbf{Increased number of send and receives}: The master sends all the information needed by the slaves as stream of bytes via send and receive primitives. Each send and receive done by the master or the slaves is a blocking call. So if one of the nodes is slow in sending/receiving the information, it remains blocked until the call is done. With increase in the size of data to be sent, the overhead of blocking calls increases. If the calls are asynchronous, meaning that the node is not blocked until the respective receive is done by the recipient node, then then required synchronization needs to be additionally implemented by the programmer to ensure there is an order maintained between the sends and also handle the cases of failed communication. 
+\item \textbf{Increased number of send and receives}: The master sends all the information needed by the slaves as stream of bytes via send and receive primitives. Each send and receive done by the master or the slave is a blocking call. So if one of the nodes is slow in sending/receiving the information, it remains blocked until the call is done. With increase in the size of data to be sent, the overhead of blocking calls increases. If the calls are asynchronous, meaning that the node is not blocked until the respective receive is done by the recipient node, then the required synchronization needs to be additionally implemented by the programmer to ensure there is an order maintained between the sends and also handle the cases of failed communication. 
 \item \textbf{Increased computation due to frequent serialization and deserialization}: As the cluster nodes can be heterogeneous, the information communicated between the nodes needs to serialized at the sender and deserialized at the receiver. The process of serialization and deserialization is explained in the section \ref{serdser}. Due to this, for each send and receive there is an additional computation to be performed. As the size of byte stream is not fixed, the size needs to be communicated first followed by the actual data.  
 \end{itemize}
 
 
 \section{Serialization and Deserialization of Data} \label{serdser}
 
-The nodes forming the cluster used for distributed computing may not always be homogenous, which means that each node may be different in terms of the system architecture, computation capacity and memory. Due to such heterogeneity, the representation of the user defined data types (i.e. in our case objects) may vary as the "endianness" of the nodes might differ \cite{ObSerDeser}. To ensure that each node interprets the data correctly, the objects are "flattened" to stream of bytes or a string before sending it the destination, also known as serialization of the objects. At the destination node, the received stream of bytes are "unflattened" to reconstruct the objects, which is known as deserialization \cite{yadav2016system}. The Figure \ref{fig:SerDeser} summarizes the serialization and deserialization process used in cluster computing.
+The nodes forming the cluster used for distributed computing may not always be homogenous, which means that each node may be different in terms of the system architecture, computation capacity and memory. Due to such heterogeneity, the representation of the user defined data types (i.e. in our case objects) may vary as the "endianness" of the nodes might differ \cite{ObSerDeser}. To ensure that each node interprets the data correctly, the objects are "flattened" to stream of bytes or a string before sending it the destination, also known as serialization of the objects. At the destination node, the received stream of bytes are "unflattened" to reconstruct the object, which is known as deserialization \cite{yadav2016system}. The Figure \ref{fig:SerDeser} summarizes the serialization and deserialization process used.
 
 \begin{figure}[!t]
 \centering
@@ -392,12 +531,12 @@ The nodes forming the cluster used for distributed computing may not always be h
 
 \section{Communication medium}
 
-The cluster nodes are connected via network and communicate through message passing. The communication protocol for passing the messages via the network can be TCP/UDP, Message Passing Interface(MPI), REST(Representational State Transfer) or HTTP(Hypertext Transfer Protocol). Irrespective of the protocol used, the two prototypes must function without any need for implementation or logical modifications. To achieve this and to provide the user the convenience of choosing the desired communication protocol, the user can set the protocol of choice through the configuration file which would be used to generate the communicator using the set value as underlying protocol. The implementation details of how the messages are sent or received are abstracted away as the communicator provides basic communication primitives are the functions of the interface. The Figure \ref{fig:CommAbs} summarizes the process of how the communicator is selected.
+The cluster nodes are connected via network and communicate through message passing. The communication protocol for passing the messages via the network can be TCP/UDP, Message Passing Interface(MPI), REST(Representational State Transfer) or HTTP(Hypertext Transfer Protocol). Irrespective of the protocol used, the two prototypes must function without any need for implementation or logical modifications. To achieve this and to provide the user the convenience of choosing the desired communication protocol, the user can set the protocol of choice through the configuration file which would be used to generate the communicator using the set value as communicator's underlying protocol. The implementation details of how the messages are sent or received are abstracted away as the communicator provides basic communication primitives as the functions of the interface. The Figure \ref{fig:CommAbs} summarizes the process of how the communicator is selected.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[scale=0.65]{Communication_Abstraction.PNG}
-\caption{Serialization and Deserialization}
+\includegraphics[scale=0.45]{Communication_Abstraction.PNG}
+\caption{Communicator Selection}
 \label{fig:CommAbs}
 \end{figure}
 
