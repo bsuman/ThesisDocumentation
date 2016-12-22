@@ -71,7 +71,59 @@ After the set-up of the required software, the next step was implementation of t
 \label{fig:Componentdiagram}
 \end{figure}
 
+Each component has an input it receives from another component and an output that it generates which may be used by the following component in the pipeline(if any). The dependency is depicted in the Figure \ref{fig:Componentdiagram} by the {\lq}lollipop{\rq} symbol where in the half circle depicts interface exported by the component and the circle represents the interface that is imported by the component, for example, the component \textit{MasterDistributorPJ}uses the print job created by the \textit{PrintJobOrganizer} and provides the print jobs with distributed print objects used by the \textit{SlavePJCollector}.
 
+The new classes which were implemented during the thesis are enlisted in the Table \ref{CSPI} for prototype I, in the Table \ref{CSPII} for prototype II and common classes used by both the prototypes are listed in Table \ref{ComClass}. 
+
+\begin{table}[]
+\centering
+\caption{Class specific for Prototype I}
+\label{CSPI}
+\begin{tabular}{|l|l|l}
+\cline{1-2}
+\textbf{Class}              & 
+\textbf{Purpose}                                                                                                                                                                                                &  \\ \cline{1-2}
+MasterDistributor & \begin{tabular}[c]{@{}l@{}}Class for slave work item creation and distribution. \\ The work item created is the main configuration file \\ containing the assigned number of print object files.\end{tabular} &  \\ \cline{1-2}
+\end{tabular}
+\end{table}
+
+
+
+\begin{table}[]
+\centering
+\caption{Classes specific for Prototype II}
+\label{CSPII}
+\begin{tabular}{|l|l|l}
+\cline{1-2}
+\textbf{Class}      & \textbf{Purpose}                                                                                                                                                                   &  \\ \cline{1-2}
+MasterPJDistributor & \begin{tabular}[c]{@{}l@{}}Class for creation of print jobs with the print objects \\ distributed using the cost function and \\ serialization of the print jobs\end{tabular}      &  \\ \cline{1-2}
+SlavePJCollector    & \begin{tabular}[c]{@{}l@{}}Class for collection of the serialized print job, \\ de-serialization of the print jobs and loading\\ the texture data to the node memory.\end{tabular} &  \\ \cline{1-2}
+\end{tabular}
+\end{table}
+
+
+\begin{table}[]
+\centering
+\caption{Common Classes For Prototype I and II}
+\label{ComClass}
+\begin{tabular}{|l|l|l}
+\cline{1-2}
+\textbf{Class}                & \textbf{Purpose}                                                                                                                                                           &  \\ \cline{1-2}
+MasterPrintingSoftware        & Creates and manages the printing software for the master node                                                                                                              &  \\ \cline{1-2}
+SlavePrintingSoftware         & Creates and manages the printing software for the slave node                                                                                                               &  \\ \cline{1-2}
+P3DNetworkComm                & Interface exposing the methods for communication                                                                                                                           &  \\ \cline{1-2}
+P3dNetworkCommMPI             & \begin{tabular}[c]{@{}l@{}}Implements the interface methods using MPI as \\ the message passing library\end{tabular}                                                       &  \\ \cline{1-2}
+DistributedComponentParser    & Parser for the JSON files used for distributed computing                                                                                                                   &  \\ \cline{1-2}
+DistributedComponentInitiator & \begin{tabular}[c]{@{}l@{}}Initiator class for distributed computing. It manages \\ the cluster creation, execution and shut down of the\\ printing software\end{tabular}  &  \\ \cline{1-2}
+SyncVoxelSlicesContainer      & \begin{tabular}[c]{@{}l@{}}Synchronized voxel slice container allowing \\ synchronous access to multiple threads\end{tabular}                                              &  \\ \cline{1-2}
+MasterMergerWorker            & \begin{tabular}[c]{@{}l@{}}Interface exposing methods for performing \\ collection of metadata, de-serialization and\\  writing partial slices to full slices\end{tabular} &  \\ \cline{1-2}
+MasterMergerWorkerImpl        & \begin{tabular}[c]{@{}l@{}}Implementation of the MasterMergerWorker class \\ with a thread per slave\end{tabular}                                                          &  \\ \cline{1-2}
+DistributedCostFunction       & \begin{tabular}[c]{@{}l@{}}Class for calculation of the threshold and cost \\ function used for load distribution\end{tabular}                                             &  \\ \cline{1-2}
+SlaveReporter                 & \begin{tabular}[c]{@{}l@{}}Class which performs serialization of the slices \\ and reports them to master\end{tabular}                                                     &  \\ \cline{1-2}
+MasterMerger                  & \begin{tabular}[c]{@{}l@{}}Class performing collection of partial slices \\ and generation of merged full slices\end{tabular}                                              &  \\ \cline{1-2}
+SlaveDataBuffer               & Synchronous queue used by the thread of slave reporter class                                                                                                               &  \\ \cline{1-2}
+\end{tabular}
+\end{table}
 
 \section{Communication Specifics}
 \section{External Libraries}
