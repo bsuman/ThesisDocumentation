@@ -76,7 +76,7 @@ Each component has an input it receives from another component and an output tha
 \subsection{Introduction to the New Classes}
 The new classes which were implemented during the thesis are enlisted in the Table \ref{CSPI} for prototype I, in the Table \ref{CSPII} for prototype II and common classes used by both the prototypes are listed in Table \ref{ComClass}. 
 
-\begin{table}[]
+\begin{table}[ht]
 \centering
 \caption{Class specific for Prototype I}
 \label{CSPI}
@@ -88,7 +88,7 @@ MasterDistributor & \begin{tabular}[c]{@{}l@{}}Class for slave work item creatio
 \end{tabular}
 \end{table}
 
-\begin{table}[]
+\begin{table}[ht]
 \centering
 \caption{Classes specific for Prototype II}
 \label{CSPII}
@@ -100,7 +100,7 @@ SlavePJCollector    & \begin{tabular}[c]{@{}l@{}}Class for collection of the ser
 \end{tabular}
 \end{table}
 
-\begin{table}[]
+\begin{table}[ht]
 \centering
 \caption{Common Classes For Prototype I and II}
 \label{ComClass}
@@ -123,9 +123,38 @@ SlaveDataBuffer               & Synchronous queue used by the thread of slave re
 \end{tabular}
 \end{table}
 
+\begin{table}[ht]
+\centering
+\caption{Projects for Distributed Computing}
+\label{ProDC}
+\begin{tabular}{|l|l|l|ll}
+\cline{1-3}
+Project                  & Components / Classes                                                                                                              & Properties                                                                                                                                                                                                                                                                                                                   &  &  \\ \cline{1-3}
+P3DDistributedCuttlefish & \begin{tabular}[c]{@{}l@{}}MasterMerger\\ MasterDistributor\\ MasterPJDistributor\\ SlaveReporter\\ SlavePJCollector\end{tabular} & \begin{tabular}[c]{@{}l@{}}1.Project contains the components which are \\ implemented for distributed computing. \\ 2.The project is built as a dynamic linking library. \\ 3.The project uses the Zlib, rapidjson external libraries.\end{tabular}                                                                      &  &  \\ \cline{1-3}
+P3DDistributedUtility    & \begin{tabular}[c]{@{}l@{}}MasterPrintingSoftware\\ SlavePrintingSoftware\\ DistributedComputingInitiator\end{tabular}            & \begin{tabular}[c]{@{}l@{}}1. Project contains the classes implementing the \\ printing software and the initiator class for\\ distributed computing\\ 2.The project is built as a static library. \\ 3.The project uses rapidjson external library.\end{tabular}                                                     &  &  \\ \cline{1-3}
+P3DNetworkComm           & \begin{tabular}[c]{@{}l@{}}P3DNetComm\\ P3DNetCommMPI\end{tabular}                                                                & \begin{tabular}[c]{@{}l@{}}1.Project contains the interface exporting the \\ methods used for communication over the network \\ and an MPI specific implementation of the interface. \\ 2.The project is built as a dynamic linking library\\ 3.MS-MPI library is the external library used \\ in the project.\end{tabular} &  &  \\ \cline{1-3}
+\end{tabular}
+\end{table}
+
+
 \subsection{Code Organization}
 
-The solution for the application is generated using the CMAKE tool with each project having it's own CMakeLists.txt file. The CMakeLists.txt file specifies the properties of the project such as the project would be built as an executable or static library or dynamic library, the libraries it is needs to linked to, the include directories etc. Through the thesis, the code written is organized in 3 different projects namely P3DDistributedCuttlfish, P3DDistributedUtility and P3DNetworkComm. The table describes code organization in the projects named.    
+The solution for the application is generated using the CMAKE tool with each project having it's own CMakeLists.txt file. The CMakeLists.txt file specifies the properties of the project such as the project would be built as an executable or static library or dynamic library, the libraries it needs to linked to, the include directories etc. Through the thesis, the code written is organized in 3 different projects namely P3DDistributedCuttlefish, P3DDistributedUtility and P3DNetworkComm. The Table \ref{ProDC} describes code organization in the projects named. Some of the directives of CMake which influence the generator output of a project are add\_library, add\_subdirectory, target\_link\_library  and add\_dependencies. The Table \ref{CDirec} details the directive used.
+
+\begin{table}[]
+\centering
+\caption{Cmake Directives}
+\label{CDirec}
+\begin{tabular}{lll}
+\hline
+\multicolumn{1}{|l|}{\textbf{Cmake Directive}} & \multicolumn{1}{l|}{\textbf{Purpose}}                                                                                                                                                                                                          & \multicolumn{1}{l|}{\textbf{Example}}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              \\ \hline
+\multicolumn{1}{|l|}{add\_library}             & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}1.Adds a library with the stated \\ target name to be built from\\ the listed source code.\\ 2. The library could be static library, \\ dynamic linking library or modules.\end{tabular}}       & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}add\_library(P3DDistributedCuttlefish SHARED\\                     SRC\_FILES  SRC\_HDRS\\                     DEPEND\_INCLUDES)\\ \\ The project P3DDistributedCuttlefish is \\ added as dynamic linking library (SHARED keyword\\ specifies creation of dynamic linking library to the cmake\\ tool), followed by the source files, header files and other \\ includes needed to build the project. \\ \\ add\_library(P3DDistributedUtility STATIC \\                     SRC\_FILES  SRC\_HDRS\\                     DEPEND\_INCLUDES)\\ \\ \\ The project P3DDistributedUtility is added as a static \\ library specified by the use of STATIC keyword followed\\ by the source files, header files and included needed to \\ build the project.\\ \end{tabular}} \\ \hline
+\multicolumn{1}{|l|}{add\_dependencies}        & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}1. Adds the dependency among \\ the projects.\\ 2. It helps to ensure that the projects\\ on which the current project is \\ dependent on is build before the \\ current project.\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}\$\{DEPEND\_INCS ../P3DInfrastructure;../P3DUtility;\\                                 ../P3DModuleInterface;\\                                 ../P3DNetComm;\}\\ \\ \\ add\_dependency(P3DDistributedCuttlefish \\                             DEPEND\_INCS)\\ \\ The project P3DDistributedCuttlefish is dependent \\ on the projects P3DInfrastructre, P3DUtility,\\ P3DModuleInterface and P3DNetComm. \\ add\_dependency ensures that these projects are\\ built before P3DDistributedCuttlefish is built.\\ \end{tabular}}                                                                                                                                                                                                                                      \\ \hline
+\multicolumn{1}{|l|}{add\_subdirectory}        & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}1.Adds the specified subdirectory \\ in the solution.\\ 2.The name of the directory specifies \\ the location of the source \\ CMakeLists.txt and source \\ code files.\end{tabular}}           & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}add\_subdirectory(P3DDistributedCuttlefish)\\ \\ The directive specifies that the project \\ P3DDistributedCuttlefish should be added to \\ the current solution generated and the\\ CMakeLists.txt file required to include\\ the project is present in the directory with\\  same name as the project. \\ \end{tabular}}                                                                                                                                                                                                                                                                                                                                                                                                                                              \\ \hline
+\multicolumn{1}{|l|}{target\_link\_libraries}  & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}1.Links the specified libraries\\ to the named target.\end{tabular}}                                                                                                                            & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}\$\{DEPEND\_LIBS ../zlib.lib;../msmpi64.lib\}\\ \\ target\_link\_libraries\{P3DNetComm DEPEND\_LIBS\}\\ \\ The project P3DNetComm is included in the \\ solution is built as a dynamic link library and \\ the target dynamic linking library generated\\ will be linked to the zlib library and msmpi\\  lib 64 bit version. \\ \end{tabular}}                                                                                                                                                                                                                                                                                                                                                                                                                         \\ \hline
+                                               &                                                                                                                                                                                                                                                &                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+\end{tabular}
+\end{table}
 
 \section{Communication Specifics}
 \section{External Libraries}
