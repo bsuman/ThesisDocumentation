@@ -156,7 +156,93 @@ The solution for the application is generated using the CMAKE tool with each pro
 \end{tabular}
 \end{table}
 
+While using CMake tool to generate the solution for distributed cuttlefish application, the flag P3D\_DISTRIBUTED should be enabled which allows the inclusion of the projects which have the distributed computing implementation. The flag is defined so as to help easy solution generation of both distributed and native cuttlefish application. When the flag is set, the sub-directories are added by using the add\_subdirectory directive in the CMakelists.txt. The Listing \ref{lst:DIST} shows how the sub-directories are included and the use of the flag.
+
+\begin{lstlisting}[language=C,label={lst:DIST},caption={Flag to enable distributed computing solution}]
+if(DEFINED P3D_DISTRIBUTED)
+	add_subdirectory(P3DDistributedCuttlefish)
+	add_subdirectory(P3DDistributedUtility)
+	add_subdirectory(P3DNetComm)
+endif()
+\end{lstlisting}
+
+The MPI dependencies are managed by using the find\_package directive in the CMakeLists.txt of the target project. The Listing \ref{lst:MPIFind} is shows how to find about availability of MPI and if MPI is available, include the headers as well as link to the library. 
+
+\begin{lstlisting}[language=C,label={lst:MPIFind},caption={find\_package use for MPI libraries}]
+find_package(MPI REQUIRED)
+if(MPI_FOUND)
+	include_directories(${MPI_INCLUDE_PATH})
+	target_link_libraries( P3DDistributedCuttlefish ${MPI_LIBRARIES})
+endif(MPI_FOUND)
+\end{lstlisting}
+
 \section{Communication Specifics}
+
+\textbf{M}icrosoft \textbf{M}essage \textbf{P}assing \textbf{I}nterface (MS-MPI) is Microsoft's windows specific implementation of Message Passing Interface Specification  (MPI-2 version). It provides 160 APIs which allow communication in a distributed computing environment by use of message passing paradigm and help to build application which perform parallel computation. This section details the API's used in the implementation followed by a brief explanation of how MS-MPI works internally and last but not the least comparison with other communication mechanisms.
+
+\subsection{MPI APIs used in the Implementation}  
+
+A parallel program written using MPI first should initialize the MPI execution environment which allows to perform the following:
+\begin{itemize}
+\item Create, initialize and set up a message passing layer
+\item Launch the stated number of processes
+\item Allocation of resources such as shared memory (if required), local inter-process communication channels,
+network communication channels and to allow communication with specialized network hardware it allocates {\lq}special{\rq} memory.  
+\end{itemize}
+
+If the initialization of the MPI execution environment fails due to failure in one of the above steps, the command hangs or aborts depending on the chosen implementation. For MS-MPI, there some warning messages shown on the command prompt. The initialization is done using MPI\_INIT method as seen in the Listing \ref{lst:mpiINIT}. 
+
+\begin{lstlisting}[language=C++,label={lst:mpiINIT},caption={Initialization of Execution Environment}]
+#include<mpi.h>
+void MPI::Init(int& argc, char**& argv)
+void MPI::Init()
+\end{lstlisting}
+
+The thread that calls the MPI\_INIT should also be the thread which destroys the set-up by calling MPI\_FINALIZE. MPI\_INIT should ideally be the first method to be called before any kind of communication can be done within the distributed computing environment, although MPI\_INITIALIZED - checks if MPI environment is initialized by calling MPI\_INIT, MPI\_FINALIZED - checks if the set-up has be been destroyed by calling MPI\_FINALIZE, MPI\_GET\_VERSION - gets the MPI standard followed by the current implementation, can be called before MPI\_INIT. \newline
+
+The set of processes launched during the initialization process form a communicator and each process has rank within the communicator.
+The query functions like MPI\_COMM\_SIZE and MPI\_COMM\_RANK are local functions which do not require coordination and communication outside the local MPI process as they are local look ups. MPI\_COMM\_SIZE returns the size of communicator created during the  MPI\_INIT method execution and MPI\_COMM\_RANK returns the rank of process, executing the instruction, in the communicator. The implementation decides the order in which the ranks are assigned to the processes and generally the node on which mpiexec is executed has the rank 0 which is the rank of the root/master process. The Listing \ref{lst:mpicommSizeRank} shows the syntax of the MPI\_COMM\_SIZE and MPI\_COMM\_RANK methods.
+
+\begin{lstlisting}[language=C++,label={lst:mpicommSizeRank},caption={MPI Query Functions}]
+#include <mpi.h>
+int Comm::Get_size() const
+int Comm::Get_rank() const
+\end{lstlisting}
+
+Message passing is done through fundamental directives called as send and receive. As the name suggest, the send directive is used to send information and receive directive is used to receive the information. The communication when done using the send and receive directives is point to point communication as there is one sender and one receiver for each pair of send and receive. The communication can also be a broadcast where in there is one sender and rest of the processes in the communicator are receivers. In the implementation of the thesis, point to point communication is done using MPI\_SEND and MPI\_RECEIVE methods. \newline
+
+The directives for point-to-point communication come in two different flavors, blocking and non-blocking. The blocking send and receive can have 3 additional modes of communication namely, buffered, synchronous and ready. The blocking send does not return from the call until the message data and envelope has been safely stored and the message buffer is ready to be modified again. The blocking send does not provide a status of message being sent or received but rather just provides a guarantee that the message buffer is available again.  The Listing \ref{lst:mpiSend} provides the syntax of a blocking send call. The first three arguments- pointer to the buffer holding the message data, count of elements stored in the buffer and the type of each element in the buffer form the message content where as the last three arguments namely the destination i.e. the rank of the receiving process, the tag- a unique number identifying the message and communicator handle form the message envelope. \newline  
+
+\begin{lstlisting}[language=C++,label={lst:mpiSend},caption={Blocking MPI Send}]
+
+int MPI_Send(void* buf, int count, MPI_Datatype datatype, int dest,int tag, MPI_Comm comm)
+
+void MPI::Comm::Send(const void* buf, int count, const MPI::Datatype& datatype, int dest, int tag) const  	
+\end{lstlisting}
+
+The blocking receive consists of 6 parameters, the first three include the pointer to receiver's buffer, the size of the data to be received also the size of the buffer and the type of data to be received and the following 3 parameters include rank of the sender process i.e. the source of the sender, tag is the unique number identifying the message and communicator to which the process belongs to.  The receiver can receive message from {\lq}any{\rq} source where as the sender always has to specify the receiver of the message which is known as the {\lq}push{\rq} mode. If the receiver had to always mention a specific sender then such a communication mode is called the {\lq}pull{\rq} mode. MPI\_STATUS can used to know the status of the receive call and if in a buffer under run error case the MPI\_STATUS value is MPI\_ERROR which can be used for further investigation. 
+
+\begin{lstlisting}[language=C++,label={lst:mpiReceive},caption={Blocking MPI Receive}]
+int MPI_Recv(void* buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status)
+
+void MPI::Comm::Recv(void* buf, int count, const MPI::Datatype& datatype, int source, int tag, MPI::Status& status)
+\end{lstlisting}
+
+The blocking send and receive work in tandem. For every send there needs to be corresponding receive matching in the following triples  source (rank), tag and communicator. MPI specification 2.0 provides the following properties for the point-to-point communication paradigm. 
+
+\begin{itemize}
+\item \textbf{Order}- The message ordering is needed to maintain the requirement of matching send and receives. The messages are non-overtaking which makes the code for message exchanges deterministic in a single-threaded implementation. 
+\item \textbf{Progress}- This guarantees completion of send and receive operations if there is matching pair of send and receive operation.  
+\item \textbf{Fairness}- No guarantee of fairness in managing the communication is provided.  
+\end{itemize} 
+
+
+
+\subsection{How does MS-MPI work internally?}
+
+\subsection{Comparison of MPI with other Communication Mechanisms}
+  
+
 \section{External Libraries}
 \section{Debugging}
 \section{Project Management}
