@@ -236,6 +236,27 @@ The blocking send and receive work in tandem. For every send there needs to be c
 \item \textbf{Fairness}- No guarantee of fairness in managing the communication is provided.  
 \end{itemize} 
 
+When there is no longer communication needed among the processes, the communicator can be closed. MPI library provides MPI\_FINALIZE method to perform the same. Before the call to the function MPI\_FINALIZE is made the processes in the communicator should complete all the initiated but pending communication as the MPI\_FINALIZE call will shut down the MPI communication layer by shutting down all the network connections, release the held resources and clean the process space. To ensure that the pending send and receive calls are completed before the MPI\_FINALIZE call, the processes need to synchronize by calling the MPI\_BARRIER. The MPI\_BARRIER synchronizes all the processes within the communicator and any process calling it is blocked until all the processes in the communicator have executed the statement. The syntax of MPI\_BARRIER and MPI\_FINALIZE can be seen in the Listing \ref{lst:mpiBarrier} and \ref{lst:mpiFinalize} respectively.
+
+\begin{lstlisting}[language=C++,label={lst:mpiFinalize},caption={Shutting down the MPI environment}]
+#include <mpi.h>
+void Finalize()
+\end{lstlisting} 
+
+\begin{lstlisting}[language=C++,label={lst:mpiBarrier},caption={Explicit Synchronization via Barrier}]
+#include <mpi.h>
+void MPI::Comm::Barrier() const = 0
+\end{lstlisting} 
+
+It might also be possible to use some other message passing communication mechanism other than MPI. The distributed system is connected through the enterprise network and messages could be exchanged through TCP/ UDP sockets or REST protocol. To make it possible to have various flavors of communication mechanism easily implementable, an interface exposing the necessary methods for message passing is provided. This interface acts as an abstraction layer such that the underlying communication mechanism is determined at run-time and the appropriate implementation is invoked. \newline
+The interface provided is called P3DNetworkComm which exposes the methods for initialization of the communication group, getter methods for information regarding the communication group members as well as the group, send/ receive methods for different types of data and to shut down the set up. The class P3DNetworkCommMPI class is the MPI specific implementation for the methods exposed by the interface. The user can select the communication mechanism via setting the value in the main configuration file for the tag {\lq}Communicator{\rq} to the name of the implementation. The Figure \ref{fig:InterfaceDiagram} enlists the methods of the interface.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.75]{Interface.png}
+\caption{Class Diagram for the Interface}
+\label{fig:InterfaceDiagram}
+\end{figure}
 
 
 \subsection{How does MS-MPI work internally?}
