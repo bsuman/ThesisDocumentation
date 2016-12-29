@@ -180,7 +180,7 @@ endif(MPI_FOUND)
 
 \textbf{M}icrosoft \textbf{M}essage \textbf{P}assing \textbf{I}nterface (MS-MPI) is Microsoft's windows specific implementation of Message Passing Interface Specification  (MPI-2 version). It provides 160 APIs which allow communication in a distributed computing environment by use of message passing paradigm and help to build application which perform parallel computation. This section details the API's used in the implementation followed by a brief explanation of how MS-MPI works internally and last but not the least comparison with other communication mechanisms.
 
-\subsection{MPI APIs used in the Implementation}  
+\subsection{MPI APIs used in the Implementation} \label{MSMPI-API} 
 
 A parallel program written using MPI first should initialize the MPI execution environment which allows to perform the following:
 \begin{itemize}
@@ -211,7 +211,7 @@ int Comm::Get_rank() const
 
 Message passing is done through fundamental directives called as send and receive. As the name suggest, the send directive is used to send information and receive directive is used to receive the information. The communication when done using the send and receive directives is point to point communication as there is one sender and one receiver for each pair of send and receive. The communication can also be a broadcast where in there is one sender and rest of the processes in the communicator are receivers. In the implementation of the thesis, point to point communication is done using MPI\_SEND and MPI\_RECEIVE methods. \newline
 
-The directives for point-to-point communication come in two different flavors, blocking and non-blocking. The blocking send and receive can have 3 additional modes of communication namely, buffered, synchronous and ready. The blocking send does not return from the call until the message data and envelope has been safely stored and the message buffer is ready to be modified again. The blocking send does not provide a status of message being sent or received but rather just provides a guarantee that the message buffer is available again.  The Listing \ref{lst:mpiSend} provides the syntax of a blocking send call. The first three arguments- pointer to the buffer holding the message data, count of elements stored in the buffer and the type of each element in the buffer form the message content where as the last three arguments namely the destination i.e. the rank of the receiving process, the tag- a unique number identifying the message and communicator handle form the message envelope. \newline  
+The directives for point-to-point communication come in two different flavors, blocking and non-blocking. The blocking send and receive can have 3 additional modes of communication namely, buffered, synchronous and ready. The blocking send does not return from the call until the message data and envelope has been safely stored and the message buffer is ready to be modified again \cite{mpiMech}. The blocking send does not provide a status of message being sent or received but rather just provides a guarantee that the message buffer is available again.  The Listing \ref{lst:mpiSend} provides the syntax of a blocking send call. The first three arguments- pointer to the buffer holding the message data, count of elements stored in the buffer and the type of each element in the buffer form the message content where as the last three arguments namely the destination i.e. the rank of the receiving process, the tag- a unique number identifying the message and communicator handle form the message envelope. \newline  
 
 \begin{lstlisting}[language=C++,label={lst:mpiSend},caption={Blocking MPI Send}]
 
@@ -238,18 +238,18 @@ The blocking send and receive work in tandem. For every send there needs to be c
 
 When there is no longer communication needed among the processes, the communicator can be closed. MPI library provides MPI\_FINALIZE method to perform the same. Before the call to the function MPI\_FINALIZE is made the processes in the communicator should complete all the initiated but pending communication as the MPI\_FINALIZE call will shut down the MPI communication layer by shutting down all the network connections, release the held resources and clean the process space. To ensure that the pending send and receive calls are completed before the MPI\_FINALIZE call, the processes need to synchronize by calling the MPI\_BARRIER. The MPI\_BARRIER synchronizes all the processes within the communicator and any process calling it is blocked until all the processes in the communicator have executed the statement. The syntax of MPI\_BARRIER and MPI\_FINALIZE can be seen in the Listing \ref{lst:mpiBarrier} and \ref{lst:mpiFinalize} respectively.
 
-\begin{lstlisting}[language=C++,label={lst:mpiFinalize},caption={Shutting down the MPI environment}]
-#include <mpi.h>
-void Finalize()
-\end{lstlisting} 
-
 \begin{lstlisting}[language=C++,label={lst:mpiBarrier},caption={Explicit Synchronization via Barrier}]
 #include <mpi.h>
 void MPI::Comm::Barrier() const = 0
 \end{lstlisting} 
 
+\begin{lstlisting}[language=C++,label={lst:mpiFinalize},caption={Shutting down the MPI environment}]
+#include <mpi.h>
+void Finalize()
+\end{lstlisting} 
+
 It might also be possible to use some other message passing communication mechanism other than MPI. The distributed system is connected through the enterprise network and messages could be exchanged through TCP/ UDP sockets or REST protocol. To make it possible to have various flavors of communication mechanism easily implementable, an interface exposing the necessary methods for message passing is provided. This interface acts as an abstraction layer such that the underlying communication mechanism is determined at run-time and the appropriate implementation is invoked. \newline
-The interface provided is called P3DNetworkComm which exposes the methods for initialization of the communication group, getter methods for information regarding the communication group members as well as the group, send/ receive methods for different types of data and to shut down the set up. The class P3DNetworkCommMPI class is the MPI specific implementation for the methods exposed by the interface. The user can select the communication mechanism via setting the value in the main configuration file for the tag {\lq}Communicator{\rq} to the name of the implementation. The Figure \ref{fig:InterfaceDiagram} enlists the methods of the interface.
+The interface provided is called P3DNetworkComm which exposes the methods for initialization of the communication group, getter methods for information regarding the communication group members as well as the group, send/ receive methods for different types of data and to shut down the set up. The class P3DNetworkCommMPI class is the MPI specific implementation for the methods exposed by the interface. The user can select the communication mechanism via setting the value in the main configuration file for the tag {\lq}CommunicatorType{\rq} to the name of the implementation. The Figure \ref{fig:InterfaceDiagram} enlists the methods of the interface.
 
 \begin{figure}[ht!]
 \centering
@@ -260,6 +260,31 @@ The interface provided is called P3DNetworkComm which exposes the methods for in
 
 
 \subsection{How does MS-MPI work internally?}
+
+MPI as mentioned in the earlier sections provides the methods which allow for communication via message passing in a point-to-point communication or collective communication paradigm. MPI specifies a standard on what a message passing interface is supposed to do and not how it is done. The part of how it is done is decided by the implementation. The implementation can provide MPI methods using different underlying protocols and performance of the communication depends on the implementation, the underlying network and type of data communicated. MPI is message oriented protocol meaning that data is sent in distinct packets which are assembled at the receiver whereas a stream oriented protocol will have data sent byte-by-byte i.e. stream of bytes.The size of the data sent determines the way in which the message is sent or received. The underlying message protocol can be {\lq}eager{\rq} or {\lq}rendezvous{\rq} protocol\newline 
+
+\textbf{Eager Message Passing Protocol}- The responsibility of storing the message is done at the receiver's end if no matching receive has been posted by the receiver. The sending process sends the message which is received by the receiving process if the matching receive has been already posted other wise the message is buffered by the receiving process. The sending process sends the message irrespective of whether the receive has been posted or not. It is allows for easy implementation of MPI\_Send and better performance as the send call does not need to block to get an acknowledgment from the receive operation. The problem is that this solution is not scalable and may lead to memory exhaustion if there are large number of messages which need to be buffered at the receiver. Another problem is the extra copy of the buffered message is required at the receiver from the buffered space i.e. the buffer allocated in the kernel space to the receiver's buffer i.e. the buffer allocated  in the receiver process's address space. This also leads to investing CPU cycles for the extra copy to be made.       
+
+\textbf{Rendezvous Message Passing Protocol}- This protocol can be used on top of the eager protocol i.e. when the buffering limit has been reached. There is no underlying assumption made by the sending process that the receiver can allocate the memory and hence need to first signal the receiver process about the incoming message. This signaling is called as {\lq}handshake{\rq}. The format of the message for MPI was introduced in the  section \ref{MSMPI-API}. The Figure \ref{fig:MessageFormat} shows the message format specified by MPI standard. During the handshake the following actions are performed in the specified order: 
+
+\begin{enumerate}
+\item The receiver process first receives the envelope of the message to be sent from the sender.
+\item The received envelope is stored by the receiver process if there is no buffer space. 
+\item As the buffer space becomes available, receiver process sends an acknowledgment to the sender, indicating that it can receive the message.
+\item The sender after receiving the acknowledgment from the receiver, sends the actual payload. 
+\item The receiver then receives the message. 
+\end{enumerate}   
+
+The protocols fixes the buffer exhaustion issue by not overwhelming the receiver's buffer by actual data rather the receiver needs to just store the envelope of the message which is relatively smaller in size. Therefore makes the receiver process more robust as the receiver does not hang because of buffer overflow. As the messages are received after the acknowledgment by the sender, CPU cycles are saved as the data can directly be copied to the buffer allocated in process's address space. The problem with this protocol is extra messages exchanged during the handshake. 
+
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.75]{MessageFormat.png}
+\caption{Format of MPI Message}
+\label{fig:MessageFormat}
+\end{figure}
+
 
 \subsection{Comparison of MPI with other Communication Mechanisms}
   
