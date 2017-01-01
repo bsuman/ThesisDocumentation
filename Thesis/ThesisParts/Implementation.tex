@@ -265,7 +265,7 @@ MPI as mentioned in the earlier sections provides the methods which allow for co
 
 \textbf{Eager Message Passing Protocol}- The responsibility of storing the message is done at the receiver's end if no matching receive has been posted by the receiver. The sending process sends the message which is received by the receiving process if the matching receive has been already posted other wise the message is buffered by the receiving process. The sending process sends the message irrespective of whether the receive has been posted or not. It is allows for easy implementation of MPI\_Send and better performance as the send call does not need to block to get an acknowledgment from the receive operation. The problem is that this solution is not scalable and may lead to memory exhaustion if there are large number of messages which need to be buffered at the receiver. Another problem is the extra copy of the buffered message is required at the receiver from the buffered space i.e. the buffer allocated in the kernel space to the receiver's buffer i.e. the buffer allocated  in the receiver process's address space. This also leads to investing CPU cycles for the extra copy to be made.       
 
-\textbf{Rendezvous Message Passing Protocol}- This protocol can be used on top of the eager protocol i.e. when the buffering limit has been reached. There is no underlying assumption made by the sending process that the receiver can allocate the memory and hence need to first signal the receiver process about the incoming message. This signaling is called as {\lq}handshake{\rq}. The format of the message for MPI was introduced in the  section \ref{MSMPI-API}. The Figure \ref{fig:MessageFormat} shows the message format specified by MPI standard. During the handshake the following actions are performed in the specified order: 
+\textbf{Rendezvous Message Passing Protocol}- This protocol can be used on top of the eager protocol i.e. when the buffering limit has been reached. There is no underlying assumption made by the sending process that the receiver can allocate the memory and hence need to first signal the receiver process about the incoming message. This signaling is called as {\lq}handshake{\rq}. The format of the message for MPI was introduced in the  section \ref{MSMPI-API}. The Figure \ref{fig:MessageFormat} shows the message format specified by MPI standard \cite{mpiMsgForm}. During the handshake the following actions are performed in the specified order: 
 
 \begin{enumerate}
 \item The receiver process first receives the envelope of the message to be sent from the sender.
@@ -277,7 +277,6 @@ MPI as mentioned in the earlier sections provides the methods which allow for co
 
 The protocols fixes the buffer exhaustion issue by not overwhelming the receiver's buffer by actual data rather the receiver needs to just store the envelope of the message which is relatively smaller in size. Therefore makes the receiver process more robust as the receiver does not hang because of buffer overflow. As the messages are received after the acknowledgment by the sender, CPU cycles are saved as the data can directly be copied to the buffer allocated in process's address space. The problem with this protocol is extra messages exchanged during the handshake. 
 
-
 \begin{figure}[ht!]
 \centering
 \includegraphics[scale=0.75]{MessageFormat.png}
@@ -285,10 +284,23 @@ The protocols fixes the buffer exhaustion issue by not overwhelming the receiver
 \label{fig:MessageFormat}
 \end{figure}
 
+The receive event of a message can either be notified through an interrupt or the receiving process can poll at regular intervals to check if a message has arrived \cite{mpirel}. The interrupt technique works better when the send/receives are asynchronous i.e. they are non-blocking where as polling works well in case of synchronous send/receives i.e. they are blocking. In the polling mode,the receiver process busy waits using the CPU and queries the hardware frequently and manages the messaging by bypassing the OS where as in interrupt mode, the receiving process interacts with the OS which might decide to suspend the process while it is waiting for the message. As the time wasted in the context switch can be significant if the receive event is frequently done as well as OS involvement is generally costly, for better performance reasons the polling method is used by the implementations of MPI specification. \newline
 
-\subsection{Comparison of MPI with other Communication Mechanisms}
-  
+MPI can use TCP/IP as the underlying protocol for message passing in a cluster connected via Infiniband i.e. TCP/IP over Infiniband (IPoIB) or it can use lower level protocols like the OpenFabric protocol or Qlogic Performance Scaled Messaging Protocol or it could as simple as TCP/IP over Ethernet. Microsoft's implementation of MPI-2 specification varies from others such that it uses mechanisms by which the use of TCP/IP can be bypassed. MS-MPI uses Microsoft WinSock Direct Protocol for compatibility over different kinds of Ethernet interconnect and CPU efficiency. The WinSock direct protocol \cite{SDP} uses remote direct memory access i.e. RDMA and thereby bypasses TCP/IP stack as it goes directly to the network interface card allowing for high-speed communication of data. When the TCP/IP stack is bypassed, the overhead occurred due to use of extra CPU cycles and memory bandwidth could be avoided. Winsock Direct Protocol reduces the library overhead and application distribution can scale better even over traditional interconnect networks. Figure \ref{fig:WinsockProto} depicts how the WinSock protocol works \cite{msmpiWinSoc}. \newline
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.85]{WinsockProto.png}
+\caption{WinSocket Direct Protocol Behavior}
+\label{fig:WinsockProto}
+\end{figure}
+   
+\section{Comparison of MPI to traditional socket programming}
+
+MPI is designed to allow communication amongst HPC (high performance cluster) and preferred choice of programmers over traditional socket programming \cite{mpivssock}. The goal of programming applications to run on HPC is to perform huge and complex computation in a distributed manner if possible. To achieve this goal, programs which perform splitting of huge tasks into smaller sub-tasks and accumulation of partial results to generate final output are written. The logic to perform splitting of tasks, accumulation of results, synchronization and communication if needed among the cluster nodes requires significant programming effort and leads to complicated code. So, it is justified that the developers use libraries which abstract from the underlying complexities of communication but allow to write simple, clean and understandable code. MS-MPI is one such implementation of MPI-2 specification which not only provides decent performance but also lets developers not be bothered about managing the IP addresses, sockets/connection - opening and closing them, and other idiosyncrasies of the underlying network. Simple MPI\_SEND and MPI\_RECV calls do the magic necessary for successful communication. MPI allows to use customized proprietary networks leading to high-throughput and low latency communication. These networks provide abstractions which might not be suitable for socket programming and in-turn lead to lower performance of the application when sockets are used. \newline          
+
+The problem with MPI-2 specification based implementation is lack of robustness when the communication fails amongst the network. There is no standardization of error management and reporting which leads to vague error messages being shown in an event of failure. This is where socket programming might win against MPI as level of robustness provided is pretty standard. Another issue with MS-MPI is that the spawning of the processes and group management is done when the application is launched and dynamic scaling up/down of cluster resources cannot be done at run-time. The cases where the number of sub-tasks are lowers than the configured cluster size needs to be handled by the implementation. So, when the number of print object files in the main configuration is less than the number slave nodes in the cluster, the master needs to drop some of the slaves from the cluster and only wait on {\lq} working nodes{\rq} for partial output. 
+	
 \section{External Libraries}
 \section{Debugging}
 \section{Project Management}
