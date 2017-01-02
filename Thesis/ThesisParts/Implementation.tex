@@ -302,5 +302,63 @@ MPI is designed to allow communication amongst HPC (high performance cluster) an
 The problem with MPI-2 specification based implementation is lack of robustness when the communication fails amongst the network. There is no standardization of error management and reporting which leads to vague error messages being shown in an event of failure. This is where socket programming might win against MPI as level of robustness provided is pretty standard. Another issue with MS-MPI is that the spawning of the processes and group management is done when the application is launched and dynamic scaling up/down of cluster resources cannot be done at run-time. The cases where the number of sub-tasks are lowers than the configured cluster size needs to be handled by the implementation. So, when the number of print object files in the main configuration is less than the number slave nodes in the cluster, the master needs to drop some of the slaves from the cluster and only wait on {\lq} working nodes{\rq} for partial output. 
 	
 \section{External Libraries}
+
+Libraries which are developed by external sources are referred to as {\lq}External Libraries{\rq} in the current documentation. The external libraries offer specific functionality which can be used by the applications. Generally the use of such libraries is encouraged as they allow the developer to use the already implemented solution and focus on the in-hand problem statement instead of reinventing the wheel. These external libraries are generally are high-quality as they are mostly rigorously tested and used in different kinds of target applications. The algorithms implemented to perform the task by the libraries provide good efficiency at a low-cost. The probable problem of using an external library is that if there is a bug in the library then all the applications using these library duplicate the bug. \newline
+
+In the implementation of the thesis, the following external libraries are used:    
+\begin{enumerate}
+\item \textbf{Little Color Management Engine(lcms) Version 2.0}: It is an open source small-footprint color management engine which uses ICC standard (International Color Consortium). It provides numerous APIs which can be used to access (parse, read, write) the ICC profiles, access (read/write) tags and profile structures, create formatters which describe the organization of the bitmap buffers and performing color transformation.  In the implementation of prototype II, the master reads the ICC profile  and sends the byte stream to the slave nodes. The master node uses \textbf{\textit{cmsOpenProfileFromFile}}, \textbf{\textit{cmsSaveProfileToMem}} APIs where as slave nodes use \textit{\textbf{cmsOpenProfileFromMem}} API. The header {\lq}lcms2.h{\rq} should be included to use the mentioned APIs. The syntax and the use of the APIs is described below:
+
+\begin{itemize}
+\item \textbf{\textit{cmsOpenProfileFromFile}}- API used to open the profile from the file on the disk \ref{lst:OpenProfileFromFile}.
+\item \textbf{\textit{cmsSaveProfileToMem}}- API used to save the profile to the memory block \ref{lst:SaveProfileToMem}. 
+\item \textbf{\textit{cmsOpenProfileFromMem}}- API used to open the profile already in the stored in a memory block \ref{lst:OpenProfileFromMem}. 
+\end{itemize} 
+
+\item \textbf{RapidJSON}- It is an open-source JSON parser/generator for C++ supporting both SAX/DOM style API. It is not only fast, small and header-only but also is unicode and memory friendly. It provides APIs to parse, read, write/modify and query value from the JSON document. The APIs are used with the \textit{rapid::json } namespace. The following RapidJSON library APIs are used:
+\begin{itemize}
+\item \textbf{\textit{IsObject}}- Normally a type {\lq}Value{\rq} stores the JSON value and {\lq}Document{\rq}, holds the root Value of the DOM tree. IsObject is an API to check if the root is a DOM object.
+\item \textbf{\textit{ParseStream}}- API used to parse the JSON stream from the input.
+\item \textbf{\textit{HasMember} and \textit{AddMember}}- APIs used to check if the specified member is present in the object and to add the member to the object respectively. 
+\item \textbf{\textit{setters} and \textit{getters}}- APIs used to set \{SetString\} and get a value \{GetArray, GetInt, GetUint, GetString, GetObject\}.
+\item \textbf{\textit{Queries for value type}}: IsBool, IsNull, IsNumber, IsString are the APIs which allow to check the type of the value. 
+\end{itemize} 
+  
+\item \textbf{Zlib}- It is a general purpose compression library providing functions to perform compression and decompression of data. The functions provided use in-memory buffers which allows for compressing the whole data at once by using deflation compression methodology. The library also offers functions to perform integrity check on the compressed data and functions to read/write files with gzip format. The following APIs are used for compression/ decompression in the implementation of prototype II where slices are sent and received as stream of bytes.  
+\begin{itemize}
+\item \textbf{\textit{compress2}}- Compresses the source buffer into the destination buffer \ref{lst:compress2}. The last argument of the API is used to set the compression level which can be Z\_BEST\_SPEED for best speed, Z\_BEST\_COMPRESSION to get the smallest size of compression or Z\_DEFAULT\_COMPRESSION for default compression.
+\item \textbf{\textit{Decompression}}- Decompresses the source buffer into the destination buffer \ref{lst:uncompress}. The size of the decompressed data should be communicated to the site where the decompression is performed so that the buffer with appropriate size could be allocated.
+\end{itemize}
+\end{enumerate}
+   
+\begin{lstlisting}[language=C++,label={lst:OpenProfileFromFile},caption={Open profile from File}]
+cmsBool cmsOpenProfileFromFile(cmsHPROFILE hProfile, void *MemPtr, cmsUInt32Number* BytesNeeded);
+\end{lstlisting} 
+
+\begin{lstlisting}[language=C++,label={lst:SaveProfileToMem},caption={Save profile to Memory}]
+cmsBool cmsSaveProfileToMem(cmsHPROFILE hProfile, void *MemPtr, cmsUInt32Number* BytesNeeded);
+\end{lstlisting} 
+
+\begin{lstlisting}[language=C++,label={lst:OpenProfileFromMem},caption={Open profile from Memory}]
+cmsHPROFILE cmsOpenProfileFromMem(const void * MemPtr, cmsUInt32Number dwSize);
+\end{lstlisting} 
+
+\begin{lstlisting}[language=C++,label={lst:compress2},caption={API to compress the data}]
+int ZEXPORT compress2(Bytef *dest, uLongf *destLen,const Bytef *source, uLong sourceLen, int level);
+\end{lstlisting} 
+
+\begin{lstlisting}[language=C++,label={lst:uncompress},caption={API to uncompress the data}]																	
+int ZEXPORT uncompress(Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen);															
+\end{lstlisting} 																	
+
 \section{Debugging}
+
+During the implementation, there will be many occasions on which it would not be possible understand the reason for the wrong output of the program by just observing the output or log file. Hence, developers perform a multi-step process of identification and isolation of the problem followed by correcting the problem which altogether is called as the debugging process. Microsoft Visual Studio 12 provides an inbuilt debugging tool which comes very handy to debug the application. 
+As the application modified through the thesis runs on the cluster, a new challenge of which and how should the instance of the application be debugged had to be addressed. There were two possible solutions- using a remote debugger or use a local debugger by changing the role/rank of the machine in the cluster. \newline
+
+Debugging a parallel application using remote debugger tool can be performed by searching for the process representing the instance of the application running on the node i.e. the remote machine and attaching the process to the visual studio process on the local machine. The debugging process done in this manner is quite slow and might be tricky to debug applications which crash at the very start giving the developer very small time interval to find and attach the process. The advantage is that debugging can be done on the local machine with the local visual studio instance running and hence installation of visual studio on the remote location is not required. \newline
+
+Debugging done by changing the rank of the local machine in the cluster is simple, faster and same as performing local debugging. Depending on the rank, a node acts as the master or a slave and so changing the role of the local machine helps to debug the application behavior for master or slave node. The rank of the local machine can be 0 i.e. master if it is the first value for the -hostname argument of the mpiexec command or \gt 0 i.e. slave node, if it is not the first value for the -hostname argument. As this method was faster, debugging of the distributed cuttlefish application during the implementation was done by using this method. 
+ 
 \section{Project Management}
+
