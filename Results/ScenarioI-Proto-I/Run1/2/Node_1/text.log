@@ -1,0 +1,2362 @@
+Warning:json file inside profile could not be parsed 
+
+GL version: 4.5.0 NVIDIA 372.54
+
+Warning: there is no json file embedded inside profile 
+
+LayerExtractor: distance needed for layers: 0.135467
+
+FileParserPJ: initializing
+PrintJobOrganizer: initializing
+PrintJobPreprocessor: initializing
+PrintJobVoxelizer: initializing
+TonalValueCalculator: initializing
+TonalValueCalculator: Using rendering intent RELATIVE_COLORIMETRIC
+
+SurfaceDistanceOrderedTransfer: initializing
+TonalLinearizer: initializing
+VectorLayerHalftoner: initializing
+SlaveReporter: initializing
+FileParserPJ:  runs 14:48:32
+
+FileParserPJ: loading OBJ file
+
+244921 vertices
+489840 faces
+
+FileParserPJ: 245383 texture coordinates
+
+FileParserPJ: 245383 vertices after duplication
+
+FileParserPJ: //filer-igd2.igd.fraunhofer.de/igd-3dt/shared/3DModels/Head/HeadMTL/Head_Level3.obj parsed: 245383 vertices and 489840 faces
+
+FileParserPJ: loading jpg file
+
+FileParserPJ: Input files parsed
+
+PrintJobOrganizer:  runs 14:48:36
+
+centering objects at origin
+optimizing rotation for height
+scaling objects
+optimizing rotation for support use
+PrintJobOrganizer: support cost         = 25.4851
+support cost flipped = 22.9004
+
+arranging objects in 2D
+validating object placement
+PrintJobOrganizer: print object 1 print-space bounding box: (0.00211667, 0.00423333, 0.00135106), (8.00212, 5.12195, 4.19435)
+saving transforms to file
+PrintJobPreprocessor:  runs 14:48:37
+
+PrintJobPreprocessor: flatten
+PrintJobPreprocessor: prioritize
+PrintJobPreprocessor: segment-hierarchy
+PrintJobPreprocessor: boundingBox
+PrintJobPreprocessor: uniformAppearanceTextures
+PrintJobVoxelizer:  runs 14:48:37
+
+PrintJobVoxelizer: 
+number of slices to print: 777 (4.19435 cm)
+width of slices to print:  946 (8.00212 cm)
+height of slices to print: 303 (5.12195 cm)
+chunk size:                50 (0.270213 cm)
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	1 trials
+	total = 0.184559 s
+	mean  = 0.184559 s
+	var   = 0 s^2, std = 0 s
+	min   = 0.184559 s
+	max   = 0.184559 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 200
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.295971
+
+GWNSampleFloodVoxelizer::voxelize:
+	1 trials
+	total = 0.768483 s
+	mean  = 0.768483 s
+	var   = 0 s^2, std = 0 s
+	min   = 0.768483 s
+	max   = 0.768483 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	1 trials
+	total = 0.121723 s
+	mean  = 0.121723 s
+	var   = 0 s^2, std = 0 s
+	min   = 0.121723 s
+	max   = 0.121723 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	1 trials
+	total = 0.084653 s
+	mean  = 0.084653 s
+	var   = 0 s^2, std = 0 s
+	min   = 0.084653 s
+	max   = 0.084653 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	1 trials
+	total = 0.078134 s
+	mean  = 0.078134 s
+	var   = 0 s^2, std = 0 s
+	min   = 0.078134 s
+	max   = 0.078134 s
+
+GWNSampleFloodVoxelizer::flood:
+	1 trials
+	total = 0.467346 s
+	mean  = 0.467346 s
+	var   = 0 s^2, std = 0 s
+	min   = 0.467346 s
+	max   = 0.467346 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 18700 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:48:39
+slices [0, 49):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:48:39
+slices [0, 49):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 0 0 23
+LayerExtractor:  runs 14:48:39
+slices [0, 23):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:48:39
+slices [0, 22):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:48:39
+slices [0, 22):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+
+SlaveReporter:  runs 14:48:39
+slices [0, 10):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:48:39
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	2 trials
+	total = 0.748778 s
+	mean  = 0.374389 s
+	var   = 0.0720709 s^2, std = 0.26846 s
+	min   = 0.184559 s
+	max   = 0.564219 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 330
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 1.03114
+
+GWNSampleFloodVoxelizer::voxelize:
+	2 trials
+	total = 1.63676 s
+	mean  = 0.818379 s
+	var   = 0.00497922 s^2, std = 0.0705636 s
+	min   = 0.768483 s
+	max   = 0.868275 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	2 trials
+	total = 0.21593 s
+	mean  = 0.107965 s
+	var   = 0.000378565 s^2, std = 0.0194568 s
+	min   = 0.094207 s
+	max   = 0.121723 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	2 trials
+	total = 0.169279 s
+	mean  = 0.0846395 s
+	var   = 3.645e-010 s^2, std = 1.90919e-005 s
+	min   = 0.084626 s
+	max   = 0.084653 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	2 trials
+	total = 0.294437 s
+	mean  = 0.147218 s
+	var   = 0.00954534 s^2, std = 0.0977002 s
+	min   = 0.078134 s
+	max   = 0.216303 s
+
+GWNSampleFloodVoxelizer::flood:
+	2 trials
+	total = 0.922052 s
+	mean  = 0.461026 s
+	var   = 7.98848e-005 s^2, std = 0.00893783 s
+	min   = 0.454706 s
+	max   = 0.467346 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 122101 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:48:41
+slices [49, 99):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:48:41
+slices [23, 99):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 23 49 73
+LayerExtractor:  runs 14:48:41
+slices [21, 73):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:48:42
+slices [22, 72):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:48:42
+slices [10, 72):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:48:43
+slices [10, 60):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:48:43
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	3 trials
+	total = 1.51826 s
+	mean  = 0.506086 s
+	var   = 0.088068 s^2, std = 0.296763 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 478
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 1.71356
+
+GWNSampleFloodVoxelizer::voxelize:
+	3 trials
+	total = 2.62675 s
+	mean  = 0.875582 s
+	var   = 0.012306 s^2, std = 0.110933 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	3 trials
+	total = 0.339464 s
+	mean  = 0.113155 s
+	var   = 0.00027008 s^2, std = 0.0164341 s
+	min   = 0.094207 s
+	max   = 0.123534 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	3 trials
+	total = 0.253932 s
+	mean  = 0.084644 s
+	var   = 2.43e-010 s^2, std = 1.55885e-005 s
+	min   = 0.084626 s
+	max   = 0.084653 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	3 trials
+	total = 0.599784 s
+	mean  = 0.199928 s
+	var   = 0.0131075 s^2, std = 0.114488 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	3 trials
+	total = 1.37826 s
+	mean  = 0.459421 s
+	var   = 4.76737e-005 s^2, std = 0.00690461 s
+	min   = 0.454706 s
+	max   = 0.467346 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 280669 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:48:45
+slices [99, 149):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:48:45
+slices [73, 149):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 73 99 123
+LayerExtractor:  runs 14:48:45
+slices [71, 123):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:48:46
+slices [72, 122):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:48:46
+slices [60, 122):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:48:48
+slices [60, 110):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:48:48
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	4 trials
+	total = 2.19319 s
+	mean  = 0.548298 s
+	var   = 0.0658394 s^2, std = 0.256592 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 348
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 1.12002
+
+GWNSampleFloodVoxelizer::voxelize:
+	4 trials
+	total = 3.51817 s
+	mean  = 0.879543 s
+	var   = 0.00826681 s^2, std = 0.090922 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	4 trials
+	total = 0.462391 s
+	mean  = 0.115598 s
+	var   = 0.000203928 s^2, std = 0.0142803 s
+	min   = 0.094207 s
+	max   = 0.123534 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	4 trials
+	total = 0.338085 s
+	mean  = 0.0845212 s
+	var   = 6.04323e-008 s^2, std = 0.00024583 s
+	min   = 0.084153 s
+	max   = 0.084653 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	4 trials
+	total = 0.812066 s
+	mean  = 0.203016 s
+	var   = 0.00877652 s^2, std = 0.0936831 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	4 trials
+	total = 1.82996 s
+	mean  = 0.45749 s
+	var   = 4.66885e-005 s^2, std = 0.0068329 s
+	min   = 0.451699 s
+	max   = 0.467346 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 430827 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:48:50
+slices [149, 199):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:48:50
+slices [123, 199):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 123 149 173
+LayerExtractor:  runs 14:48:50
+slices [121, 173):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:48:51
+slices [122, 172):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:48:51
+slices [110, 172):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:48:54
+slices [110, 160):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:48:54
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	5 trials
+	total = 2.80901 s
+	mean  = 0.561802 s
+	var   = 0.0502913 s^2, std = 0.224257 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 321
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.979022
+
+GWNSampleFloodVoxelizer::voxelize:
+	5 trials
+	total = 4.40292 s
+	mean  = 0.880583 s
+	var   = 0.00620552 s^2, std = 0.0787751 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	5 trials
+	total = 0.584316 s
+	mean  = 0.116863 s
+	var   = 0.000160953 s^2, std = 0.0126867 s
+	min   = 0.094207 s
+	max   = 0.123534 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	5 trials
+	total = 0.422237 s
+	mean  = 0.0844474 s
+	var   = 7.25933e-008 s^2, std = 0.000269431 s
+	min   = 0.084152 s
+	max   = 0.084653 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	5 trials
+	total = 1.01321 s
+	mean  = 0.202641 s
+	var   = 0.00658309 s^2, std = 0.0811363 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	5 trials
+	total = 2.28667 s
+	mean  = 0.457335 s
+	var   = 3.51375e-005 s^2, std = 0.00592769 s
+	min   = 0.451699 s
+	max   = 0.467346 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 577180 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:48:56
+slices [199, 249):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:48:56
+slices [173, 249):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 173 199 223
+LayerExtractor:  runs 14:48:56
+slices [171, 223):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:48:57
+slices [172, 222):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:48:57
+slices [160, 222):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:49:0
+slices [160, 210):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:49:0
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	6 trials
+	total = 3.39553 s
+	mean  = 0.565922 s
+	var   = 0.0403349 s^2, std = 0.200836 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 307
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.903347
+
+GWNSampleFloodVoxelizer::voxelize:
+	6 trials
+	total = 5.24039 s
+	mean  = 0.873398 s
+	var   = 0.00527422 s^2, std = 0.0726238 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	6 trials
+	total = 0.692605 s
+	mean  = 0.115434 s
+	var   = 0.000141015 s^2, std = 0.011875 s
+	min   = 0.094207 s
+	max   = 0.123534 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	6 trials
+	total = 0.501642 s
+	mean  = 0.083607 s
+	var   = 4.29571e-006 s^2, std = 0.00207261 s
+	min   = 0.079405 s
+	max   = 0.084653 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	6 trials
+	total = 1.18426 s
+	mean  = 0.197377 s
+	var   = 0.0054327 s^2, std = 0.0737069 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	6 trials
+	total = 2.73488 s
+	mean  = 0.455813 s
+	var   = 4.19955e-005 s^2, std = 0.00648039 s
+	min   = 0.448207 s
+	max   = 0.467346 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 720693 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:49:1
+slices [249, 299):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:49:1
+slices [223, 299):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 223 249 273
+LayerExtractor:  runs 14:49:2
+slices [221, 273):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:49:2
+slices [222, 272):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:49:2
+slices [210, 272):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:49:5
+slices [210, 260):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:49:8
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	7 trials
+	total = 4.00218 s
+	mean  = 0.57174 s
+	var   = 0.0338493 s^2, std = 0.183982 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 306
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.915666
+
+GWNSampleFloodVoxelizer::voxelize:
+	7 trials
+	total = 6.11614 s
+	mean  = 0.873735 s
+	var   = 0.00439598 s^2, std = 0.0663022 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	7 trials
+	total = 0.816036 s
+	mean  = 0.116577 s
+	var   = 0.000126648 s^2, std = 0.0112538 s
+	min   = 0.094207 s
+	max   = 0.123534 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	7 trials
+	total = 0.586297 s
+	mean  = 0.0837567 s
+	var   = 3.73666e-006 s^2, std = 0.00193304 s
+	min   = 0.079405 s
+	max   = 0.084655 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	7 trials
+	total = 1.36268 s
+	mean  = 0.194669 s
+	var   = 0.0045786 s^2, std = 0.0676654 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	7 trials
+	total = 3.20323 s
+	mean  = 0.457604 s
+	var   = 5.74453e-005 s^2, std = 0.00757926 s
+	min   = 0.448207 s
+	max   = 0.468349 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 869230 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:49:9
+slices [299, 349):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:49:9
+slices [273, 349):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 273 299 323
+LayerExtractor:  runs 14:49:10
+slices [271, 323):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:49:10
+slices [272, 322):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:49:10
+slices [260, 322):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:49:13
+slices [260, 310):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:49:19
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	8 trials
+	total = 4.5817 s
+	mean  = 0.572712 s
+	var   = 0.0290213 s^2, std = 0.170356 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 279
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.744852
+
+GWNSampleFloodVoxelizer::voxelize:
+	8 trials
+	total = 6.96271 s
+	mean  = 0.870339 s
+	var   = 0.00386024 s^2, std = 0.0621309 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	8 trials
+	total = 0.962826 s
+	mean  = 0.120353 s
+	var   = 0.000222662 s^2, std = 0.0149219 s
+	min   = 0.094207 s
+	max   = 0.14679 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	8 trials
+	total = 0.670956 s
+	mean  = 0.0838695 s
+	var   = 3.30461e-006 s^2, std = 0.00181786 s
+	min   = 0.079405 s
+	max   = 0.084659 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	8 trials
+	total = 1.49673 s
+	mean  = 0.187091 s
+	var   = 0.00438396 s^2, std = 0.0662114 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	8 trials
+	total = 3.66298 s
+	mean  = 0.457872 s
+	var   = 4.98144e-005 s^2, std = 0.00705793 s
+	min   = 0.448207 s
+	max   = 0.468349 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1011469 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:49:20
+slices [349, 399):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:49:20
+slices [323, 399):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 323 349 373
+LayerExtractor:  runs 14:49:21
+slices [321, 373):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:49:21
+slices [322, 372):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:49:21
+slices [310, 372):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:49:25
+slices [310, 360):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:49:30
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	9 trials
+	total = 5.17825 s
+	mean  = 0.575361 s
+	var   = 0.0254568 s^2, std = 0.159552 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 271
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.776759
+
+GWNSampleFloodVoxelizer::voxelize:
+	9 trials
+	total = 7.82019 s
+	mean  = 0.86891 s
+	var   = 0.00339609 s^2, std = 0.058276 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	9 trials
+	total = 1.11391 s
+	mean  = 0.123768 s
+	var   = 0.000299781 s^2, std = 0.0173142 s
+	min   = 0.094207 s
+	max   = 0.151087 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	9 trials
+	total = 0.755613 s
+	mean  = 0.083957 s
+	var   = 2.96044e-006 s^2, std = 0.00172059 s
+	min   = 0.079405 s
+	max   = 0.084659 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	9 trials
+	total = 1.62827 s
+	mean  = 0.180919 s
+	var   = 0.00417882 s^2, std = 0.0646438 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	9 trials
+	total = 4.11779 s
+	mean  = 0.457533 s
+	var   = 4.46269e-005 s^2, std = 0.00668033 s
+	min   = 0.448207 s
+	max   = 0.468349 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1155965 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:49:32
+slices [399, 449):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:49:32
+slices [373, 449):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 373 399 423
+LayerExtractor:  runs 14:49:32
+slices [371, 423):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:49:33
+slices [372, 422):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:49:33
+slices [360, 422):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:49:36
+slices [360, 410):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:49:40
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	10 trials
+	total = 5.73243 s
+	mean  = 0.573243 s
+	var   = 0.0226731 s^2, std = 0.150576 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 274
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.73046
+
+GWNSampleFloodVoxelizer::voxelize:
+	10 trials
+	total = 8.63476 s
+	mean  = 0.863476 s
+	var   = 0.00331404 s^2, std = 0.0575677 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	10 trials
+	total = 1.22321 s
+	mean  = 0.122321 s
+	var   = 0.000287425 s^2, std = 0.0169536 s
+	min   = 0.094207 s
+	max   = 0.151087 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	10 trials
+	total = 0.851381 s
+	mean  = 0.0851381 s
+	var   = 1.65815e-005 s^2, std = 0.00407204 s
+	min   = 0.079405 s
+	max   = 0.095768 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	10 trials
+	total = 1.75963 s
+	mean  = 0.175963 s
+	var   = 0.00396007 s^2, std = 0.0629291 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	10 trials
+	total = 4.57151 s
+	mean  = 0.457151 s
+	var   = 4.11211e-005 s^2, std = 0.00641258 s
+	min   = 0.448207 s
+	max   = 0.468349 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1293947 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:49:42
+slices [449, 499):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:49:42
+slices [423, 499):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 423 449 473
+LayerExtractor:  runs 14:49:42
+slices [421, 473):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:49:43
+slices [422, 472):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:49:43
+slices [410, 472):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:49:46
+slices [410, 460):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:49:51
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	11 trials
+	total = 6.32634 s
+	mean  = 0.575122 s
+	var   = 0.0204446 s^2, std = 0.142985 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 293
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.846212
+
+GWNSampleFloodVoxelizer::voxelize:
+	11 trials
+	total = 9.51394 s
+	mean  = 0.864904 s
+	var   = 0.00300508 s^2, std = 0.0548186 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	11 trials
+	total = 1.38575 s
+	mean  = 0.125977 s
+	var   = 0.000405737 s^2, std = 0.0201429 s
+	min   = 0.094207 s
+	max   = 0.16254 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	11 trials
+	total = 0.936006 s
+	mean  = 0.0850915 s
+	var   = 1.49473e-005 s^2, std = 0.00386617 s
+	min   = 0.079405 s
+	max   = 0.095768 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	11 trials
+	total = 1.91524 s
+	mean  = 0.174112 s
+	var   = 0.00360175 s^2, std = 0.0600145 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	11 trials
+	total = 5.02822 s
+	mean  = 0.457111 s
+	var   = 3.70267e-005 s^2, std = 0.00608496 s
+	min   = 0.448207 s
+	max   = 0.468349 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1432715 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:49:53
+slices [499, 549):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:49:53
+slices [473, 549):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 473 499 523
+LayerExtractor:  runs 14:49:53
+slices [471, 523):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:49:53
+slices [472, 522):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:49:54
+slices [460, 522):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:49:56
+slices [460, 510):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:50:1
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	12 trials
+	total = 6.9325 s
+	mean  = 0.577709 s
+	var   = 0.0186663 s^2, std = 0.136625 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 331
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.967426
+
+GWNSampleFloodVoxelizer::voxelize:
+	12 trials
+	total = 10.4365 s
+	mean  = 0.869708 s
+	var   = 0.00300883 s^2, std = 0.0548528 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	12 trials
+	total = 1.53254 s
+	mean  = 0.127711 s
+	var   = 0.000404947 s^2, std = 0.0201233 s
+	min   = 0.094207 s
+	max   = 0.16254 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	12 trials
+	total = 1.02066 s
+	mean  = 0.0850552 s
+	var   = 1.36042e-005 s^2, std = 0.00368839 s
+	min   = 0.079405 s
+	max   = 0.095768 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	12 trials
+	total = 2.10192 s
+	mean  = 0.17516 s
+	var   = 0.00328749 s^2, std = 0.0573366 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	12 trials
+	total = 5.48846 s
+	mean  = 0.457372 s
+	var   = 3.44764e-005 s^2, std = 0.00587166 s
+	min   = 0.448207 s
+	max   = 0.468349 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1573649 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:50:3
+slices [549, 599):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:50:3
+slices [523, 599):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 523 549 573
+LayerExtractor:  runs 14:50:4
+slices [521, 573):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:50:4
+slices [522, 572):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:50:4
+slices [510, 572):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:50:7
+slices [510, 560):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:50:12
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	13 trials
+	total = 7.61203 s
+	mean  = 0.58554 s
+	var   = 0.0179082 s^2, std = 0.133822 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 392
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 1.41307
+
+GWNSampleFloodVoxelizer::voxelize:
+	13 trials
+	total = 11.4057 s
+	mean  = 0.877361 s
+	var   = 0.00351947 s^2, std = 0.0593251 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	13 trials
+	total = 1.6439 s
+	mean  = 0.126454 s
+	var   = 0.000391765 s^2, std = 0.0197931 s
+	min   = 0.094207 s
+	max   = 0.16254 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	13 trials
+	total = 1.10097 s
+	mean  = 0.0846898 s
+	var   = 1.42062e-005 s^2, std = 0.00376912 s
+	min   = 0.079405 s
+	max   = 0.095768 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	13 trials
+	total = 2.38227 s
+	mean  = 0.183252 s
+	var   = 0.00386468 s^2, std = 0.0621665 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	13 trials
+	total = 5.96623 s
+	mean  = 0.458941 s
+	var   = 6.36e-005 s^2, std = 0.00797496 s
+	min   = 0.448207 s
+	max   = 0.477767 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1728964 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:50:14
+slices [599, 649):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:50:14
+slices [573, 649):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 573 599 623
+LayerExtractor:  runs 14:50:14
+slices [571, 623):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:50:15
+slices [572, 622):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:50:15
+slices [560, 622):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:50:18
+slices [560, 610):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:50:23
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	14 trials
+	total = 8.21303 s
+	mean  = 0.586645 s
+	var   = 0.0165477 s^2, std = 0.128638 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 353
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 1.11441
+
+GWNSampleFloodVoxelizer::voxelize:
+	14 trials
+	total = 12.3374 s
+	mean  = 0.881245 s
+	var   = 0.00345997 s^2, std = 0.0588215 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	14 trials
+	total = 1.79123 s
+	mean  = 0.127945 s
+	var   = 0.000392778 s^2, std = 0.0198186 s
+	min   = 0.094207 s
+	max   = 0.16254 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	14 trials
+	total = 1.18562 s
+	mean  = 0.0846873 s
+	var   = 1.31135e-005 s^2, std = 0.00362126 s
+	min   = 0.079405 s
+	max   = 0.095768 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	14 trials
+	total = 2.60659 s
+	mean  = 0.186185 s
+	var   = 0.00368787 s^2, std = 0.0607279 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	14 trials
+	total = 6.42665 s
+	mean  = 0.459046 s
+	var   = 5.88638e-005 s^2, std = 0.00767227 s
+	min   = 0.448207 s
+	max   = 0.477767 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1850901 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:50:25
+slices [649, 699):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:50:25
+slices [623, 699):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 623 649 673
+LayerExtractor:  runs 14:50:25
+slices [621, 673):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:50:26
+slices [622, 672):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:50:26
+slices [610, 672):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:50:29
+slices [610, 660):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:50:33
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	15 trials
+	total = 8.49475 s
+	mean  = 0.566316 s
+	var   = 0.0215643 s^2, std = 0.146848 s
+	min   = 0.184559 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 50]
+GWNSampleFloodVoxelizer: number of samples: 226
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.46133
+
+GWNSampleFloodVoxelizer::voxelize:
+	15 trials
+	total = 13.2559 s
+	mean  = 0.88373 s
+	var   = 0.00330542 s^2, std = 0.0574928 s
+	min   = 0.768483 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	15 trials
+	total = 1.89953 s
+	mean  = 0.126635 s
+	var   = 0.000390469 s^2, std = 0.0197603 s
+	min   = 0.094207 s
+	max   = 0.16254 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	15 trials
+	total = 1.26578 s
+	mean  = 0.0843853 s
+	var   = 1.35445e-005 s^2, std = 0.00368028 s
+	min   = 0.079405 s
+	max   = 0.095768 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	15 trials
+	total = 2.70688 s
+	mean  = 0.180458 s
+	var   = 0.0039164 s^2, std = 0.0625812 s
+	min   = 0.078134 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	15 trials
+	total = 6.9717 s
+	mean  = 0.46478 s
+	var   = 0.000547755 s^2, std = 0.0234042 s
+	min   = 0.448207 s
+	max   = 0.545049 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1893763 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:50:34
+slices [699, 749):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:50:34
+slices [673, 749):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 673 699 723
+LayerExtractor:  runs 14:50:35
+slices [671, 723):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:50:35
+slices [672, 722):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:50:35
+slices [660, 722):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:50:37
+slices [660, 710):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+PrintJobVoxelizer:  runs 14:50:42
+
+PrintJobVoxelizer: setting up slices
+PrintJobVoxelizer: rasterizing objects
+PrintJobVoxelizer: creating rasterizer
+PrintJobVoxelizer: rasterizing object 1
+Rasterizer::rasterize:
+	16 trials
+	total = 8.61071 s
+	mean  = 0.538169 s
+	var   = 0.032803 s^2, std = 0.181116 s
+	min   = 0.11596 s
+	max   = 0.769481 s
+
+
+PrintJobVoxelizer: voxelizing objects
+Object 1 ROI: [0 0 0] --> [946 303 27]
+GWNSampleFloodVoxelizer: number of samples: 251
+GWNSampleFloodVoxelizer: samples evaluated
+GWNSampleFloodVoxelizer: adaptive threshold = 0.498039
+GWNSampleFloodVoxelizer: flooding complete
+Voxelization: solid angle evaluations per voxel: 0.419228
+
+GWNSampleFloodVoxelizer::voxelize:
+	16 trials
+	total = 13.7219 s
+	mean  = 0.85762 s
+	var   = 0.0139926 s^2, std = 0.11829 s
+	min   = 0.465973 s
+	max   = 0.989987 s
+
+GWNSampleFloodVoxelizer::initIndicator:
+	16 trials
+	total = 1.9842 s
+	mean  = 0.124013 s
+	var   = 0.000474468 s^2, std = 0.0217823 s
+	min   = 0.084677 s
+	max   = 0.16254 s
+
+GWNSampleFloodVoxelizer::selectSamples:
+	16 trials
+	total = 1.33379 s
+	mean  = 0.0833619 s
+	var   = 2.93989e-005 s^2, std = 0.00542208 s
+	min   = 0.068011 s
+	max   = 0.095768 s
+
+GWNSampleFloodVoxelizer::evaluateSamples:
+	16 trials
+	total = 2.75379 s
+	mean  = 0.172112 s
+	var   = 0.00476997 s^2, std = 0.069065 s
+	min   = 0.046912 s
+	max   = 0.305347 s
+
+GWNSampleFloodVoxelizer::flood:
+	16 trials
+	total = 7.21153 s
+	mean  = 0.450721 s
+	var   = 0.00367392 s^2, std = 0.0606129 s
+	min   = 0.239829 s
+	max   = 0.545049 s
+
+
+PrintJobVoxelizer: finalizing surfaces
+PrintJobVoxelizer: 1899494 surface voxels
+PrintJobVoxelizer: getting output subset
+PrintJobVoxelizer: updating slice indices
+TonalValueCalculator:  runs 14:50:43
+slices [749, 777):
+	channel 0: occupancy (dense)
+	channel 1: opticalFeature (sparse)
+
+SurfaceDistanceOrderedTransfer:  runs 14:50:43
+slices [723, 777):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+
+SurfaceDistanceOrderedTransfer: 723 749 777
+LayerExtractor:  runs 14:50:44
+slices [721, 777):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+TonalLinearizer:  runs 14:50:44
+slices [722, 777):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+
+VectorLayerHalftoner: VectorLayerHalftoner error: no tonal values available
+
+VectorLayerHalftoner:  runs 14:50:44
+slices [710, 777):
+	channel 0: occupancy (dense)
+	channel 1: surfaceDist (dense)
+	channel 2: layer_000 (sparse)
+	channel 3: layer_001 (sparse)
+	channel 4: layer_002 (sparse)
+	channel 5: layer_003 (sparse)
+	channel 6: layer_004 (sparse)
+	channel 7: layer_005 (sparse)
+	channel 8: layer_006 (sparse)
+	channel 9: layer_007 (sparse)
+	channel 10: intermedTonal_0 (sparse)
+	channel 11: intermedTonal_1 (sparse)
+	channel 12: intermedTonal_2 (sparse)
+	channel 13: intermedTonal_3 (sparse)
+	channel 14: intermedTonal_4 (sparse)
+	channel 15: intermedTonal_5 (sparse)
+	channel 16: intermedTonal_6 (sparse)
+	channel 17: intermedTonal_7 (sparse)
+	channel 18: quantizedTonal (sparse)
+	channel 19: errorDiffInfo2 (sparse)
+	channel 20: distanceToEmpty (sparse)
+	channel 21: errorDiffInfo3 (sparse)
+	channel 22: errorDiffInfo4 (sparse)
+	channel 23: errorDiffInfo5 (sparse)
+	channel 24: errorDiffInfo6 (sparse)
+	channel 25: errorDiffInfo7 (sparse)
+	channel 26: errorDiffInfo8 (sparse)
+	channel 27: errorDiffInfo9 (sparse)
+
+SlaveReporter:  runs 14:50:45
+slices [710, 777):
+	channel 0: material (dense)
+	channel 1: occupancy (dense)
+
+SlaveReporter::runInternal
+Computation finished 
+
+Status: success
+Slave Node  1 :Total execution time in seconds 171.511
+
