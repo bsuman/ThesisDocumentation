@@ -3,7 +3,7 @@
 With science and technology progressing rapidly, there is a good chance of availability of already implemented solution for a given problem identified in a target system. This chapter highlights the existing systems in place which provide solutions designed to achieve similar goals to the thesis under discussion and comparison to how the solution presented in the current document differs from them. This chapter is divided into two sections with the first section briefly describes the existing distributed systems which can be used for cluster computing followed by the second section focusing the use of distributed systems in the field of 3D printing.
 
 \section{Introduction to distributed systems and its types}
-A distributed system consists of autonomous systems (AS) connected through network which interact (if necessary) through message passing and most importantly give the user an illusion of being single large system \cite{DCE}. The main goal of distributed system is to connect the users and the available infrastructure i.e. IT resources, in a transparent, open, cost-effective, reliable as well as scalable way. Transparency in distributed computing environment (DCE) means that the user is unaware of the underlying system complexities in terms of location of the AS, heterogeneity of the system hardware, concurrency and replication of the AS mainly to provide reliability and fault tolerance. Scalability refers to the property by which the number of AS in the DCE can be increased (scaled in) or decreased (scaled out) so as to provide best suited infrastructure to handle the fluctuating load (i.e. the amount of work to be done). The shared resources of the distributed system can be broadly classified as physical resources and virtual resources. The Figure\ref{fig:TypesOfResourceSharing} details the resources included in the two categorizes. 
+A distributed system consists of autonomous systems (AS) connected through network which interact (if necessary) through message passing and most importantly give the user an illusion of being single large system \cite{DCE}. The main goal of distributed system is to connect the users and the available infrastructure i.e. IT resources, in a transparent, open, cost-effective, reliable, scalable way. Transparency in distributed computing environment (DCE) means that the user is unaware of the underlying system complexities in terms of location of the AS, heterogeneity of the system hardware, concurrency and replication of the AS mainly to provide reliability and fault tolerance. Transparency property of the distributed systems makes it appear as a single system dedicated to perform some tasks to the user \cite{DSBook}. Scalability refers to the property by which the number of AS in the DCE can be increased (scaled in) or decreased (scaled out) so as to provide best suited infrastructure to handle the fluctuating load (i.e. the amount of work to be done). The shared resources of the distributed system can be broadly classified as physical resources and virtual resources. The Figure\ref{fig:TypesOfResourceSharing} details the resources included in the two categorizes. 
 
 \begin{figure}[ht!]
 \centering
@@ -12,7 +12,7 @@ A distributed system consists of autonomous systems (AS) connected through netwo
 \label{fig:TypesOfResourceSharing}
 \end{figure}
   
-Distributed Computing is a vast domain which consists of various different types of computing environments like utility computing (grid computing and cloud computing), cluster computing, peer-to-peer computing and Jungle computing (figure \ref{fig:DistributedComputingEnv}). 
+Distributed Computing is a vast domain which consists of various different types of computing environments like utility computing (grid computing and cloud computing), cluster computing, and peer-to-peer computing (Figure \ref{fig:DistributedComputingEnv}) which are described briefly as follows.
 
 \begin{figure}[ht!]
 \centering
@@ -21,9 +21,8 @@ Distributed Computing is a vast domain which consists of various different types
 \label{fig:DistributedComputingEnv}
 \end{figure}
 
-Each of the computing environment forming the part of the DCE is described briefly-
 \begin{itemize}
-\item \textbf{Peer-to-Peer computing}- Each node in the DCE acts as both client and server, providing as well as consuming part of the system resources. Peers are machines simply connected to the internet where in each peer can freely join and leave the DCE without affecting the whole system making the system self-organizing  and also implying no particular role (either master or slave) for a peer (figure \ref{fig:P2P}).
+\item \textbf{Peer-to-Peer computing}- Each node in the DCE acts as both client and server, providing as well as consuming part of the system resources. Peers are machines simply connected to the internet where in each peer can freely join and leave the DCE without affecting the whole system making the system self-organizing  and also implying no particular role (either master or slave) for a peer (Figure \ref{fig:P2P}).
 
 \begin{figure}[ht!]
 \centering
@@ -36,20 +35,16 @@ Each of the computing environment forming the part of the DCE is described brief
 
 \item \textbf{Cluster Computing}- A cluster is a set of stand-alone computers and a network interconnecting them. The computers of the cluster work cooperatively together as a single integrated computing resource. A cluster is local if all of its component subsystems are supervised within a single administrative domain, usually residing in a single room and managed as a single computer system. The components of a cluster are connected to each other through fast local area networks. 
 
-\item \textbf{Jungle Computing}- It is the combination of one or more DCEs enlisted above resulting in a highly diverse, distributed and non-uniform high performance computing environments (figure \ref{fig:JungleComputing}).  
+As mentioned in the brief description of different distributed systems, each node is similar to the other in a peer-to-peer system and it can join/leave the distributed system without affecting the user. As the requirement of the thesis design needed designated roles for the nodes, a peer to peer system does not fulfill the requirement of specific node roles in distributed system. A Peer-to-Peer system mostly uses internet to maintain connectivity amongst the peers. The distributed system to be used in the thesis has nodes which were connected through the enterprise network and it was not possible for a node outside the institution to join the system, which makes peer to peer system not an ideal choice. Grid computing essentially has systems which are offered by multiple institutions as resources, which dedicated to perform part of computation required for solving huge problems. The institutions which offer their systems form a virtual organization and only these institutions have shared access rights on the resources \cite{DSBook}. The distributed system in demand for the thesis is dedicated to be used for a specific enterprise and other institutions not part of the same network cannot contribute computes nodes. This makes grid computing not suitable as a distributed system for the thesis under discussion. 
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[scale=0.6]{JungleComputing.PNG}
-\caption{Jungle Computing}
-\label{fig:JungleComputing}
-\end{figure}
-\end{itemize}
 
 \subsection{Use of Distributed Computing in fields involving large computations}
 
 Distributed systems offer various advantages like computational speed-up, robustness through duplication of the resources, cheaper and scalable infrastructure etc. 
-Using distributed systems allows to overcome the limitation of resources for solving problems with large computation, making it possible to get correct results within in a shorter span of time. The various domains where distributed computing has been used involves astronomy: for example Cosmology@Home is a project started to design models which describe the universe, data analysis and machine learning: the DistributedDataMining project involved data analysis for stock market prediction and analysis of medical information, artificial neural networks: NNGenerator Project is a distributed system for analyzing neural networks and time-series forecasting, molecular biology: RNA world distributed system uses bio-informatics software to study the structure of RNA, climate study projects started in Oxford University use distributed system to study the climate changes which help to draw models for more accurate climate predictions, etc.  
+Using distributed systems allows to overcome the limitation of resources for solving problems with large computation, making it possible to get correct results within in a shorter span of time. The various domains where distributed computing has been used involves astronomy: for example Cosmology@Home is a project started to design models which describe the universe \cite{coshome}, data analysis and machine learning: the DistributedDataMining project involved data analysis for stock market prediction and analysis of medical information \cite{DisDataMin}, molecular biology: RNA world distributed system uses bio-informatics software to study the structure of RNA \cite{rnaworld}, climate study projects started in Oxford University use distributed system to study the climate changes which help to draw models for more accurate climate predictions \cite{ClimaProj}, etc. \newline
+
+  
+
 
 \section{Existing solutions for 3D Printing}
 
