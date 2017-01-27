@@ -29,9 +29,9 @@ On the basis of level of testing, testing can be done to check the functional or
 \section{Implementation Assessment}
 
 Amongst the types of testing discussed in the Section \ref{SDLCTesting}, the implementation of the thesis was tested by using manual testing during the development and automated testing after the development was done. The manual testing involved running the scenarios to check individual components or parts of the components.  
-Following the unit tests, were the tests which involved checking how the components worked together for different scenarios. Some of the manual tests performed are described in Section  \ref{Manual Tests}. 
+Following the unit tests, were the tests which involved checking how the components worked together for different scenarios. Some of the manual tests performed are described in Section \ref{ManualTests}. The performance of the distributed cuttlefish is measured through automated testing. The performance tests and results of the tests are discussed in the Section \ref{PerformanceTests}.
 
-\subsection{Manual Tests}
+\subsection{Manual Tests} \label{ManualTests}
 
 Out of the various test cases which were conducted, the important cases have been documented in this Section which highlight the scenarios testing the components newly introduced for distributed computing. 
 
@@ -79,11 +79,61 @@ Out of the various test cases which were conducted, the important cases have bee
 \item{\textbf{Method}}- Distributed cuttlefish was executed multiple times on the slave node with varying number of input models at the master.
 \item{\textbf{Results}}- In the prototype II, the \textit{SlavePJCollector} component receives the serialized print job from the master. The size of the serialized data was cross-examined with the size of data sent at the master node. After deserializing the print job, the number of print objects contained in the print job was checked through debugging the component. To check if the texture data was received and deserialized correctly, the deserialized data was written to an image on the disk. Through this test, a bug in the format in which the texture data was uploaded to the GPU memory at the slave node was found. The texture data is in RGBA format and is linearized at the master node before uploading the data to master node GPU. When the texture data is communicated to the slave, the load operation should not perform the linearization again and instead load the data directly to the GPU memory.
 \end{itemize}
+\end{itemize} 
 
+\item{\textbf{Test-Cases Common for Prototype I and Prototype II}}:
+There are some corner cases which had to be checked for both the prototypes. These scenarios and the tests performed to check how the system handles these scenarios are described as follows:
 
+\begin{itemize}
+\item{\textbf{Corner Case I}- Size of input objects < number of slave nodes }
+\begin{itemize}
+\item{\textbf{Scenario}}- To test the behavior of distributed cuttlefish when the number of input objects submitted to the master node is smaller than the cluster size i.e. number of print objects in the main configuration file are less than the number of slave nodes.
+\item{\textbf{Method}}- Distributed cuttlefish was executed with submitted main configuration file consisting of less number print objects in comparison to the number of nodes given to mpiexec command, i.e.  cluster size is number of print objects plus 2 (as master node does not act as a slave node)
+\item{\textbf{Results}}- When the number of print objects is less than the number of available slave nodes, some of the slave nodes get empty input. At the master, the \textit{MasterMerger} component is notified the number of slaves nodes doing the actual work so as to ensure that the \textit{MasterMerger} component waits to receive the partial slices only from these many slave nodes. For prototype I, the empty work item to the {\lq}dropped{\rq} slaves is given by writing a main configuration file without any print object files. Through this test case, it was discovered that the cuttlefish application did not handle empty input case and crashed. So to handle the empty input, there were some modifications introduced in the application. For Prototype II, the empty input the {\lq}dropped{\rq} slaves is given by sending a print job without any print objects. The {\lq}dropped{\rq} slaves do execute the whole pipeline once with null input and wait for the other slaves doing the work to finish while they execute MPI\_Barrier call.     
+\end{itemize}
+\item{\textbf{Corner Case II}- Size of input objects = 1}
+\begin{itemize}
+\item{\textbf{Scenario}}- To test the behavior of distributed cuttlefish when only one print object is submitted to the master node, i.e.the main configuration file contains only one print object file.
+\item{\textbf{Method}}- Distributed cuttlefish was executed with submitted main configuration file consisting of 1 print object.
+\item{\textbf{Results}}- Irrespective of the number of slave nodes in the cluster, as there is only one print object provided as input to the distributed cuttlefish, there is no need to calculate the threshold to perform the distribution. So, the slave node with rank 1 i.e. the first slave node in the cluster gets the print object and rest of the slave nodes (if any depending on the number of hosts set in the mpiexec command) are {\lq}dropped{\rq} and the behavior of the system is similar to the behavior discussed in the above test-case.
+\end{itemize}
 
+\item{\textbf{Corner Case III}- No input given to the distributed cuttlefish}
+\begin{itemize}
+\item{\textbf{Scenario}}- To test the behavior of distributed cuttlefish when input of size is 0.
+\item{\textbf{Method}}- Distributed cuttlefish was executed with submitted main configuration file consisting of 0 print objects.
+\item{\textbf{Results}}- When the input size is 0, for prototype II, the \textit{MasterPJDistributor} component gets an empty print job from the \textit{PrintJobOrganizer} component. The \textit{MasterPJDistributor} component informs the \textit{MasterMerger} component that all the slave nodes are dropped and it should not wait for any partial output from the slave nodes. For prototype I, all the slave nodes receive empty configuration files and the master behaves the same as in prototype II. 
+\end{itemize}
+\end{itemize}
 \end{enumerate}
 
-  
+ 
+\section{Results} \label{PerformanceTests}
 
-\section{Results}
+The performance testing is done through automation of the test-cases. To perform automated testing, either another software is used to run the software under test or scripts are written to perform the testing. For testing the distributed cuttlefish, batch scripts were written and executed to perform the tests. For each test case, the test-data was created along with the script and the task was scheduled using the windows task scheduler. The performance tests were conducted to check the computation speed-up and efficiency achieved by distributed computing. The Section \ref{DistvsNonDist} explains the terms computational speed-up and efficiency in parallel computing followed by the test case used to find the speed-up and observed result. The Section \ref{ProtoComp} details the comparison of the two prototypes developed in terms of computation speed-up, communication overhead and how well the prototypes scale for a given work load.
+
+\subsection{Comparison of distributed vs non-distributed cuttlefish performance} \label{DistvsNonDist}
+
+Speed-up is one of the most common metric used to measure performance of a parallel processing and is defined as the gain by parallel computation in terms of performance in comparison to the sequential computation. \textit{Absolute speed-up} calculation can be done by considering how fast the computation can be performed by using N processors in comparison to best sequential algorithm performance on a single processor \cite{Speedup}. \textit{Relative speed-up }is defined as the ratio of performance of parallel algorithm on one processor to the performance of same on N processors. \textit{Relative speed-up} is used to compare how well the algorithm performs when the number of processors is scaled up \cite{Speedup}. To do performance evaluation for distributed cuttlefish, we use the absolute speed-up definition and Equation \ref{eq:speed-up} to calculate the speed-up, where p is number of processors, \begin{math} T_{s} \end{math} - is the execution time of non-distributed cuttlefish for the given work load, \begin{math} T_{p}\end{math}- is the execution time of distributed cuttlefish for the same work load.
+
+\begin{equation}
+\label{eq:speed-up}
+\begin{aligned}
+S_{p} = T_{s}/T_{p}
+\end{aligned}
+\end{equation}
+
+Using the Equation \ref{eq:speed-up}, the speed-up can be classified as either linear speed-up, sub-linear speed-up or super-linear speed-up. Linear speed-up is observed when S_{p}=p i.e. speed-up is equal to the number of processors. Sub-linear speed-up is when the speed-up is lesser than number of processors where are super-linear speed up is when the speed-up gained is larger than the number of processors. Some of the reasons why super-linear speed-up is possible are higher cache hit rate, better resource utilization, lower network latency for small-sized messages communication. The Figure summarizes the three types of speed-up observed.  
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.6]{ProducerConsumerProblem.PNG}
+\caption{Producer-Consumer Problem}
+\label{fig:ProducerConsumerProblem}
+\end{figure}
+
+
+\subsection{Comparison of Distributed Cuttlefish prototypes} \label{ProtoComp}
+
+
+  
