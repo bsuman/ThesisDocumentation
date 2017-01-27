@@ -114,24 +114,50 @@ The performance testing is done through automation of the test-cases. To perform
 
 \subsection{Comparison of distributed vs non-distributed cuttlefish performance} \label{DistvsNonDist}
 
-Speed-up is one of the most common metric used to measure performance of a parallel processing and is defined as the gain by parallel computation in terms of performance in comparison to the sequential computation. \textit{Absolute speed-up} calculation can be done by considering how fast the computation can be performed by using N processors in comparison to best sequential algorithm performance on a single processor \cite{Speedup}. \textit{Relative speed-up }is defined as the ratio of performance of parallel algorithm on one processor to the performance of same on N processors. \textit{Relative speed-up} is used to compare how well the algorithm performs when the number of processors is scaled up \cite{Speedup}. To do performance evaluation for distributed cuttlefish, we use the absolute speed-up definition and Equation \ref{eq:speed-up} to calculate the speed-up, where p is number of processors, \begin{math} T_{s} \end{math} - is the execution time of non-distributed cuttlefish for the given work load, \begin{math} T_{p}\end{math}- is the execution time of distributed cuttlefish for the same work load.
+Speed-up is one of the most common metric used to measure performance of a parallel processing and is defined as the gain by parallel computation in terms of performance in comparison to the sequential computation. \textit{Absolute speed-up} calculation can be done by considering how fast the computation can be performed by using N processors in comparison to best sequential algorithm performance on a single processor \cite{Speedup}. \textit{Relative speed-up }is defined as the ratio of performance of parallel algorithm on one processor to the performance of same on N processors. \textit{Relative speed-up} is used to compare how well the algorithm performs when the number of processors is scaled up \cite{Speedup}. To do performance evaluation for distributed cuttlefish, we use the absolute speed-up definition and Equation \ref{eq:speed-up} to calculate the speed-up, where N is number of processors, \begin{math} T_{s} \end{math} - is the execution time of non-distributed cuttlefish for the given work load, \begin{math} T_{N}\end{math}- is the execution time of distributed cuttlefish for the same work load.
 
 \begin{equation}
 \label{eq:speed-up}
 \begin{aligned}
-S_{p} = T_{s}/T_{p}
+S_{N} = T_{s}/T_{N}
 \end{aligned}
 \end{equation}
 
-Using the Equation \ref{eq:speed-up}, the speed-up can be classified as either linear speed-up, sub-linear speed-up or super-linear speed-up. Linear speed-up is observed when S_{p}=p i.e. speed-up is equal to the number of processors. Sub-linear speed-up is when the speed-up is lesser than number of processors where are super-linear speed up is when the speed-up gained is larger than the number of processors. Some of the reasons why super-linear speed-up is possible are higher cache hit rate, better resource utilization, lower network latency for small-sized messages communication. The Figure summarizes the three types of speed-up observed.  
+Using the Equation \ref{eq:speed-up}, the speed-up can be classified as either linear speed-up, sub-linear speed-up or super-linear speed-up. Linear speed-up is observed when \begin{math}S_{N}=N \end{math} i.e. speed-up is equal to the number of processors. Sub-linear speed-up is when the speed-up is lesser than number of processors where are super-linear speed up is when the speed-up gained is larger than the number of processors. Some of the reasons why super-linear speed-up is possible are higher cache hit rate, better resource utilization, lower network latency for small-sized messages communication. The Figure summarizes the three types of speed-up observed. \newline 
 
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.6]{ProducerConsumerProblem.PNG}
-\caption{Producer-Consumer Problem}
-\label{fig:ProducerConsumerProblem}
+\includegraphics[scale=0.8]{TypesOfSpeedUp.PNG}
+\caption{Speed-Up Types}
+\label{fig:TypesOfSpeedUp}
 \end{figure}
 
+Efficiency is defined as a ratio of speed-up gained for \textit{N} processors to the number of processors. The Equation \ref{eq:eff} is used to calculate the efficiency.
+
+\begin{equation}
+\label{eq:eff}
+\begin{aligned}
+E_{N} = S_{N}/N
+\end{aligned}
+\end{equation}
+
+\subsubsection{Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish}
+
+To check the speed-up gained by using the Distributed Cuttlefish Prototype I, the application was run with different work-loads and comparison between the execution times for both Distributed Cuttlefish Prototype I and Non-Distributed Cuttlefish application was drawn.
+
+\begin{itemize}
+\item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype I in comparison to non-distributed cuttlefish.
+\item{\textbf{Test-Case and Test-Data Description}}- The test case was executed 5 times for each test-data. The cluster was composed of 3 nodes where in one node was the master and remaining two were compute nodes. The cluster nodes were heterogeneous in terms of the number of cores, CPU speed and RAM capacity. The test-data included multiple head models of size 8cms. The number of head models was increased by factor of 2 for each following test-case, i.e. starting with 2 head models the number was increased to 10 head models for 5 test-cases, with each test-case executed 5 times to enable collection of the average execution times. The speed-up for each test case was calculated using the average execution time for distributed cuttlefish and non-distributed cuttlefish for a given test-data i.e. given work-load. The non-distributed cuttlefish application was executed on the slowest node of the cluster as the slowest node in the cluster would impact the execution time of the distributed version. 
+\item{\textbf{Results}}- To elaborate on the amount of work to be done, each 8cms head model consists of 777 slices with each slice having the width of 946(8.00cms)and height 303 (5.12cms). The Volume(\begin{math} V_{o}\end{math}) to be processed for each model is calculated using the Equation \ref{eq:NumVoxel}, where \begin{math} S_{w}\end{math} is slice width,\begin{math} S_{h}\end{math} is slice height,\begin{math} S_{t}\end{math} is slice thickness, \begin{math}S_{Num}\end{math} is total number of slices.
+\end{itemize}
+
+
+\begin{equation}
+\label{eq:NumVoxel}
+\begin{aligned}
+V_{o} = S_{w} \times S_{h} \times S_{t} \times S_{Num}
+\end{aligned}
+\end{equation}
 
 \subsection{Comparison of Distributed Cuttlefish prototypes} \label{ProtoComp}
 
