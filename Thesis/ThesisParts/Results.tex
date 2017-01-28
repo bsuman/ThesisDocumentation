@@ -148,16 +148,40 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype I, th
 \begin{itemize}
 \item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype I in comparison to non-distributed cuttlefish.
 \item{\textbf{Test-Case and Test-Data Description}}- The test case was executed 5 times for each test-data. The cluster was composed of 3 nodes where in one node was the master and remaining two were compute nodes. The cluster nodes were heterogeneous in terms of the number of cores, CPU speed and RAM capacity. The test-data included multiple head models of size 8cms. The number of head models was increased by factor of 2 for each following test-case, i.e. starting with 2 head models the number was increased to 10 head models for 5 test-cases, with each test-case executed 5 times to enable collection of the average execution times. The speed-up for each test case was calculated using the average execution time for distributed cuttlefish and non-distributed cuttlefish for a given test-data i.e. given work-load. The non-distributed cuttlefish application was executed on the slowest node of the cluster as the slowest node in the cluster would impact the execution time of the distributed version. 
-\item{\textbf{Results}}- To elaborate on the amount of work to be done, each 8cms head model consists of 777 slices with each slice having the width of 946(8.00cms)and height 303 (5.12cms). The Volume(\begin{math} V_{o}\end{math}) to be processed for each model is calculated using the Equation \ref{eq:NumVoxel}, where \begin{math} S_{w}\end{math} is slice width,\begin{math} S_{h}\end{math} is slice height,\begin{math} S_{t}\end{math} is slice thickness, \begin{math}S_{Num}\end{math} is total number of slices.
+\item{\textbf{Results}}- To elaborate on the amount of work to be done, each 8cms head model consists of 777 slices with each slice having the width-946 units (8.00cms)and height-303 units (5.12cms). The total number of voxels for each model is calculated using the following Equation \ref{eq:NumVoxel} where, \begin{math} T_{NumVoxels} \end{math} is the total number of voxels for a given model, width (W), height(H), length (L) and voxel dimensions (voxDims). For each head model used in the test data, the total number of voxels to be processed is \begin{math} 2.17 \times 10^{8} \end{math}. Each voxel can be assigned values denoting the materials and a null material value depending upon the printer specification provided. For current test case, the materials provided in the printer specification are VeroCyan, VeroWhite, VeroMagenta, VeroYellow, VeroBlack and EMPTY\_VOXEL as null material . For each material there is a bitmap generated denoting the voxels which are assigned that particular material in the slice. Figure \ref{fig:SliceOutput} shows the material assignment generated for 108th slice of a single head model. The Table \ref{protoIvsND} summarizes the execution times for distributed cuttlefish with prototype I and non-distributed cuttlefish along with the speed-up.  
+\item{\textbf{Observation}}- The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{{eq:speed-up} and increases with the increase in work-load. The Figure \
+ 
 \end{itemize}
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.5]{SliceOutput.PNG}
+\caption{Material Assignment for Single Slice}
+\label{fig:SliceOutput}
+\end{figure}
 
 
 \begin{equation}
 \label{eq:NumVoxel}
 \begin{aligned}
-V_{o} = S_{w} \times S_{h} \times S_{t} \times S_{Num}
+T_{NumVoxels} = (W\div voxDims.y) \times (L\div voxDims.x) \times (H \div voxDims.z)
 \end{aligned}
 \end{equation}
+
+\begin{table}[]
+\centering
+\caption{Speed-Up: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish}
+\label{protoIvsND}
+\begin{tabular}{|c|l|l|l|l}
+\cline{1-4}
+\textbf{\begin{tabular}[c]{@{}c@{}}Number of \\ Head Models\\ 8cms\\ (Resolution:\\ 300 X 150 X 470)\end{tabular}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time\\  for Distributed \\ Cuttlefish Prototype I\\ (Cluster Size- 3)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time \\ for Non-Distributed\\ Cuttlefish\end{tabular}}} & \multicolumn{1}{c|}{\textbf{Speed-Up}} &  \\ \cline{1-4}
+2                                                                                                                  & 173.3568                                                                                                                                                    & 357.3552                                                                                                                       & 2.0614652                              &  \\ \cline{1-4}
+4                                                                                                                  & 363.3992                                                                                                                                                    & 920.566                                                                                                                        & 2.5332101                              &  \\ \cline{1-4}
+6                                                                                                                  & 585.3218                                                                                                                                                    & 1651.1775                                                                                                                      & 2.8209769                              &  \\ \cline{1-4}
+8                                                                                                                  & 836.2334                                                                                                                                                    & 4071.576                                                                                                                       & 4.8672945                              &  \\ \cline{1-4}
+10                                                                                                                 & 1130.514                                                                                                                                                    & 4790.198                                                                                                                       & 4.2371859                              &  \\ \cline{1-4}
+\end{tabular}
+\end{table}
 
 \subsection{Comparison of Distributed Cuttlefish prototypes} \label{ProtoComp}
 
