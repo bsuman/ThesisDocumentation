@@ -149,8 +149,7 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype I, th
 \item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype I in comparison to non-distributed cuttlefish.
 \item{\textbf{Test-Case and Test-Data Description}}- The test case was executed 5 times for each test-data. The cluster was composed of 3 nodes where in one node was the master and remaining two were compute nodes. The cluster nodes were heterogeneous in terms of the number of cores, CPU speed and RAM capacity. The test-data included multiple head models of size 8cms. The number of head models was increased by factor of 2 for each following test-case, i.e. starting with 2 head models the number was increased to 10 head models for 5 test-cases, with each test-case executed 5 times to enable collection of the average execution times. The speed-up for each test case was calculated using the average execution time for distributed cuttlefish and non-distributed cuttlefish for a given test-data i.e. given work-load. The non-distributed cuttlefish application was executed on the slowest node of the cluster as the slowest node in the cluster would impact the execution time of the distributed version. 
 \item{\textbf{Results}}- To elaborate on the amount of work to be done, each 8cms head model consists of 777 slices with each slice having the width-946 units (8.00cms)and height-303 units (5.12cms). The total number of voxels for each model is calculated using the following Equation \ref{eq:NumVoxel} where, \begin{math} T_{NumVoxels} \end{math} is the total number of voxels for a given model, width (W), height(H), length (L) and voxel dimensions (voxDims). For each head model used in the test data, the total number of voxels to be processed is \begin{math} 2.17 \times 10^{8} \end{math}. Each voxel can be assigned values denoting the materials and a null material value depending upon the printer specification provided. For current test case, the materials provided in the printer specification are VeroCyan, VeroWhite, VeroMagenta, VeroYellow, VeroBlack and EMPTY\_VOXEL as null material . For each material there is a bitmap generated denoting the voxels which are assigned that particular material in the slice. Figure \ref{fig:SliceOutput} shows the material assignment generated for 108th slice of a single head model. The Table \ref{protoIvsND} summarizes the execution times for distributed cuttlefish with prototype I and non-distributed cuttlefish along with the speed-up.  
-\item{\textbf{Observation}}- The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{{eq:speed-up} and increases with the increase in work-load. The Figure \
- 
+\item{\textbf{Observation}}- The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{eq:speed-up} and increases with the increase in work-load in comparison to the non-distributed cuttlefish performance. The Figure \ref{fig:ProtoISpeedupVsNumModels} depicts the scaling of the speed-up with increase in work load i.e number of models. The Figure \ref{fig:ProtoISpeedupVsNumModels}shows some interesting results, the speed-up seen is linear with increase in work-load until it reaches a point where in for a given cluster size increase in the load does not provide linear increase in speed-up although the distributed cuttlefish prototype I performs better than non-distributed version. This is proved by calculating the efficiency using the Equation \ref{eq:eff} and by seeing the trend depicted in the Figure 
 \end{itemize}
 
 \begin{figure}[t]
@@ -158,6 +157,20 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype I, th
 \includegraphics[scale=0.5]{SliceOutput.PNG}
 \caption{Material Assignment for Single Slice}
 \label{fig:SliceOutput}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.6]{ProtoISpeedupVsNumModels.pdf}
+\caption{Speed-up Vs Number of Models}
+\label{fig:ProtoISpeedupVsNumModels}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.6]{.pdf}
+\caption{Efficiency Vs Number of Models}
+\label{fig:ProtoISpeedupVsNumModels}
 \end{figure}
 
 
@@ -172,14 +185,14 @@ T_{NumVoxels} = (W\div voxDims.y) \times (L\div voxDims.x) \times (H \div voxDim
 \centering
 \caption{Speed-Up: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish}
 \label{protoIvsND}
-\begin{tabular}{|c|l|l|l|l}
-\cline{1-4}
-\textbf{\begin{tabular}[c]{@{}c@{}}Number of \\ Head Models\\ 8cms\\ (Resolution:\\ 300 X 150 X 470)\end{tabular}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time\\  for Distributed \\ Cuttlefish Prototype I\\ (Cluster Size- 3)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time \\ for Non-Distributed\\ Cuttlefish\end{tabular}}} & \multicolumn{1}{c|}{\textbf{Speed-Up}} &  \\ \cline{1-4}
-2                                                                                                                  & 173.3568                                                                                                                                                    & 357.3552                                                                                                                       & 2.0614652                              &  \\ \cline{1-4}
-4                                                                                                                  & 363.3992                                                                                                                                                    & 920.566                                                                                                                        & 2.5332101                              &  \\ \cline{1-4}
-6                                                                                                                  & 585.3218                                                                                                                                                    & 1651.1775                                                                                                                      & 2.8209769                              &  \\ \cline{1-4}
-8                                                                                                                  & 836.2334                                                                                                                                                    & 4071.576                                                                                                                       & 4.8672945                              &  \\ \cline{1-4}
-10                                                                                                                 & 1130.514                                                                                                                                                    & 4790.198                                                                                                                       & 4.2371859                              &  \\ \cline{1-4}
+\begin{tabular}{|c|l|l|l|c|}
+\hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Number of \\ Head Models\\ 8cms\\ (Resolution:\\ 300 X 150 X 470)\end{tabular}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time (in Secs)\\  for Distributed \\ Cuttlefish Prototype I\\ (Cluster Size- 3)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time (in Secs) \\ for Non-Distributed\\ Cuttlefish\end{tabular}}} & \multicolumn{1}{c|}{\textbf{Speed-Up}} & \textbf{Efficiency} \\ \hline
+2                                                                                                                  & 173.3568                                                                                                                                                    & 357.3552                                                                                                                       & 2.0614652                              & 0.6871551           \\ \hline
+4                                                                                                                  & 363.3992                                                                                                                                                    & 920.566                                                                                                                        & 2.5332101                              & 0.8444034           \\ \hline
+6                                                                                                                  & 585.3218                                                                                                                                                    & 1651.1775                                                                                                                      & 2.8209769                              & 0.9403256           \\ \hline
+8                                                                                                                  & 836.2334                                                                                                                                                    & 4071.576                                                                                                                       & 4.8672945                              & 1.6224315           \\ \hline
+10                                                                                                                 & 1130.514                                                                                                                                                    & 4790.198                                                                                                                       & 4.2371859                              & 1.4123953           \\ \hline
 \end{tabular}
 \end{table}
 
