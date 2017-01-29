@@ -259,14 +259,14 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \begin{itemize}
 \item{\textbf{Test-Case and Test-Data Description}}- The test-case and the test-data used here is exactly same as the test-case and test-data of Scenario 2 of Prototype I testing.
 \item{\textbf{Results}}- The amount of work done by the nodes remains same as described in Scenario 2 of Prototype I testing. The Table \ref{ProtoIIDiffModelsVsND} summarizes the execution time for the test case for prototype II.
-\item{\textbf{Observation}}-  
+\item{\textbf{Observation}}-  The speed-up for the prototype II was calculated using the Equation \ref{eq:speed-up} and efficiency was calculated using the Equation \ref{eq:eff}. The Figure \ref{fig:SpeedUp-ProtoIIDiffModelsVsNumModels} and Figure \ref{Effi-ProtoIIDiffModelsVsNumModels} depict the trend seen for the speed-up and efficiency for prototype II for different models as input set. As the number of models increases the speed-up and efficiency vary but the over-all speed-up and efficiency in comparison to the non-distributed cuttlefish performance is pretty constant i.e. it is within the range of 2.3- 2.5.
 \end{itemize}
 \end{enumerate}
 
 
 \begin{table}[]
 \centering
-\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish for Same Models  }
+\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish for Same Models}
 \label{ProtoIISameModelsVsND}
 \begin{tabular}{|c|l|l|l|c|}
 \hline
@@ -279,7 +279,20 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \end{tabular}
 \end{table}
 
-
+\begin{table}[]
+\centering
+\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish for Different Models}
+\label{ProtoIIDiffModelsVsND}
+\begin{tabular}{|c|l|l|l|c|}
+\hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Number of \\ Head \& Dame\\  Models -8 cm\\ (Resolution:\\ 300 X 150 X 470)\end{tabular}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time \\ (in secs)\\  for Distributed \\ Cuttlefish Prototype II\\ (Cluster Size- 3)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time\\ (in secs) \\ for Non-Distributed\\ Cuttlefish\end{tabular}}} & \multicolumn{1}{c|}{\textbf{Speed-Up}} & \textbf{Efficiency} \\ \hline
+2                                                                                                                            & 94.5212                                                                                                                                                                   & 243.940                                                                                                                                    & 2.580797                               & 0.8602656           \\ \hline
+4                                                                                                                            & 270.9220                                                                                                                                                                  & 635.524                                                                                                                                    & 2.345782                               & 0.7819274           \\ \hline
+6                                                                                                                            & 470.9220                                                                                                                                                                  & 1171.320                                                                                                                                   & 2.487291                               & 0.8290970           \\ \hline
+8                                                                                                                            & 778.4300                                                                                                                                                                  & 1890.706                                                                                                                                   & 2.428871                               & 0.8096236           \\ \hline
+10                                                                                                                           & 1951.2400                                                                                                                                                                 & 4793.470                                                                                                                                   & 2.456628                               & 0.8188759           \\ \hline
+\end{tabular}
+\end{table}
 
 \begin{figure}
 \centering
@@ -299,7 +312,22 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \end{figure}
 
 
-
+\begin{figure}
+\centering
+\captionsetup[subfigure]{labelformat=empty}
+\begin{subfigure}
+\centering
+\includegraphics[scale=0.5]{SpeedUp-ProtoIIDiffModelsVsNumModels.pdf}
+\caption{Speed-up Vs Number of Models}
+\label{fig:SpeedUp-ProtoIIDiffModelsVsNumModels}
+\end{subfigure}
+\begin{subfigure}
+\centering
+\includegraphics[scale=0.5]{Effi-ProtoIIDiffModelsVsNumModels.pdf}
+\caption{Efficiency Vs Number of Models}
+\label{Effi-ProtoIIDiffModelsVsNumModels}
+\end{subfigure}
+\end{figure}
 
 
 \subsection{Comparison of Distributed Cuttlefish prototypes} \label{ProtoComp}
