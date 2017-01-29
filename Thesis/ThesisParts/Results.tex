@@ -147,66 +147,23 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype I, th
 
 \begin{enumerate}
 \item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype I in comparison to non-distributed cuttlefish for input consisting of same models.
+\begin{itemize}
 \item{\textbf{Test-Case and Test-Data Description}}- The test case was executed 5 times for each test-data. The cluster was composed of 3 nodes where in one node was the master and remaining two were compute nodes. The cluster nodes were heterogeneous in terms of the number of cores, CPU speed and RAM capacity. The test-data included multiple head models of size 8cms. The number of head models was increased by factor of 2 for each following test-case, i.e. starting with 2 head models the number was increased to 10 head models for the 5 test-cases, with each test-case executed 5 times to enable collection of the average execution times. The speed-up for each test case was calculated using the average execution time for distributed cuttlefish and non-distributed cuttlefish for a given test-data i.e. given work-load. The non-distributed cuttlefish application was executed on the slowest node of the cluster as the slowest node in the cluster would impact the execution time of the distributed version. 
 \item{\textbf{Results}}- To elaborate on the amount of work to be done, each 8 cm head model consists of 777 slices with each slice having the width-946 units (8.00 cm)and height-303 units (5.12 cm). The total number of voxels for each model is calculated using the Equation \ref{eq:NumVoxel} where, \begin{math} T_{NumVoxels} \end{math} is the total number of voxels for a given model, width (W), height(H), length (L) and voxel dimensions (voxDims). For each head model used in the test data, the total number of voxels to be processed is \begin{math} 2.17 \times 10^{8} \end{math}. Each voxel can be assigned values denoting the materials and a null material value depending upon the printer specification provided. For current test case, the materials provided in the printer specification are VeroCyan, VeroWhite, VeroMagenta, VeroYellow, VeroBlack and EMPTY\_VOXEL as null material . For each material there is a bitmap generated denoting the voxels which are assigned that particular material in the slice. Figure \ref{fig:SliceOutput} shows the material assignment generated for 108th slice of a single head model. The Table \ref{protoIvsND} summarizes the execution times for distributed cuttlefish with prototype I and non-distributed cuttlefish along with the speed-up.  
 \item{\textbf{Observation}}- The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{eq:speed-up} and increases with the increase in work-load in comparison to the non-distributed cuttlefish performance. The Figure \ref{fig:ProtoISpeedupVsNumModels} depicts the scaling of the speed-up with increase in work load i.e number of models. The Figure \ref{fig:ProtoISpeedupVsNumModels}shows some interesting results, the speed-up seen is linear with increase in work-load until it reaches a point where in for a given cluster size increase in the load does not provide linear increase in speed-up although the distributed cuttlefish prototype I performs better than non-distributed version. This is proved by calculating the efficiency using the Equation \ref{eq:eff} and by seeing the trend depicted in the Figure \ref{fig:EfficiencyVsNumModels}. 
-\end{enumerate}
+\end{itemize}
 
-\begin{enumerate}
 \item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype I in comparison to non-distributed cuttlefish for input consisting of different models.
+\begin{itemize}
 \item{\textbf{Test-Case and Test-Data Description}}- The test case was executed 5 times for each test-data. The cluster was composed of 3 nodes where in one node was the master and remaining two were compute nodes. The cluster nodes were heterogeneous in terms of the number of cores, CPU speed and RAM capacity. The test-data included multiple head and dame models of size 8 cm. The number of models was increased by factor of 2 for each following test-case, i.e. starting with 1 head model and 1 dame model, the number was increased to 5 head and dame models each, for the 5 test-cases, with each test-case executed 5 times to enable collection of the average execution times. The speed-up for each test case was calculated using the average execution time for distributed cuttlefish and non-distributed cuttlefish for a given test-data i.e. given work-load. The non-distributed cuttlefish application was executed on the slowest node of the cluster as the slowest node in the cluster would impact the execution time of the distributed version. 
 \item{\textbf{Results}}- To elaborate on the amount of work to be done, each 8cms head model consists of 777 slices, with each slice having the width-946 units (8.00 cm)and height-303 units (5.12 cm). The total number of voxels for each model is calculated using the following Equation \ref{eq:NumVoxel} where, \begin{math} T_{NumVoxels} \end{math} is the total number of voxels for a given model, width (W), height(H), length (L) and voxel dimensions (voxDims). For each head model used in the test data, the total number of voxels to be processed is \begin{math} 2.17 \times 10^{8} \end{math}. Each 8 cm dame model consists of 605 slices, with each slice having the width-946 units (8.00 cm)and height-194 units (3.27035 cm). The total number of voxels for the dame model calculated using the Equation \ref{eq:NumVoxel} is  \begin{math} 1.09495848 \times 10^{8} \end{math}. Each voxel can be assigned values denoting the materials and a null material value depending upon the printer specification provided. For current test case, the materials provided in the printer specification are VeroCyan, VeroWhite, VeroMagenta, VeroYellow, VeroBlack and EMPTY\_VOXEL as null material . For each material there is a bitmap generated denoting the voxels which are assigned that particular material in the slice. The Table \ref{protoIvsNDDiffModel} summarizes the execution times for distributed cuttlefish with prototype I and non-distributed cuttlefish along with the speed-up for input consisting of different models.  
 \item{\textbf{Observation}}-  The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{eq:speed-up} and increases with the increase in work-load in comparison to the non-distributed cuttlefish performance. Although, the speed-up achieved for a given number of models with input consisting of only head models was marginally more than the speed-up achieved when distributed cuttlefish was executed with equal number of models with input consisting of different models. The Figure \ref{fig:SpeedUp-ProtoIDiffModelsVsNumModels} depicts the scaling of the speed-up with increase in work load i.e number of models. Unlike the plot seen in Figure \ref{fig:ProtoISpeedupVsNumModels}, the speed-up increases with increase in the work-load and there is no drop in the speed-up.This is proved by calculating the efficiency using the Equation \ref{eq:eff} and by seeing the trend depicted in the Figure \ref{ProtoIDiffModelsVsNumModels}. 
+\end{itemize}
 \end{enumerate}
-
-
-\begin{figure}[ht]
-\centering
-\includegraphics[scale=0.5]{SliceOutput.PNG}
-\caption{Material Assignment for Single Slice}
-\label{fig:SliceOutput}
-\end{figure}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[scale=0.6]{ProtoISpeedupVsNumModels.pdf}
-\caption{Speed-up Vs Number of Models}
-\label{fig:ProtoISpeedupVsNumModels}
-\end{figure}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[scale=0.6]{SpeedUp-ProtoIDiffModelsVsNumModels.pdf}
-\caption{Speed-up Vs Number of Models}
-\label{fig:SpeedUp-ProtoIDiffModelsVsNumModels}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.6]{EfficiencyPrototIvsNumModels.pdf}
-\caption{Efficiency Vs Number of Models}
-\label{fig:EfficiencyVsNumModels}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.6]{Effi-ProtoIDiffModelsVsNumModels.pdf}
-\caption{Efficiency Vs Number of Models}
-\label{ProtoIDiffModelsVsNumModels}
-\end{figure}
-
-
-
-\begin{equation}
-\label{eq:NumVoxel}
-\begin{aligned}
-T_{NumVoxels} = (W\div voxDims.y) \times (L\div voxDims.x) \times (H \div voxDims.z)
-\end{aligned}
-\end{equation}
 
 \begin{table}[]
 \centering
-\caption{Speed-Up: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish For Same Models}
+\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish For Same Models}
 \label{protoIvsND}
 \begin{tabular}{|c|l|l|l|c|}
 \hline
@@ -222,7 +179,7 @@ T_{NumVoxels} = (W\div voxDims.y) \times (L\div voxDims.x) \times (H \div voxDim
 
 \begin{table}[]
 \centering
-\caption{Speed-Up: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish For Different Models}
+\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish For Different Models}
 \label{protoIvsNDDiffModel}
 \begin{tabular}{|c|l|l|l|c|}
 \hline
@@ -232,6 +189,91 @@ T_{NumVoxels} = (W\div voxDims.y) \times (L\div voxDims.x) \times (H \div voxDim
 6                                                                                                                            & 563.3                                                                                                                                                                    & 1171.32                                                                                                                                    & 2.079389313                            & 0.693129771         \\ \hline
 8                                                                                                                            & 685.21                                                                                                                                                                   & 1890.706                                                                                                                                   & 2.759308825                            & 0.919769608         \\ \hline
 10                                                                                                                           & 988.708                                                                                                                                                                  & 4793.47                                                                                                                                    & 4.848216056                            & 1.616072019         \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.5]{SliceOutput.PNG}
+\caption{Material Assignment for Single Slice}
+\label{fig:SliceOutput}
+\end{figure}
+
+\begin{figure}
+\centering
+
+\begin{subfigure}[a]
+\centering
+\includegraphics[scale=0.5]{ProtoISpeedupVsNumModels.pdf}
+\caption{Speed-up Vs Number of Models}
+\label{fig:ProtoISpeedupVsNumModels}
+\end{subfigure}
+\begin{subfigure}[b]
+\centering
+\includegraphics[scale=0.5]{EfficiencyPrototIvsNumModels.pdf}
+\caption{Efficiency Vs Number of Models}
+\label{fig:EfficiencyVsNumModels}
+\end{subfigure}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\begin{subfigure}[a]
+\centering
+\includegraphics[scale=0.5]{SpeedUp-ProtoIDiffModelsVsNumModels.pdf}
+\caption{Speed-up Vs Number of Models}
+\label{fig:SpeedUp-ProtoIDiffModelsVsNumModels}
+\end{subfigure}
+\begin{subfigure}[b]
+\centering
+\includegraphics[scale=0.5]{Effi-ProtoIDiffModelsVsNumModels.pdf}
+\caption{Efficiency Vs Number of Models}
+\label{ProtoIDiffModelsVsNumModels}
+\end{subfigure}
+\end{figure}
+
+
+\begin{equation}
+\label{eq:NumVoxel}
+\begin{aligned}
+T_{NumVoxels} = (W\div voxDims.y) \times (L\div voxDims.x) \times (H \div voxDims.z)
+\end{aligned}
+\end{equation}
+
+
+\subsubsection{Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish}
+To check the speed-up gained by using the Distributed Cuttlefish Prototype II, the application was run with different work-loads and comparison between the execution times for both Distributed Cuttlefish Prototype I and Non-Distributed Cuttlefish application was drawn.
+
+\begin{enumerate}
+\item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype II in comparison to non-distributed cuttlefish for input consisting of same models.
+\begin{itemize}
+\item{\textbf{Test-Case and Test-Data Description}}- The test-case and the test-data used here is exactly same as the test-case and test-data of Scenario I of Prototype I testing.
+\item{\textbf{Results}}- The amount of work done by the nodes remains same as described in Scenario I of Prototype I testing. The Table \ref{ProtoIISameModelsVsND} summarizes the execution time for the test case for prototype II.
+\item{\textbf{Observation}}- 
+\end{itemize}
+
+\item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype II in comparison to non-distributed cuttlefish for input consisting of different models.
+\begin{itemize}
+\item{\textbf{Test-Case and Test-Data Description}}- 
+\item{\textbf{Results}}- 
+\item{\textbf{Observation}}-  
+\end{itemize}
+\end{enumerate}
+
+
+\begin{table}[]
+\centering
+\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish for Same Models  }
+\label{ProtoIISameModelsVsND}
+\begin{tabular}{|c|l|l|l|c|}
+\hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Number of \\ Head \\  Models -8 cm\\ (Resolution:\\ 300 X 150 X 470)\end{tabular}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time \\ (in secs)\\  for Distributed \\ Cuttlefish Prototype II\\ (Cluster Size- 3)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time\\ (in secs) \\ for Non-Distributed\\ Cuttlefish\end{tabular}}} & \multicolumn{1}{c|}{\textbf{Speed-Up}} & \textbf{Efficiency} \\ \hline
+2                                                                                                                     & 135.49                                                                                                                                                                    & 357.355                                                                                                                                    & 2.637501                               & 0.879167            \\ \hline
+4                                                                                                                     & 345.342                                                                                                                                                                   & 920.566                                                                                                                                    & 2.665665                               & 0.888555            \\ \hline
+6                                                                                                                     & 594.3004                                                                                                                                                                  & 1651.177                                                                                                                                   & 2.778354                               & 0.926118            \\ \hline
+8                                                                                                                     & 1534.654                                                                                                                                                                  & 4071.56                                                                                                                                    & 2.65308                                & 0.88436             \\ \hline
+10                                                                                                                    & 1832.356                                                                                                                                                                  & 4790.198                                                                                                                                   & 2.614229                               & 0.87141             \\ \hline
 \end{tabular}
 \end{table}
 
