@@ -5,7 +5,7 @@ set sourpath= D:\MRepo\3DPrinterDriver\slaveReports
 set slicePath= D:\MRepo\3DPrinterDriver\slicedbg\
 set Destpath= D:\MasterThesis\Documentation\ThesisDocumentation\Results\ScenarioI-Same-Model\ScenarioI-Proto-II\Run5\
 
-set var=5
+set var=1
 set terminator=6
 :loop
 mpiexec -hosts 3 PC2215 PC2408 PC2339 -wdir \\pc2215\SharedFolder\MRepo\p3d_build\windows\bin\Release\ Cuttlefish.exe \\pc2215\SharedFolder\MasterThesis\Documentation\ThesisDocumentation\Results\ScenarioI-Same-Model\ScenarioI-Proto-II\Run5\main_conf.json
@@ -14,7 +14,7 @@ echo %DestFolder%
 md %DestFolder%
 
 copy D:\MRepo\3DPrinterDriver\performanceReport.txt %DestFolder%
-echo "performanceReport.txt to " %DestFolder%
+echo "performanceReport.log to " %DestFolder%
 
 copy D:\MRepo\3DPrinterDriver\text.log %DestFolder%
 echo "text.log to " %DestFolder%
@@ -29,8 +29,8 @@ del /s *.png
 
 echo "Deleted content of slice debugger"
 
-del D:\MRepo\3DPrinterDriver\performanceReport.txt 
-echo "Deleted performanceReport.txt"
+del D:\MRepo\3DPrinterDriver\performanceReport.log 
+echo "Deleted performanceReport.log"
 
 del D:\MRepo\3DPrinterDriver\text.log
 echo "Deleted text.log"
