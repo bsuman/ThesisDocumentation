@@ -329,6 +329,10 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \end{subfigure}
 \end{figure}
 
+\subsubsection{Distributed Cuttlefish Prototype II Performance Evaluation}
+
+While implementing the distributed cuttlefish prototype II, two designs were possible for distribution of print jobs and merging of the partial slices. In the first design, the transformation of the print objects in the print bed calculated by the \textit{PrintJobOrganizer} at the master is sent without modification to the slaves and the slaves generate the partial slices with print objects placed with the same transformation as sent by the master. This results in each slave generating partial slices with full slice height and width. At the master during merging process, the assigned material is written from the partial slices to the full slices. After running the test-cases, it was seen that the performance of prototype II was comparatively bad with respect to prototype I. The major difference between the two prototypes is the communication of information between the master and slaves nodes. As the master nodes sent the print jobs consisting of print objects with the transformation, each of the slaves had to do processing of slices with the full slice height and width. Also, as each slave sent back the partial slices inform of stream of bytes, the size of the message to be sent increased considerably given that each partial slice was the full slice dimension with material EMPTY\_VOXEL assigned to rest of the slice where there was no object placed.  
+
 
 \subsection{Comparison of Distributed Cuttlefish prototypes} \label{ProtoComp}
 
