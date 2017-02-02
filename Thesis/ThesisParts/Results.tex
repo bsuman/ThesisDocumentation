@@ -333,11 +333,11 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 
 While implementing the distributed cuttlefish prototype II, two designs were possible for distribution of print jobs and merging of the partial slices. In the first design, the transformation of the print objects in the print bed calculated by the \textit{PrintJobOrganizer} at the master is sent without modification to the slaves and the slaves generate the partial slices with print objects placed with the same transformation as sent by the master. This results in each slave generating partial slices with full slice height and width. At the master during merging process, the assigned material if not empty, is written from the partial slices to the full slices. After running the test-cases, it was seen that the performance of prototype II was comparatively bad with respect to prototype I. The major difference between the two prototypes is the communication of information between the master and slaves nodes. As the master nodes sent the print jobs consisting of print objects with the transformation, each of the slaves had to do processing of slices with the full slice height and width. Also, as each slave sent back the partial slices in form of stream of bytes, the size of the message to be sent increased considerably given that each partial slice had the full slice dimension with material EMPTY\_VOXEL assigned to rest of the slice where there was no object placed.  To fix this performance issue, a new design of prototype II implemented where in the slave nodes rearranged the print objects again by running the \textit{PrintJobOrganizer} component after receiving the print objects from the master. Due to this at the slave nodes, new transformation for the print objects was applied which resulted in the partial slices being much smaller and hence the messages communicated by the slave nodes were smaller. \newline
 
-Test-Case scenario to check the performance of two designs: 
+\textbf{Test-Scenario}: Test-Case scenario to check the performance of two designs: The prototype II design I and design II were executed with a cluster of 3 nodes. The comparison of the two designs was done by comparing the speed-up achieved when compared with the non-distributed cuttlefish and the efficiency of the prototype II design with varying workload. 
 \begin{itemize}
-\item \textbf{Test-Data}- The input set for the test-cases consisted of head models, 8cm each in the first set and second set consisted of head and dame model 8cm each. The resolution used was \begin{math} 300 \times 150 \times 470 \end{math} 
-\item \textbf{Results}- The Table \ref{ProtoIIDesignIVsDesignIIDiffMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of different models. The Table \ref{ProtoIIDesignIVsDesignIISameMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of same models. The Figure \ref{fig:SpeedUPForDesigns} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EfficiencyForDesigns} shows the efficiency of the prototype II for the two designs.
-\item \textbf{Observation}-
+\item \textbf{Test-Data}- The input set for the test-cases consisted of head models, 8cm each in the first set and second set consisted of head and dame model 8cm each. The resolution used was \begin{math} 300 \times 150 \times 470 \end{math}. 
+\item \textbf{Results}- The Table \ref{ProtoIIDesignIVsDesignIIDiffMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of different models. The Table \ref{ProtoIIDesignIVsDesignIISameMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of same models. The Figure \ref{fig:SpeedUPForDesigns} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EfficiencyForDesigns} shows the efficiency of the prototype II for the two designs for input of different models. The Figure \ref{fig:SpeedUPForDesignsSameModels} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EfficiencyForDesignsSameModels}  shows the efficiency of the prototype II for the two designs for input of same models.
+\item \textbf{Observation}- The speed-up gained by prototype II design II (range: 2.5-6.0) is much larger than the speed-up gained by prototype II design I (range:2.35 to 2.55) for input of the different models. The efficiency of the prototype II design II increases with increase in workload for input of the different models. The speed-up gained by prototype II design II (range:3.5 to 5.55) is much larger than the speed-up gained by prototype II design I (range:2.5 to 2.8) for input of the same models. The efficiency of the same models of the prototype II design II increases with increase in workload until for a given cluster size the efficiency starts to drop for increase in the input.   
 \end{itemize}
 
 
@@ -379,16 +379,15 @@ Test-Case scenario to check the performance of two designs:
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{SpeedUPDesign1.pdf}
-\caption{Speed-up of Design I Vs Number of Models}
 \label{fig:SpeedUPDesign1}
 \end{subfigure}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{SpeedUPDesign2.pdf}
-\caption{Speed-up of Design II Vs Number of Models}
 \label{fig:SpeedUPDesign2}
 \end{subfigure}
 \label{fig:SpeedUPForDesigns}
+\caption{Speed-up of Design II Vs Number of Models For input with different models}
 \end{figure}
 
 
@@ -398,18 +397,52 @@ Test-Case scenario to check the performance of two designs:
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{EfficiencyDesign1.pdf}
-\caption{Efficiency of Design I Vs Number of Models}
 \label{fig:EfficiencyDesign1}
 \end{subfigure}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{EfficiencyDesign2.pdf}
-\caption{Efficiency of Design II Vs Number of Models}
 \label{fig:EfficiencyDesign2}
 \end{subfigure}
 \label{fig:EfficiencyForDesigns}
+\caption{Efficiency of Design II Vs Number of Models for input with different models}
 \end{figure}
 
+
+\begin{figure}
+\centering
+\captionsetup[subfigure]{labelformat=empty}
+\begin{subfigure}
+\centering
+\includegraphics[scale=0.5]{SpeedUPDesign1SameModels.pdf}
+\label{fig:SpeedUPDesign1SameModels}
+\end{subfigure}
+\begin{subfigure}
+\centering
+\includegraphics[scale=0.5]{SpeedUPDesign2SameModels.pdf}
+\label{fig:SpeedUPDesign2SameModels}
+\end{subfigure}
+\label{fig:SpeedUPForDesignsSameModels}
+\caption{Speed-up of Design I Vs Number of Models for input with same models}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\captionsetup[subfigure]{labelformat=empty}
+\begin{subfigure}
+\centering
+\includegraphics[scale=0.5]{EfficiencyDesign1SameModels.pdf}
+\label{fig:EfficiencyDesign1SameModels}
+\end{subfigure}
+\begin{subfigure}
+\centering
+\includegraphics[scale=0.5]{EfficiencyDesign2SameModels.pdf}
+\label{fig:EfficiencyDesign2SameModels}
+\end{subfigure}
+\label{fig:EfficiencyForDesignsSameModels}
+\caption{Efficiency of Design I Vs Number of Models for input with same models}
+\end{figure}
 
 \subsection{Comparison of Distributed Cuttlefish prototypes} \label{ProtoComp}
 
