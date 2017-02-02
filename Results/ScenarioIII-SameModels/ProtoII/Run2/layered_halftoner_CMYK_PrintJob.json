@@ -1,0 +1,102 @@
+{
+    "Components":[
+        {   
+			"type":"FileParserPJ"
+		},
+        {
+			"type":"PrintJobOrganizer",
+			"defaultSize":"8",
+			"scaleInObjectSpace":false
+		},
+		{
+			"type":"PrintJobPreprocessor",
+			"voxelizePriority":"alphanumeric",
+			"preprocess":["flatten", "prioritize", "segment-hierarchy", "boundingBox", "uniformAppearanceTextures"],
+            "defaultAppearancePath":"//pc2215/SharedFolder/MRepo/p3d_build/working_reference/default_appearance.json"
+		},
+		{
+			"type":"PrintJobVoxelizer",
+			"computeType":"multi-threaded",
+			"rasterizer":"ProjectionRasterizer-Default",
+			"voxelizer":"GWNSampleFloodVoxelizer",
+			"defaultColor":["255","255","255"],
+            "hiddenSurfaceRemoval":false
+		},
+        {
+			"type":"SliceDebugger",
+			"OutputPath":"slicedbg/",
+            "debugName":["occupancy", "RGBA"],
+			"debugTarget":"file"
+		},
+		{
+			"type":"TonalValueCalculator",
+            "CMYmappingToTonal":["0","1","2"],
+            "computeType":"multi-threaded",
+            "TonalValueType":"LCMSTonalValue",
+            "Intent": "RELATIVE_COLORIMETRIC",
+            "BlackPointCompensation": false
+		},
+		{
+			"ignore":"",
+			"type":"SurfaceDistanceNearestEvaluator",
+			"maxDistance":"0.04",
+            "computeType":"multi-threaded",
+			"separateSurfaceSlices":true,
+			"targetCentricTransfer":true,
+            "transferAttribute":"tonal",
+			"transferAlgorithm":"nearest",
+			"oldOccCompatibility": true
+		},
+		{
+			"ignore":"",
+			"type":"SurfaceDistanceTransform",
+			"maxDistance":"0.04",
+            "computeType":"multi-threaded",
+			"separateSurfaceSlices":true,
+			"targetCentricTransfer":true,
+            "transferAttribute":"tonal",
+			"checkID":true
+		},
+		{
+			"type":"SurfaceDistanceOrderedTransfer",
+			"maxDistance":"0.01",
+            "computeType":"multi-threaded",
+            "transferAttribute":"tonal",
+			"checkID":true
+		},
+        {
+			"type":"SliceDebugger",
+			"OutputPath":"slicedbg/",
+            "debugName":["surfaceDist", "tonal"],
+			"debugTarget":"file"
+		},
+		{
+			"type":"LayerExtractor",
+			"layersToExtract":"8",
+			"attribute":"tonal"
+		},
+		{ 
+			"type":"TonalLinearizer",
+			"computeType":"multi-threaded"
+		},
+        {
+			"type":"VectorLayerHalftoner",
+            "computeType":"multi-threaded",
+            "tonalBits" : "1",
+            "windowSize": "1",
+			"traversal":"consistentWinding",
+			"filter":"Ostromoukhov",
+			"noiseAdded":"0",
+			"tonalSigma":"10"
+		},
+        {
+			"type":"SliceDebugger",
+			"OutputPath":"slicedbg/",
+			"debugName":["material"],
+			"debugTarget":"file"
+		},
+		{
+			"type":"MaterialUsageEstimator"
+		}
+    ]
+}
