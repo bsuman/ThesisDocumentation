@@ -329,7 +329,45 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \end{subfigure}
 \end{figure}
 
-\subsubsection{Distributed Cuttlefish Prototype II Performance Evaluation}
+
+\subsection{Comparison of Distributed Cuttlefish Prototypes} \label{ProtoComp}
+
+After comparing the performance of distributed cuttlefish vs non-distributed cuttlefish, to understand the performance of the prototypes in comparison with each other some tests were done. The aim of the tests was to understand how well the prototypes scales by varying cluster size for a given workload. The underlying assumption is that for a given workload, if the number slave nodes in the cluster increases, the speed-up should also increase thus increasing the efficiency of the prototype. 
+
+\begin{enumerate}
+\item \textbf{Test-Scenario}: To understand how well the prototypes perform with increase in the cluster size, the distributed cuttlefish prototype I and prototype II were executed with constant load buy adding a slave node for each test. There were 5 runs per test with the distributed system having 3,4,5,6 cluster size respectively.
+\begin{itemize}
+\item \textbf{Tests-Data}: The whole test-case was executed with two input sets,one input set consisted of 10 head models and the second set consisted of the 5 head and 5 dame models. Each model was 8cm and resolution used was 300 \times 150 \times 470.  
+\item \textbf{Results}: The Table \ref{ProtoIVsProtoII-CS} summarizes total execution time for both the prototypes for varying cluster size, speed-up gained by the prototypes in comparison to the non-distributed cuttlefish execution and efficiency of the prototypes for varying cluster size. 
+\item \textbf{Observation}
+\end{itemize}
+\item \textbf{Test-Scenario}:
+\begin{itemize}
+\item \textbf{Tests-Data}
+\item \textbf{Results}
+\item \textbf{Observation}
+\end{itemize}
+\end{enumerate}
+
+
+\begin{table}[]
+\centering
+\caption{Prototype I vs Prototype II Measurements for 10 Head Models}
+\label{ProtoIVsProtoII-CS}
+\scalebox{0.8}{
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Cluster\\ Size\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total \\ Execution \\ Time for\\ Prototype I\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total \\ Execution \\ Time \\ for\\ Prototype II\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total \\ Execution\\ Time by \\ Non-Distributed\\ Cuttlefish\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Prototype\\       I\\ Speed-up\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Prototype \\       II\\ Speed-up\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Efficiency\\ of \\ Prototype I\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Efficiency \\ of \\ Prototype II\end{tabular}}} \\ \hline
+3                                                                                     & 1130.514                                                                                                           & 1014.9828                                                                                                              & 4790.198                                                                                                                           & 4.237                                                                                                & 4.7194                                                                                                 & 1.412395306                                                                                          & 1.573162291                                                                                            \\ \hline
+4                                                                                     & 917.459                                                                                                            & 702.2442                                                                                                               & 4790.198                                                                                                                           & 5.2211                                                                                               & 6.8212                                                                                                 & 1.305289392                                                                                          & 1.705317751                                                                                            \\ \hline
+5                                                                                     & 675.9754                                                                                                           & 488.2102                                                                                                               & 4790.198                                                                                                                           & 7.0863                                                                                               & 9.8117                                                                                                 & 1.417269918                                                                                          & 1.962350643                                                                                            \\ \hline
+6                                                                                     & 555.8746                                                                                                           & 416.2974                                                                                                               & 4790.198                                                                                                                           & 8.6174                                                                                               & 11.506                                                                                                 & 1.436234599                                                                                          & 1.917778812                                                                                            \\ \hline
+\end{tabular}}
+\end{table}
+
+
+
+\subsection{Distributed Cuttlefish Prototype II Performance Evaluation} \label{ProtoIIDesigns}
 
 While implementing the distributed cuttlefish prototype II, two designs were possible for distribution of print jobs and merging of the partial slices. In the first design, the transformation of the print objects in the print bed calculated by the \textit{PrintJobOrganizer} at the master is sent without modification to the slaves and the slaves generate the partial slices with print objects placed with the same transformation as sent by the master. This results in each slave generating partial slices with full slice height and width. At the master during merging process, the assigned material if not empty, is written from the partial slices to the full slices. After running the test-cases, it was seen that the performance of prototype II was comparatively bad with respect to prototype I. The major difference between the two prototypes is the communication of information between the master and slaves nodes. As the master nodes sent the print jobs consisting of print objects with the transformation, each of the slaves had to do processing of slices with the full slice height and width. Also, as each slave sent back the partial slices in form of stream of bytes, the size of the message to be sent increased considerably given that each partial slice had the full slice dimension with material EMPTY\_VOXEL assigned to rest of the slice where there was no object placed.  To fix this performance issue, a new design of prototype II implemented where in the slave nodes rearranged the print objects again by running the \textit{PrintJobOrganizer} component after receiving the print objects from the master. Due to this at the slave nodes, new transformation for the print objects was applied which resulted in the partial slices being much smaller and hence the messages communicated by the slave nodes were smaller. \newline
 
@@ -443,8 +481,6 @@ While implementing the distributed cuttlefish prototype II, two designs were pos
 \label{fig:EfficiencyForDesignsSameModels}
 \caption{Efficiency of Design I Vs Number of Models for input with same models}
 \end{figure}
-
-\subsection{Comparison of Distributed Cuttlefish prototypes} \label{ProtoComp}
 
 
   
