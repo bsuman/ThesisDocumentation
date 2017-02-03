@@ -150,14 +150,14 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype I, th
 \begin{itemize}
 \item{\textbf{Test-Case and Test-Data Description}}- The test case was executed 5 times for each test-data. The cluster was composed of 3 nodes where in one node was the master and remaining two were compute nodes. The cluster nodes were heterogeneous in terms of the number of cores, CPU speed and RAM capacity. The test-data included multiple head models of size 8cms. The number of head models was increased by factor of 2 for each following test-case, i.e. starting with 2 head models the number was increased to 10 head models for the 5 test-cases, with each test-case executed 5 times to enable collection of the average execution times. The speed-up for each test case was calculated using the average execution time for distributed cuttlefish and non-distributed cuttlefish for a given test-data i.e. given work-load. The non-distributed cuttlefish application was executed on the slowest node of the cluster as the slowest node in the cluster would impact the execution time of the distributed version. 
 \item{\textbf{Results}}- To elaborate on the amount of work to be done, each 8 cm head model consists of 777 slices with each slice having the width-946 units (8.00 cm)and height-303 units (5.12 cm). The total number of voxels for each model is calculated using the Equation \ref{eq:NumVoxel} where, \begin{math} T_{NumVoxels} \end{math} is the total number of voxels for a given model, width (W), height(H), length (L) and voxel dimensions (voxDims). For each head model used in the test data, the total number of voxels to be processed is \begin{math} 2.17 \times 10^{8} \end{math}. Each voxel can be assigned values denoting the materials and a null material value depending upon the printer specification provided. For current test case, the materials provided in the printer specification are VeroCyan, VeroWhite, VeroMagenta, VeroYellow, VeroBlack and EMPTY\_VOXEL as null material . For each material there is a bitmap generated denoting the voxels which are assigned that particular material in the slice. Figure \ref{fig:SliceOutput} shows the material assignment generated for 108th slice of a single head model. The Table \ref{protoIvsND} summarizes the execution times for distributed cuttlefish with prototype I and non-distributed cuttlefish along with the speed-up.  
-\item{\textbf{Observation}}- The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{eq:speed-up} and increases with the increase in work-load in comparison to the non-distributed cuttlefish performance. The Figure \ref{fig:ProtoISpeedupVsNumModels} depicts the scaling of the speed-up with increase in work load i.e number of models. The Figure \ref{fig:ProtoISpeedupVsNumModels}shows some interesting results, the speed-up seen is linear with increase in work-load until it reaches a point where in for a given cluster size increase in the load does not provide linear increase in speed-up although the distributed cuttlefish prototype I performs better than non-distributed version. This is proved by calculating the efficiency using the Equation \ref{eq:eff} and by seeing the trend depicted in the Figure \ref{fig:EfficiencyVsNumModels}. 
+\item{\textbf{Observation}}- The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{eq:speed-up} and increases with the increase in work-load in comparison to the non-distributed cuttlefish performance. The red line Figure \ref{fig:SUPIPIIvsNumModDM} depicts the scaling of the speed-up with increase in work load i.e number of models. This is proved by calculating the efficiency using the Equation \ref{eq:eff} and by seeing the trend depicted by the red line in the Figure \ref{fig:EffPIPIIvsNumModDM}. 
 \end{itemize}
 
 \item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype I in comparison to non-distributed cuttlefish for input consisting of different models.
 \begin{itemize}
 \item{\textbf{Test-Case and Test-Data Description}}- The test case was executed 5 times for each test-data. The cluster was composed of 3 nodes where in one node was the master and remaining two were compute nodes. The cluster nodes were heterogeneous in terms of the number of cores, CPU speed and RAM capacity. The test-data included multiple head and dame models of size 8 cm. The number of models was increased by factor of 2 for each following test-case, i.e. starting with 1 head model and 1 dame model, the number was increased to 5 head and dame models each, for the 5 test-cases, with each test-case executed 5 times to enable collection of the average execution times. The speed-up for each test case was calculated using the average execution time for distributed cuttlefish and non-distributed cuttlefish for a given test-data i.e. given work-load. The non-distributed cuttlefish application was executed on the slowest node of the cluster as the slowest node in the cluster would impact the execution time of the distributed version. 
 \item{\textbf{Results}}- To elaborate on the amount of work to be done, each 8cms head model consists of 777 slices, with each slice having the width-946 units (8.00 cm)and height-303 units (5.12 cm). The total number of voxels for each model is calculated using the following Equation \ref{eq:NumVoxel} where, \begin{math} T_{NumVoxels} \end{math} is the total number of voxels for a given model, width (W), height(H), length (L) and voxel dimensions (voxDims). For each head model used in the test data, the total number of voxels to be processed is \begin{math} 2.17 \times 10^{8} \end{math}. Each 8 cm dame model consists of 605 slices, with each slice having the width-946 units (8.00 cm)and height-194 units (3.27035 cm). The total number of voxels for the dame model calculated using the Equation \ref{eq:NumVoxel} is  \begin{math} 1.09495848 \times 10^{8} \end{math}. Each voxel can be assigned values denoting the materials and a null material value depending upon the printer specification provided. For current test case, the materials provided in the printer specification are VeroCyan, VeroWhite, VeroMagenta, VeroYellow, VeroBlack and EMPTY\_VOXEL as null material . For each material there is a bitmap generated denoting the voxels which are assigned that particular material in the slice. The Table \ref{protoIvsNDDiffModel} summarizes the execution times for distributed cuttlefish with prototype I and non-distributed cuttlefish along with the speed-up for input consisting of different models.  
-\item{\textbf{Observation}}-  The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{eq:speed-up} and increases with the increase in work-load in comparison to the non-distributed cuttlefish performance. Although, the speed-up achieved for a given number of models with input consisting of only head models was marginally more than the speed-up achieved when distributed cuttlefish was executed with equal number of models with input consisting of different models. The Figure \ref{fig:SpeedUp-ProtoIDiffModelsVsNumModels} depicts the scaling of the speed-up with increase in work load i.e number of models. Unlike the plot seen in Figure \ref{fig:ProtoISpeedupVsNumModels}, the speed-up increases with increase in the work-load and there is no drop in the speed-up.This is proved by calculating the efficiency using the Equation \ref{eq:eff} and by seeing the trend depicted in the Figure \ref{ProtoIDiffModelsVsNumModels}. 
+\item{\textbf{Observation}}-  The number of slave nodes is constant throughout the test-cases i.e. 2 slave nodes and the work-load provided to the system is increased for every test-case. The speed-up is calculated as per the Equation \ref{eq:speed-up} and increases with the increase in work-load in comparison to the non-distributed cuttlefish performance. Although, the speed-up achieved for a given number of models with input consisting of only head models was marginally more than the speed-up achieved when distributed cuttlefish was executed with equal number of models with input consisting of different models. In the Figure {fig:SUPIPIIvsNumModDM} the red line Prototype I depicts the scaling of the speed-up with increase in work load i.e number of models. This is proved by calculating the efficiency using the Equation \ref{eq:eff} and by seeing the trend depicted by red line in the Figure \ref{fig:EffPIPIIvsNumModDM}. 
 \end{itemize}
 \end{enumerate}
 
@@ -201,19 +201,18 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype I, th
 
 \begin{figure}
 \centering
-
 \begin{subfigure}
 \centering
 \captionsetup[subfigure]{labelformat=empty}
-\includegraphics[scale=0.5]{ProtoISpeedupVsNumModels.pdf}
-\caption{Speed-up Vs Number of Models}
-\label{fig:ProtoISpeedupVsNumModels}
+\includegraphics[scale=0.5]{SUPIPIIvsNumMod.pdf}
+\caption{Speed-up Vs Number of Models For Same Models Input}
+\label{fig:SUPIPIIvsNumMod}
 \end{subfigure}
 \begin{subfigure}
 \centering
-\includegraphics[scale=0.5]{EfficiencyPrototIvsNumModels.pdf}
-\caption{Efficiency Vs Number of Models}
-\label{fig:EfficiencyVsNumModels}
+\includegraphics[scale=0.5]{EffPIPIIvsNumMod.pdf}
+\caption{Efficiency Vs Number of Models For Same Models Input}
+\label{fig:EffPIPIIvsNumMod}
 \end{subfigure}
 \end{figure}
 
@@ -223,15 +222,15 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype I, th
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
 \centering
-\includegraphics[scale=0.5]{SpeedUp-ProtoIDiffModelsVsNumModels.pdf}
-\caption{Speed-up Vs Number of Models}
-\label{fig:SpeedUp-ProtoIDiffModelsVsNumModels}
+\includegraphics[scale=0.5]{SUPIPIIvsNumModDM.pdf}
+\caption{Speed-up Vs Number of Models For Different Models Input}
+\label{fig:SUPIPIIvsNumModDM}
 \end{subfigure}
 \begin{subfigure}
 \centering
-\includegraphics[scale=0.5]{Effi-ProtoIDiffModelsVsNumModels.pdf}
-\caption{Efficiency Vs Number of Models}
-\label{ProtoIDiffModelsVsNumModels}
+\includegraphics[scale=0.5]{EffPIPIIvsNumModDM.pdf}
+\caption{Efficiency Vs Number of Models For Different Models Input}
+\label{fig:EffPIPIIvsNumModDM}
 \end{subfigure}
 \end{figure}
 
@@ -252,14 +251,14 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \begin{itemize}
 \item{\textbf{Test-Case and Test-Data Description}}- The test-case and the test-data used here is exactly same as the test-case and test-data of Scenario 1 of Prototype I testing.
 \item{\textbf{Results}}- The amount of work done by the nodes remains same as described in Scenario 1 of Prototype I testing. The Table \ref{ProtoIISameModelsVsND} summarizes the execution time for the test case for prototype II.
-\item{\textbf{Observation}}- The speed-up for the prototype II was calculated using the Equation \ref{eq:speed-up} and efficiency was calculated using the Equation \ref{eq:eff}. The Figure \ref{fig:ProtoIISpeedupVsNumModels} and Figure \ref{EfficiencyPrototIIvsNumModels} depict the trend seen for the speed-up and efficiency for prototype II. As the number of models increases the speed-up and efficiency increases for a given cluster size until a certain point (i.e. until the number of models reaches 8 models, at which there is peak performance seen) after which with increase in number of models the speed-up decreases and so does the efficiency.  
+\item{\textbf{Observation}}- The speed-up for the prototype II was calculated using the Equation \ref{eq:speed-up} and efficiency was calculated using the Equation \ref{eq:eff}. The blue line in the Figure \ref{fig:SUPIPIIvsNumMod} and Figure \ref{fig:EffPIPIIvsNumMod} depict the trend seen for the speed-up and efficiency for prototype II. As the number of models increases the speed-up and efficiency increases for a given cluster size until a certain point (i.e. until the number of models reaches 8 models, at which there is peak performance seen) after which with increase in number of models the speed-up decreases and so does the efficiency.  
 \end{itemize}
 
 \item{\textbf{Scenario}}- To test the computational speed-up gained by distributed cuttlefish prototype II in comparison to non-distributed cuttlefish for input consisting of different models.
 \begin{itemize}
 \item{\textbf{Test-Case and Test-Data Description}}- The test-case and the test-data used here is exactly same as the test-case and test-data of Scenario 2 of Prototype I testing.
 \item{\textbf{Results}}- The amount of work done by the nodes remains same as described in Scenario 2 of Prototype I testing. The Table \ref{ProtoIIDiffModelsVsND} summarizes the execution time for the test case for prototype II.
-\item{\textbf{Observation}}-  The speed-up for the prototype II was calculated using the Equation \ref{eq:speed-up} and efficiency was calculated using the Equation \ref{eq:eff}. The Figure \ref{fig:SpeedUp-ProtoIIDiffModelsVsNumModels} and Figure \ref{Effi-ProtoIIDiffModelsVsNumModels} depict the trend seen for the speed-up and efficiency for prototype II for different models as input set. As the number of models increases the speed-up and efficiency increases.
+\item{\textbf{Observation}}-  The speed-up for the prototype II was calculated using the Equation \ref{eq:speed-up} and efficiency was calculated using the Equation \ref{eq:eff}. The blue line in the Figure \ref{fig:SUPIPIIvsNumModDM} and Figure \ref{fig:EffPIPIIvsNumModDM} depict the trend seen for the speed-up and efficiency for prototype II for different models as input set. As the number of models increases the speed-up and efficiency increases.
 \end{itemize}
 \end{enumerate}
 
@@ -294,40 +293,6 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \end{tabular}
 \end{table}
 
-\begin{figure}
-\centering
-\captionsetup[subfigure]{labelformat=empty}
-\begin{subfigure}
-\centering
-\includegraphics[scale=0.5]{ProtoIISpeedupVsNumModels.pdf}
-\caption{Speed-up Vs Number of Models}
-\label{fig:ProtoIISpeedupVsNumModels}
-\end{subfigure}
-\begin{subfigure}
-\centering
-\includegraphics[scale=0.5]{EfficiencyPrototIIvsNumModels.pdf}
-\caption{Efficiency Vs Number of Models}
-\label{EfficiencyPrototIIvsNumModels}
-\end{subfigure}
-\end{figure}
-
-
-\begin{figure}
-\centering
-\captionsetup[subfigure]{labelformat=empty}
-\begin{subfigure}
-\centering
-\includegraphics[scale=0.5]{SpeedUp-ProtoIIDiffModelsVsNumModels.pdf}
-\caption{Speed-up Vs Number of Models}
-\label{fig:SpeedUp-ProtoIIDiffModelsVsNumModels}
-\end{subfigure}
-\begin{subfigure}
-\centering
-\includegraphics[scale=0.5]{Effi-ProtoIIDiffModelsVsNumModels.pdf}
-\caption{Efficiency Vs Number of Models}
-\label{Effi-ProtoIIDiffModelsVsNumModels}
-\end{subfigure}
-\end{figure}
 
 
 \subsection{Comparison of Distributed Cuttlefish Prototypes} \label{ProtoComp}
@@ -351,15 +316,14 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 \centering
 \includegraphics[scale=0.5]{SpeedupProtoIvsPrototII.pdf}
 \label{fig:SpeedupProtoIvsPrototII}
-\caption{Speed-up of Prototype I and II Vs Cluster Size}
+\caption{Speed-up of Prototype I and II Vs Cluster Size For Same Models Input Set}
 \end{subfigure}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{perInceffProtoIIvsClusterSize.pdf}
-\caption{ Percentage increase in Efficiency of Prototype II Vs Cluster Size}
+\caption{ Percentage increase in Efficiency of Prototype II Vs Cluster Size For Same Models Input Set}
 \label{fig:perInceffProtoIIvsClusterSize}
 \end{subfigure}
-\caption{Prototype I Vs II Performance for Same Models Input Set}
 \end{figure}
 
 
@@ -370,19 +334,15 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 \centering
 \includegraphics[scale=0.5]{SpeedUpProtoIProtoIIVsCS.pdf}
 \label{fig:SpeedUpProtoIProtoIIVsCS}
-\caption{Speed-up of Prototype I and II Vs Cluster Size}
+\caption{Speed-up of Prototype I and II Vs Cluster Size For Different Models Input Set}
 \end{subfigure}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{PerIncEffofProtoIIVsCS.pdf}
-\caption{ Percentage increase in Efficiency of Prototype II Vs Cluster Size}
+\caption{ Percentage increase in Efficiency of Prototype II Vs Cluster Size For Different Models Input Set}
 \label{fig:PerIncEffofProtoIIVsCS}
 \end{subfigure}
-\caption{Prototype I Vs II Performance for Different Models Input Set}
 \end{figure}
-
-
-
 
 
 \begin{table}[]
@@ -423,7 +383,7 @@ While implementing the distributed cuttlefish prototype II, two designs were pos
 \textbf{Test-Scenario}: Test-Case scenario to check the performance of two designs: The prototype II design I and design II were executed with a cluster of 3 nodes. The comparison of the two designs was done by comparing the speed-up achieved when compared with the non-distributed cuttlefish and the efficiency of the prototype II design with varying workload. 
 \begin{itemize}
 \item \textbf{Test-Data}- The input set for the test-cases consisted of head models, 8cm each in the first set and second set consisted of head and dame model 8cm each. The resolution used was \begin{math} 300 \times 150 \times 470 \end{math}. 
-\item \textbf{Results}- The Table \ref{ProtoIIDesignIVsDesignIIDiffMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of different models. The Table \ref{ProtoIIDesignIVsDesignIISameMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of same models. The Figure \ref{fig:SpeedUPForDesigns} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EfficiencyForDesigns} shows the efficiency of the prototype II for the two designs for input of different models. The Figure \ref{fig:SpeedUPForDesignsSameModels} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EfficiencyForDesignsSameModels}  shows the efficiency of the prototype II for the two designs for input of same models.
+\item \textbf{Results}- The Table \ref{ProtoIIDesignIVsDesignIIDiffMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of different models. The Table \ref{ProtoIIDesignIVsDesignIISameMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of same models. The Figure \ref{fig:SUDIDIIvsNumModDM} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EffDIDIIvsNumModDM} shows the efficiency of the prototype II for the two designs for input of different models. The Figure \ref{fig:SUDIDIIvsNumMod} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EffDIDIIvsNumMod}  shows the efficiency of the prototype II for the two designs for input of same models.
 \item \textbf{Observation}- The speed-up gained by prototype II design II (range: 2.5-6.0) is much larger than the speed-up gained by prototype II design I (range:2.35 to 2.55) for input of the different models. The efficiency of the prototype II design II increases with increase in workload for input of the different models. The speed-up gained by prototype II design II (range:3.5 to 5.55) is much larger than the speed-up gained by prototype II design I (range:2.5 to 2.8) for input of the same models. The efficiency of the same models of the prototype II design II increases with increase in workload until for a given cluster size the efficiency starts to drop for increase in the input.   
 \end{itemize}
 
@@ -465,16 +425,16 @@ While implementing the distributed cuttlefish prototype II, two designs were pos
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
 \centering
-\includegraphics[scale=0.5]{SpeedUPDesign1.pdf}
-\label{fig:SpeedUPDesign1}
+\includegraphics[scale=0.5]{SUDIDIIvsNumMod.pdf}
+\label{fig:SUDIDIIvsNumMod}
+\caption{Speed-up of Design I and II Vs Number of Models For Same Models Input}
 \end{subfigure}
 \begin{subfigure}
 \centering
-\includegraphics[scale=0.5]{SpeedUPDesign2.pdf}
-\label{fig:SpeedUPDesign2}
+\includegraphics[scale=0.5]{EffDIDIIvsNumMod.pdf}
+\label{fig:EffDIDIIvsNumMod}
+\caption{Efficiency of Design I and II Vs Number of Models For Same Models Input}
 \end{subfigure}
-\label{fig:SpeedUPForDesigns}
-\caption{Speed-up of Design II Vs Number of Models For input with different models}
 \end{figure}
 
 
@@ -483,53 +443,16 @@ While implementing the distributed cuttlefish prototype II, two designs were pos
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
 \centering
-\includegraphics[scale=0.5]{EfficiencyDesign1.pdf}
-\label{fig:EfficiencyDesign1}
+\includegraphics[scale=0.5]{SUDIDIIvsNumModDM.pdf}
+\label{fig:SUDIDIIvsNumModDM}
+\caption{Speed-up of Design I and II Vs Number of Models For Different Models Input}
 \end{subfigure}
 \begin{subfigure}
 \centering
-\includegraphics[scale=0.5]{EfficiencyDesign2.pdf}
-\label{fig:EfficiencyDesign2}
+\includegraphics[scale=0.5]{EffDIDIIvsNumModDM.pdf}
+\label{fig:EffDIDIIvsNumModDM}
+\caption{Efficiency of Design I and II Vs Number of Models For Different Models Input}
 \end{subfigure}
-\label{fig:EfficiencyForDesigns}
-\caption{Efficiency of Design II Vs Number of Models for input with different models}
 \end{figure}
-
-
-\begin{figure}
-\centering
-\captionsetup[subfigure]{labelformat=empty}
-\begin{subfigure}
-\centering
-\includegraphics[scale=0.5]{SpeedUPDesign1SameModels.pdf}
-\label{fig:SpeedUPDesign1SameModels}
-\end{subfigure}
-\begin{subfigure}
-\centering
-\includegraphics[scale=0.5]{SpeedUPDesign2SameModels.pdf}
-\label{fig:SpeedUPDesign2SameModels}
-\end{subfigure}
-\label{fig:SpeedUPForDesignsSameModels}
-\caption{Speed-up of Design I Vs Number of Models for input with same models}
-\end{figure}
-
-
-\begin{figure}
-\centering
-\captionsetup[subfigure]{labelformat=empty}
-\begin{subfigure}
-\centering
-\includegraphics[scale=0.5]{EfficiencyDesign1SameModels.pdf}
-\label{fig:EfficiencyDesign1SameModels}
-\end{subfigure}
-\begin{subfigure}
-\centering
-\includegraphics[scale=0.5]{EfficiencyDesign2SameModels.pdf}
-\label{fig:EfficiencyDesign2SameModels}
-\end{subfigure}
-\label{fig:EfficiencyForDesignsSameModels}
-\caption{Efficiency of Design I Vs Number of Models for input with same models}
-\end{figure}
-
 
   
