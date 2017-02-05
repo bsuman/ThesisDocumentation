@@ -5,10 +5,10 @@ set sourpath= D:\MasterThesis\Documentation\ThesisDocumentation\Results\Scenario
 set slicePath= D:\MRepo\3DPrinterDriver\slicedbg\
 set Destpath= D:\MasterThesis\Documentation\ThesisDocumentation\Results\ScenarioIII-SameModels\ProtoI\Run4\
 
-set var=2
-set terminator=6
+set var=6
+set terminator=11
 :loop
-mpiexec -hosts 5 PC2215 PC2408 PC2155 PC2286 PC2179 -wdir \\pc2215\SharedFolder\MRepo\p3d_build\windows\bin\Release\ Cuttlefish.exe \\pc2215\SharedFolder\MasterThesis\Documentation\ThesisDocumentation\Results\ScenarioIII-SameModels\ProtoI\Run4\main_conf.json
+mpiexec -hosts 5 PC2215 PC2408 PC2339 PC2286 PC2179 -wdir \\pc2215\SharedFolder\MRepo\p3d_build\windows\bin\Release\ Cuttlefish.exe \\pc2215\SharedFolder\MasterThesis\Documentation\ThesisDocumentation\Results\ScenarioIII-SameModels\ProtoI\Run4\main_conf.json
 set DestFolder= %Destpath%%var%
 echo %DestFolder%
 md %DestFolder%
@@ -31,8 +31,8 @@ rd  /S /Q %rmFld3%
 rd  /S /Q %rmFld4%
 echo "Remove folder successful!"
 
-copy D:\MRepo\3DPrinterDriver\performanceReport.txt %DestFolder%
-echo "performanceReport.txt to " %DestFolder%
+copy D:\MRepo\3DPrinterDriver\performanceReport.log %DestFolder%
+echo "performanceReport.log to " %DestFolder%
 
 copy D:\MRepo\3DPrinterDriver\text.log %DestFolder%
 echo "text.log to " %DestFolder%
@@ -47,8 +47,8 @@ del /s *.png
 
 echo "Deleted content of slice debugger"
 
-del D:\MRepo\3DPrinterDriver\performanceReport.txt 
-echo "Deleted performanceReport.txt"
+del D:\MRepo\3DPrinterDriver\performanceReport.log 
+echo "Deleted performanceReport.log"
 
 del D:\MRepo\3DPrinterDriver\text.log
 echo "Deleted text.log"
