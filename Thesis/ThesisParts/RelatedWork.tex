@@ -3,32 +3,32 @@
 With science and technology progressing rapidly, there is a good chance of availability of already implemented solution for a given problem identified in a target system. This chapter highlights the existing systems in place which provide solutions designed to achieve similar goals to the thesis under discussion and comparison to how the solution presented in the current document differs from them. This chapter is divided into two sections with the first section briefly describes the existing distributed systems which can be used for cluster computing followed by the second section focusing the use of distributed systems in the field of 3D printing.
 
 \section{Introduction to distributed systems and its types}
-A distributed system consists of autonomous systems (AS) connected through network which interact (if necessary) through message passing and most importantly give the user an illusion of being single large system \cite{DCE}. The main goal of distributed system is to connect the users and the available infrastructure i.e. IT resources, in a transparent, open, cost-effective, reliable, scalable way. Transparency in distributed computing environment (DCE) means that the user is unaware of the underlying system complexities in terms of location of the AS, heterogeneity of the system hardware, concurrency and replication of the AS mainly to provide reliability and fault tolerance. Transparency property of the distributed systems makes it appear as a single system dedicated to perform some tasks to the user \cite{DSBook}. Scalability refers to the property by which the number of AS in the DCE can be increased (scaled in) or decreased (scaled out) so as to provide best suited infrastructure to handle the fluctuating load (i.e. the amount of work to be done). The shared resources of the distributed system can be broadly classified as physical resources and virtual resources. The Figure\ref{fig:TypesOfResourceSharing} details the resources included in the two categorizes. 
+A distributed system consists of autonomous systems (AS) connected through network which interact (if necessary) through message passing and most importantly give the user an illusion of being single large system \cite{DCE}. The main goal of distributed system is to connect the users and the available infrastructure i.e. IT resources, in a transparent, open, cost-effective, reliable, scalable way. Transparency in distributed computing environment (DCE) means that the user is unaware of the underlying system complexities in terms of location of the AS, heterogeneity of the system hardware, concurrency and replication of the AS mainly to provide reliability and fault tolerance. Transparency property of the distributed systems makes it appear as a single system dedicated to perform some tasks to the user \cite{DSBook}. Scalability refers to the property by which the number of AS in the DCE can be increased (scaled in) or decreased (scaled out) so as to provide best suited infrastructure to handle the fluctuating load (i.e. the amount of work to be done). The shared resources of the distributed system can be broadly classified as physical resources and virtual resources. The Figure\ref{fig:TORS} details the resources included in the two categorizes. 
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[scale=0.6]{TypesOfResourceSharing.PNG}
 \caption{Distributed System Shared Resource Classification}
-\label{fig:TypesOfResourceSharing}
+\label{fig:TORS}
 \end{figure}
   
-Distributed Computing is a vast domain which consists of various different types of computing environments like utility computing (grid computing and cloud computing), cluster computing, and peer-to-peer computing (Figure \ref{fig:DistributedComputingEnv}) which are described briefly as follows.
+Distributed Computing is a vast domain which consists of various different types of computing environments like utility computing (grid computing and cloud computing), cluster computing, and peer-to-peer computing (Figure \ref{fig:DCEnv}) which are described briefly as follows.
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[scale=0.6]{DistributedComputingEnv.PNG}
 \caption{Distributed Computing Environment}
-\label{fig:DistributedComputingEnv}
+\label{fig:DCEnv}
 \end{figure}
 
 \begin{itemize}
-\item \textbf{Peer-to-Peer computing}- Each node in the DCE acts as both client and server, providing as well as consuming part of the system resources. Peers are machines simply connected to the internet where in each peer can freely join and leave the DCE without affecting the whole system making the system self-organizing  and also implying no particular role (either master or slave) for a peer (Figure \ref{fig:P2P}).
+\item \textbf{Peer-to-Peer computing}- Each node in the DCE acts as both client and server, providing as well as consuming part of the system resources. Peers are machines simply connected to the internet where in each peer can freely join and leave the DCE without affecting the whole system making the system self-organizing  and also implying no particular role (either master or slave) for a peer (Figure \ref{fig:PP}).
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[scale=0.6]{P2P.PNG}
 \caption{Peer-to-Peer system}
-\label{fig:P2P}
+\label{fig:PP}
 \end{figure}
 
 \item \textbf{Utility computing}- Utility computing is based on a model for service provisioning, which allows the users (consumers) to pay the providers for using the service only when they need to. It emphasizes on a business model, by which service providers make available the requested/paid resources to the costumers. All grid/cloud platforms are regarded as utility service providers. Grid computing enables coordinated resource sharing and problem solving in dynamic, multi-institutional virtual organizations where as cloud computing is a computing paradigm that involves outsourcing of computing resources with the capabilities of  replaceable resources and scalability i.e on-demand provisioning with little or no up-front IT infrastructure investment costs. Cloud computing offers its benefits through three types of delivery models namely- infrastructure-as-a-service (IaaS), platform-as-a-service(PaaS) and software-as-a-Service (SaaS) 

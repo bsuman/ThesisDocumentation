@@ -160,9 +160,9 @@ To check the speed-up gained by Distributed Cuttlefish Prototype I, the applicat
 \end{itemize}
 \end{enumerate}
 
-\begin{table}[]
+\begin{table}
 \centering
-\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish For Same Models}
+\caption{Speed-Up and Efficiency: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish For Same Models}
 \label{protoIvsND}
 \begin{tabular}{|c|l|l|l|c|}
 \hline
@@ -176,9 +176,9 @@ To check the speed-up gained by Distributed Cuttlefish Prototype I, the applicat
 \end{table}
 
 
-\begin{table}[]
+\begin{table}
 \centering
-\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish For Different Models}
+\caption{Speed-Up and Efficiency: Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish For Different Models}
 \label{protoIvsNDDiffModel}
 \begin{tabular}{|c|l|l|l|c|}
 \hline
@@ -262,9 +262,9 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \end{enumerate}
 
 
-\begin{table}[]
+\begin{table}
 \centering
-\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish for Same Models}
+\caption{Speed-Up and Efficiency: Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish for Same Models}
 \label{ProtoIISameModelsVsND}
 \begin{tabular}{|c|l|l|l|c|}
 \hline
@@ -277,9 +277,9 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 \end{tabular}
 \end{table}
 
-\begin{table}[]
+\begin{table}
 \centering
-\caption{Speed-Up \& Efficiency: Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish for Different Models}
+\caption{Speed-Up and Efficiency: Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish for Different Models}
 \label{ProtoIIDiffModelsVsND}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -298,31 +298,14 @@ To check the speed-up gained by using the Distributed Cuttlefish Prototype II, t
 
 After comparing the performance of distributed cuttlefish vs non-distributed cuttlefish, to understand the performance of the prototypes in comparison with each other some tests were done. The aim of the tests was to understand how well the prototypes scale by varying cluster size for a given workload. The underlying assumption is that for a given workload, if the number of slave nodes in the cluster increases, the speed-up should also increase thus increasing the efficiency of the prototype. 
 
-\begin{enumerate}
-\item \textbf{Test-Scenario}: To understand how well the prototypes perform with increase in the cluster size, the distributed cuttlefish prototype I and prototype II were executed with constant load by adding a slave node for each test. There were 5 runs per test with the distributed system having 3, 4, 5, 6 cluster size respectively.
-\begin{itemize}
-\item \textbf{Tests-Data}: The whole test-case was executed with two input sets, one input set consisted of 10 head models and the second set consisted of the 5 head and 5 dame models. Each model was 8cm and resolution used was \begin{math}300 \times 150 \times 470 \end{math}.  
-\item \textbf{Results}: The Table \ref{ProtoIVsProtoII-CS} and Table \ref{ProtoIVsProtoII-CSDiffModels}  summarizes the total execution time for both the prototypes for varying cluster size, speed-up gained by the prototypes in comparison to the non-distributed cuttlefish execution and efficiency of the prototypes for varying cluster size for same and different models input set. The Figure \ref{fig:SUProtoIPrototII} depicts the speed-up gained by each of the prototypes with increase in cluster size for a given workload for same model input and Figure \ref{fig:perInceffProtoIIvsCS}  shows that increase in the efficiency of the prototype II in comparison to efficiency of prototype I. The Figure \ref{fig:SUProtoIProtoIIVsCS} depicts the speed-up gained by each the prototypes with increase in cluster size for a given workload for different models input and and Figure \ref{fig:PerIncEffofProtoIIVsCS} shows the increase in the efficiency of the prototype II in comparison to efficiency of prototype I .
-\item \textbf{Observation}: The difference between the speed-up gained by Prototype II and I increases with the increase in the cluster size, showing that Prototype II scales well with increase in cluster size for given workload in comparison to the Prototype I. The percentage increase in efficiency in the Prototype II increases with cluster size even though not at a constant rate. 
-\end{itemize}
-
-\item \textbf{Test-Scenario}: To understand how well the prototypes perform with increase in the size of the models, the distributed cuttlefish prototype I and prototype II were executed with constant number but varying size of models and cluster size . 
-\begin{itemize}
-\item \textbf{Tests-Data}: There were 5 runs per test with 5 head models with size 4cm, 8cm, 12cm, and 16cm executed in a distributed systems of 5 nodes and \begin{math}300 \times 150 \times 470 \end{math} resolution.  
-\item \textbf{Results}: The Table \ref{DCPIvsModSize} summarizes the total execution time, time taken to perform serialization by the slowest slave node, time taken by the master node slowest worker thread to perform deserialization and time taken to receive partial output for Prototype I. The Table \ref{DCPIIvsModSize} summarizes the total execution time, time taken to perform serialization and compression by the slowest slave node, time taken by the master node slowest worker thread to perform deserialization, decompression and time taken to receive partial output for Prototype II.
-\item \textbf{Observation}: The Figure \ref{fig:PIPRTvsSize} shows that the execution time for both the prototypes increases with increase in model size. The model size determines the number of slices and size of the slices, therefore increase in model size leads to more workload per slave node in the cluster. As previously discussed Prototype II performs better than Prototype I. The cost of distributed computing is the sum of time periods spent in performing actions specific to distributed computing i.e. communication amongst the cluster nodes, serialization and deserialization of slices, and compression and decompression of slices (specific to Prototype II). In Prototype I (see Figure \ref{fig:DCPICS} ), the time spent in partial output communication is lesser than Prototype II (see Figure \ref{fig:DCPIISize}) where as the serialization cost is higher in Prototype I as the serialized data is written to the network file system i.e. disk I/O.    
-\end{itemize}
-\end{enumerate}
-
-
 \begin{figure}
 \centering
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{SpeedupProtoIvsPrototII.pdf}
-\label{fig:SUProtoIPrototII}
 \caption{Speed-up of Prototype I and II Vs Cluster Size For Same Models Input Set}
+\label{fig:SUPIPII}
 \end{subfigure}
 \begin{subfigure}
 \centering
@@ -332,15 +315,14 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 \end{subfigure}
 \end{figure}
 
-
 \begin{figure}
 \centering
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{SpeedUpProtoIProtoIIVsCS.pdf}
-\label{fig:SUProtoIProtoIIVsCS}
 \caption{Speed-up of Prototype I and II Vs Cluster Size For Different Models Input Set}
+\label{fig:SUPIPIvsCS}
 \end{subfigure}
 \begin{subfigure}
 \centering
@@ -356,22 +338,39 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{DCPIvsCS.pdf}
-\label{fig:DCPICS}
 \caption{Distributed Computing Cost for Prototype I vs Model Size}
+\label{fig:PIDCCS}
 \end{subfigure}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{DCPIIvsSize.pdf}
 \caption{ Distributed Computing Cost for Prototype II vs Model Size}
-\label{fig:DCPIISize}
+\label{fig:PIIDCSize}
 \end{subfigure}
 \end{figure}
 
+\begin{enumerate}
+\item \textbf{Test-Scenario}: To understand how well the prototypes perform with increase in the cluster size, the distributed cuttlefish prototype I and prototype II were executed with constant load by adding a slave node for each test. There were 5 runs per test with the distributed system having 3, 4, 5, 6 cluster size respectively.
+\begin{itemize}
+\item \textbf{Tests-Data}: The whole test-case was executed with two input sets, one input set consisted of 10 head models and the second set consisted of the 5 head and 5 dame models. Each model was 8cm and resolution used was \begin{math}300 \times 150 \times 470 \end{math}.  
+\item \textbf{Results}: The Table \ref{ProtoIVsProtoII-CS} and Table \ref{ProtoIVsProtoII-CSDiffModels}  summarizes the total execution time for both the prototypes for varying cluster size, speed-up gained by the prototypes in comparison to the non-distributed cuttlefish execution and efficiency of the prototypes for varying cluster size for same and different models input set. The Figure \ref{fig:SUPIPII} depicts the speed-up gained by each of the prototypes with increase in cluster size for a given workload for same model input and Figure \ref{fig:perInceffProtoIIvsCS}  shows that increase in the efficiency of the prototype II in comparison to efficiency of prototype I. The Figure \ref{fig:SUPIPIvsCS} depicts the speed-up gained by each the prototypes with increase in cluster size for a given workload for different models input and and Figure \ref{fig:PerIncEffofProtoIIVsCS} shows the increase in the efficiency of the prototype II in comparison to efficiency of prototype I .
+\item \textbf{Observation}: The difference between the speed-up gained by Prototype II and I increases with the increase in the cluster size, showing that Prototype II scales well with increase in cluster size for given workload in comparison to the Prototype I. The percentage increase in efficiency in the Prototype II increases with cluster size even though not at a constant rate. 
+\end{itemize}
+
+\item \textbf{Test-Scenario}: To understand how well the prototypes perform with increase in the size of the models, the distributed cuttlefish prototype I and prototype II were executed with constant number but varying size of models and cluster size . 
+\begin{itemize}
+\item \textbf{Tests-Data}: There were 5 runs per test with 5 head models with size 4cm, 8cm, 12cm, and 16cm executed in a distributed systems of 5 nodes and \begin{math} 300 \times 150 \times 470 \end{math} resolution.  
+\item \textbf{Results}: The Table \ref{DCPIvsModSize} summarizes the total execution time, time taken to perform serialization by the slowest slave node, time taken by the master node slowest worker thread to perform deserialization and time taken to receive partial output for Prototype I. The Table \ref{DCPIIvsModSize} summarizes the total execution time, time taken to perform serialization and compression by the slowest slave node, time taken by the master node slowest worker thread to perform deserialization, decompression and time taken to receive partial output for Prototype II.
+\item \textbf{Observation}: The Figure \ref{fig:RTvsSize} shows that the execution time for both the prototypes increases with increase in model size. The model size determines the number of slices and size of the slices, therefore increase in model size leads to more workload per slave node in the cluster. As previously discussed Prototype II performs better than Prototype I. The cost of distributed computing is the sum of time periods spent in performing actions specific to distributed computing i.e. communication amongst the cluster nodes, serialization and deserialization of slices, and compression and decompression of slices (specific to Prototype II). In Prototype I, Figure \ref{fig:PIDCCS}, the time spent in partial output communication is lesser than Prototype I, Figure \ref{fig:PIIDCSize}, where as the serialization cost is higher in Prototype I as the serialized data is written to the network file system i.e. disk I/O.    
+\end{itemize}
+\end{enumerate}
+
+
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.6]{PIP2RTvsSize.pdf}
+\includegraphics[scale=0.5]{PIP2RTvsSize.pdf}
 \caption{Total Execution Time for Prototype I and II vs Model Size}
-\label{fig:PIPRTvsSize}
+\label{fig:RTvsSize}
 \end{figure}
 
 \begin{table}[]
@@ -438,14 +437,6 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 
 While implementing the distributed cuttlefish prototype II, two designs were possible for distribution of print jobs and merging of the partial slices. In the first design, the transformation of the print objects in the print bed calculated by the \textit{PrintJobOrganizer} at the master is sent without modification to the slaves and the slaves generate the partial slices with print objects placed with the same transformation as sent by the master. This results in each slave generating partial slices with full slice height and width. At the master during merging process, the assigned material if not empty, is written from the partial slices to the full slices. After running the test-cases, it was seen that the performance of prototype II was comparatively bad with respect to prototype I. The major difference between the two prototypes is the communication of information between the master and slaves nodes. As the master nodes sent the print jobs having  print objects with the transformation, each of the slaves had to do processing of slices with the full slice height and width. Also, as each slave sent back the partial slices in form of stream of bytes, the size of the message to be sent increased considerably given that each partial slice had the full slice dimension with material EMPTY\_VOXEL assigned to rest of the slice where there was no object placed.  To fix this performance issue, a new design of prototype II was implemented where in the slave nodes rearranged the print objects again by running the \textit{PrintJobOrganizer} component after receiving the print objects from the master. Due to this, new transformation for the print objects was applied which resulted in the partial slices being much smaller as the print objects were placed close to the origin and hence the messages (containing the serialized compressed slices) communicated by the slave nodes were smaller. \newline
 
-\textbf{Test-Scenario}: Test-Case scenario to check the performance of two designs: The prototype II design I and design II were executed with a cluster of 3 nodes. The comparison of the two designs was done by comparing the speed-up achieved when compared with the non-distributed cuttlefish and the efficiency of the prototype II design II with varying workload. 
-\begin{itemize}
-\item \textbf{Test-Data}- The input set for the test-cases consisted of head models, 8cm each in the first set and second set consisted of head and dame model 8cm each. The resolution used was \begin{math} 300 \times 150 \times 470 \end{math}. 
-\item \textbf{Results}- The Table \ref{ProtoIIDesignIVsDesignIIDiffMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of different models. The Table \ref{ProtoIIDesignIVsDesignIISameMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of same models. The Figure \ref{fig:SUDIDIIvsNumModDM} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EffDIDIIvsNumModDM} shows the efficiency of the prototype II for the two designs for input of different models. The Figure \ref{fig:SUDIDIIvsNumMod} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EffDIDIIvsNumMod} shows the efficiency of the prototype II for the two designs for input of same models.
-\item \textbf{Observation}- The speed-up gained by prototype II design II (range: 2.5 to 6.0) is much larger than the speed-up gained by prototype II design I (range:2.35 to 2.55) for input of the different models. The efficiency of the prototype II design II increases with increase in workload for input of the different models. The speed-up gained by prototype II design II (range:3.5 to 5.55) is much larger than the speed-up gained by prototype II design I (range:2.5 to 2.8) for input of the same models. The efficiency of the same models of the prototype II design II increases with increase in workload for a given cluster size until a certain point after which the efficiency starts to drop with increase in the workload.   
-\end{itemize}
-
-
 \begin{table}[]
 \centering
 \caption{Prototype II: Design I vs Design II Different Models Input Set}
@@ -478,38 +469,45 @@ While implementing the distributed cuttlefish prototype II, two designs were pos
 \end{tabular}}
 \end{table}
 
-\begin{figure}
+\begin{figure}[]
 \centering
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{SUDIDIIvsNumMod.pdf}
-\label{fig:SUDIDIIvsNumMod}
 \caption{Speed-up of Design I and II Vs Number of Models For Same Models Input}
+\label{fig:SUDIDIIvsNumMod}
 \end{subfigure}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{EffDIDIIvsNumMod.pdf}
-\label{fig:EffDIDIIvsNumMod}
 \caption{Efficiency of Design I and II Vs Number of Models For Same Models Input}
+\label{fig:EffDIDIIvsNumMod}
 \end{subfigure}
 \end{figure}
 
-
-\begin{figure}
+\begin{figure}[]
 \centering
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{SUDIDIIvsNumModDM.pdf}
-\label{fig:SUDIDIIvsNumModDM}
 \caption{Speed-up of Design I and II Vs Number of Models For Different Models Input}
+\label{fig:SUDIDIIvsNumModDM}
 \end{subfigure}
 \begin{subfigure}
 \centering
 \includegraphics[scale=0.5]{EffDIDIIvsNumModDM.pdf}
-\label{fig:EffDIDIIvsNumModDM}
 \caption{Efficiency of Design I and II Vs Number of Models For Different Models Input}
+\label{fig:EffDIDIIvsNumModDM}
 \end{subfigure}
 \end{figure}
+
+\textbf{Test-Scenario}: To check the performance of two designs: The prototype II design I and design II were executed with a cluster of 3 nodes. The comparison of the two designs was done by comparing the speed-up achieved when compared with the non-distributed cuttlefish and the efficiency of the prototype II design II with varying workload. 
+\begin{itemize}
+\item \textbf{Test-Data}- The input set for the test-cases consisted of head models, 8cm each in the first set and second set consisted of head and dame model 8cm each. The resolution used was \begin{math} 300 \times 150 \times 470 \end{math}. 
+\item \textbf{Results}- The Table \ref{ProtoIIDesignIVsDesignIIDiffMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of different models. The Table \ref{ProtoIIDesignIVsDesignIISameMod} summarizes the execution times, speed-up and efficiency calculated for the two designs of prototype II for input set consisting of same models. The Figure \ref{fig:SUDIDIIvsNumModDM}  shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EffDIDIIvsNumModDM} shows the efficiency of the prototype II for the two designs for input of different models. The Figure \ref{fig:SUDIDIIvsNumMod} shows the speed-up gained by each design in comparison to non-distributed cuttlefish and Figure \ref{fig:EffDIDIIvsNumMod} shows the efficiency of the prototype II for the two designs for input of same models.
+\item \textbf{Observation}- The speed-up gained by prototype II design II (range: 2.5 to 6.0) is much larger than the speed-up gained by prototype II design I (range:2.35 to 2.55) for input of the different models. The efficiency of the prototype II design II increases with increase in workload for input of the different models. The speed-up gained by prototype II design II (range:3.5 to 5.55) is much larger than the speed-up gained by prototype II design I (range:2.5 to 2.8) for input of the same models. The efficiency of the same models of the prototype II design II increases with increase in workload for a given cluster size until a certain point after which the efficiency starts to drop with increase in the workload.   
+\end{itemize}
+\clearpage
   
