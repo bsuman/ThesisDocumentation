@@ -7,7 +7,7 @@ A distributed system consists of autonomous systems (AS) connected through netwo
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.6]{TypesOfResourceSharing.PNG}
+\includegraphics[scale=0.6]{TypesOfResourceSharing.pdf}
 \caption{Distributed System Shared Resource Classification}
 \label{fig:TORS}
 \end{figure}
@@ -16,7 +16,7 @@ Distributed Computing is a vast domain which consists of various different types
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.6]{DistributedComputingEnv.PNG}
+\includegraphics[scale=0.6]{DistributedComputingEnv.pdf}
 \caption{Distributed Computing Environment}
 \label{fig:DCEnv}
 \end{figure}
@@ -26,7 +26,7 @@ Distributed Computing is a vast domain which consists of various different types
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.6]{P2P.PNG}
+\includegraphics[scale=0.6]{P2P.pdf}
 \caption{Peer-to-Peer system}
 \label{fig:PP}
 \end{figure}
@@ -43,6 +43,8 @@ As mentioned in the brief description of different distributed systems, each nod
 
 Distributed systems offer various advantages like computational speed-up, robustness through duplication of the resources, cheaper and scalable infrastructure etc. 
 Using distributed systems allows to overcome the limitation of resources for solving problems with large computation, making it possible to get correct results within in a shorter span of time. The various domains where distributed computing has been used involves astronomy: for example Cosmology@Home is a project started to design models which describe the universe \cite{coshome}, data analysis and machine learning: the DistributedDataMining project involved data analysis for stock market prediction and analysis of medical information \cite{DisDataMin}, molecular biology: RNA world distributed system uses bio-informatics software to study the structure of RNA \cite{rnaworld}, climate study projects started in Oxford University use distributed system to study the climate changes which help to draw models for more accurate climate predictions \cite{ClimaProj}, etc. \newline
+
+Most of the above mentioned projects run on BOINC software platform which facilitates volunteer computing or grid computing. It is a middleware system which allows public computers to contribute compute resources by running a client application and also provides mechanisms to limit the amount of resources to be used along with selection of the project to which the compute resources are dedicated \cite{BOINC}. Each such computer which is contributing some computational power, also uploads the output/results periodically to the server. It uses internet for communication with compute nodes i.e. sending the tasks to be performed and output collection. The projects which run on the BOINC platform have large computation requirement, storage requirement etc. but the main requirement from these applications to be suitable to run on the platform is that task which the applications perform be divisible into sub-tasks which can run independently. For the project to run on BOINC and use volunteer computing, it should have low data to compute ratio i.e. they should consume / produce less than a gigabyte of data per day of CPU time, this is due to the fact that input and output data is exchanged via commercial internet which might turn costly for large amount of data.  Due to the restriction of low data/compute ratio, BOINC is not suitable for the approach presented in the thesis as the partial slices which are communicated can be large for large models which might exceed the data limit. As the compute nodes which are participating in volunteer computing are unknown and are not accountable, they could be unreliable and insecure nodes, which is not acceptable as the cuttlefish application can be used to create 3D prints of the confidential designs and sending the designs to unknown compute nodes would compromise the confidentiality. \newline
 
 \section{Existing solutions for 3D Printing}
 

@@ -11,7 +11,7 @@ The pipeline also has a component-based architecture. The composition of the pip
 The pipeline performs the following fundamental steps in a serial fashion irrespective of the components forming the pipeline \ref{fig:TypicalCuttlefishSteps}. Let us now examine each of the stages outlined in Figure 3.1:
 
 \begin{figure}[ht!]
-\includegraphics[scale=0.6]{TypicalCuttlefishSteps.PNG}
+\includegraphics[scale=0.6]{TypicalCuttlefishSteps.pdf}
 \caption{Cuttlefish pipeline component functionality}
 \label{fig:TypicalCuttlefishSteps}
 \end{figure}
@@ -58,7 +58,7 @@ The distributed cuttlefish printer driver is developed using a cluster of the co
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.6]{CuttlefishCluster.PNG}
+\includegraphics[scale=0.6]{CuttlefishCluster.pdf}
 \caption{Cluster setup}
 \label{fig:CuttlefishCluster}
 \end{figure}
@@ -67,7 +67,7 @@ As mentioned earlier, the role of the node determines the type of work they do.T
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.6]{Step1.PNG}
+\includegraphics[scale=0.6]{Step1.pdf}
 \caption{User submits the request}
 \label{fig:Step1}
 \end{figure}
@@ -76,7 +76,7 @@ The master node then performs some computation and distributes the sub-tasks to 
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.6]{Step2.PNG}
+\includegraphics[scale=0.6]{Step2.pdf}
 \caption{Master distributes the sub-tasks}
 \label{fig:Step2}
 \end{figure}
@@ -85,7 +85,7 @@ The slave nodes perform the assigned tasks and report back to the master (figure
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.6]{Step3.PNG}
+\includegraphics[scale=0.6]{Step3.pdf}
 \caption{Slaves report the partial output}
 \label{fig:Step3}
 \end{figure}
@@ -100,24 +100,41 @@ The distributed cuttlefish pipeline components may differ depending upon the rol
 \end{enumerate}
 
 \subsubsection{Master Node Printing Software Components}
-As per the model discussed in the section \ref{clusterArch}, the master node performs the step $1$ from the above steps. The division of the task among the slave nodes needs to be performed by the master efficiently so as to make sure that distributed load is balanced and none of the slaves are over-worked. To do so, the master needs to evaluate the input and perform some measurements so as to make a wise decision regarding the task split. Hence, the master printing software needs to at least parse the input into an internal mesh representation i.e. printjobs and compute the necessary parameters on the basis of which an informed decision can be made. The component \textit{MasterDistributor} is responsible for division of the submitted task and takes the printjobs as input and generates sub-tasks as the output. After the successful generation of the sub-tasks, the distribution of the sub-tasks among the slaves is done. The form in which the tasks are distributed may vary leading to different designs of the component which is discussed in detail in the next chapter. 
 
-On receiving the sub-tasks from the master, the slave nodes start doing their share of work. The master after submitting the sub-tasks has to wait for the slaves to generate the partial output. So as to maintain the streaming architecture, the slaves perform the assigned work in chunks and report the partial output to the master. The master then collects the partial output and performs some computation using received data and provides the final output to the user. \textit{MasterMerger} component in the master printing pipeline is responsible for receiving the partial output from all the slaves and combining it before sending it on to the output component. The output from the slave nodes are the chunks of partial \textit{slices} which are later merged into chunks of full slices. Figure \ref{fig:MasterPS} shows the components of the printing software running on the master node.
-\begin{figure}[ht!]
+\begin{figure}[t]
 \centering
-\includegraphics[scale=0.8]{MasterPS.PNG}
-\caption{Master Node Printing Software Components }
+\includegraphics[scale=0.6]{MasterPSPl.pdf}
+\caption{Master Node Printing Software Components For Prototype I}
 \label{fig:MasterPS}
 \end{figure}
 
+As per the model discussed in the section \ref{clusterArch}, the master node performs the step $1$ from the above steps. The division of the task among the slave nodes needs to be performed by the master efficiently so as to make sure that distributed load is balanced and none of the slaves are over-worked. To do so, the master needs to evaluate the input and perform some measurements so as to make a wise decision regarding the task split. Hence, the master printing software needs to at least parse the input into an internal mesh representation i.e. print jobs and compute the necessary parameters on the basis of which an informed decision can be made. The component \textit{MasterDistributor} is responsible for division of the submitted task and takes the print jobs as input and generates sub-tasks as the output. After the successful generation of the sub-tasks, the distribution of the sub-tasks among the slaves is done. The form in which the tasks are distributed may vary leading to different designs of the component which is discussed in detail in the next chapter. 
 
-\subsubsection{Slave Node Printing Software Components}
-
-The slave nodes in the cluster (i.e. all nodes other than the master are considered slave nodes) perform the assigned task and report back the results to the master node. To do so, the slaves nodes have to first wait until the master has divided the task submitted by the user into smaller sub-tasks. Once receiving the input, the slave nodes run the whole printing software (similar to the non-distributed cuttlefish version) with just one minor change. As the slave nodes report the partial output to the master, they do not need to run the output component, for example the \textit{Bitmapproducer}. The partial output which is reported by the slaves to master is in form of \textit{slices} and hence, the slave printing software running on the slave nodes does not contain the output component, instead it runs a component called the \textit{SlaveReporter} which, as the name suggests, reports the partial output in a chunk-wise fashion back to the master. Figure \ref{fig:SlavePS} shows the components of the printing software running on the slave node.
-\begin{figure}[ht!]
+\begin{figure}[t]
 \centering
-\includegraphics[scale=0.8]{SlavePS.PNG}
-\caption{Slave Node Printing Software Components }
+\includegraphics[scale=0.6]{MasterPSPIl.pdf}
+\caption{Master Node Printing Software Components For Prototype II}
+\label{fig:MasterPSII}
+\end{figure}
+
+On receiving the sub-tasks from the master, the slave nodes start doing their share of work. The master after submitting the sub-tasks has to wait for the slaves to generate the partial output. So as to maintain the streaming architecture, the slaves perform the assigned work in chunks and report the partial output to the master. The master then collects the partial output and performs some computation using received data and provides the final output to the user. \textit{MasterMerger} component in the master printing pipeline is responsible for receiving the partial output from all the slaves and combining it before sending it on to the output component. The output from the slave nodes are the chunks of partial \textit{slices} which are later merged into chunks of full slices. Figure \ref{fig:MasterPS} shows the components of the printing software running on the master node for Prototype I and Figure \ref{fig:MasterPSII} for prototype II .
+
+\subsubsection{Slave Node Printing Software Components }
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.6]{SlavePSPI.pdf}
+\caption{Slave Node Printing Software Components For Prototype I }
 \label{fig:SlavePS}
 \end{figure}
 
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.6]{SlavePSPII.pdf}
+\caption{Slave Node Printing Software Components For Prototype II }
+\label{fig:SlavePSII}
+\end{figure}
+
+The slave nodes in the cluster (i.e. all nodes other than the master are considered slave nodes) perform the assigned task and report back the results to the master node. To do so, the slaves nodes have to first wait until the master has divided the task submitted by the user into smaller sub-tasks. Once receiving the input, the slave nodes run the whole printing software (similar to the non-distributed cuttlefish version) with just one minor change. As the slave nodes report the partial output to the master, they do not need to run the output component, for example the \textit{Bitmapproducer}. The partial output which is reported by the slaves to master is in form of \textit{slices} and hence, the slave printing software running on the slave nodes does not contain the output component, instead it runs a component called the \textit{SlaveReporter} which, as the name suggests, reports the partial output in a chunk-wise fashion back to the master. Figure \ref{fig:SlavePS} shows the components of the printing software running on the slave node for Prototype I and Figure \ref{fig:SlavePSII} for Prototype II.
+
+\clearpage

@@ -126,7 +126,7 @@ Using the Equation \ref{eq:speed-up}, the speed-up can be classified as either l
 
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.8]{TypesOfSpeedUp.PNG}
+\includegraphics[scale=0.8]{TypesOfSpeedUp.pdf}
 \caption{Speed-Up Types}
 \label{fig:TypesOfSpeedUp}
 \end{figure}
@@ -193,7 +193,7 @@ To check the speed-up gained by Distributed Cuttlefish Prototype I, the applicat
 
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.5]{SliceOutput.PNG}
+\includegraphics[scale=0.5]{SliceOutput.pdf}
 \caption{Material Assignment for Single Slice}
 \label{fig:SliceOutput}
 \end{figure}
@@ -373,7 +373,7 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 \label{fig:RTvsSize}
 \end{figure}
 
-\begin{table}[]
+\begin{table}
 \centering
 \caption{Prototype I vs Prototype II Measurements for 10 Head Models}
 \label{ProtoIVsProtoII-CS}
@@ -388,7 +388,7 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 \end{tabular}}
 \end{table}
 
-\begin{table}[]
+\begin{table}
 \centering
 \caption{Prototype I vs Prototype II Measurements for Different Models Input}
 \label{ProtoIVsProtoII-CSDiffModels}
@@ -403,7 +403,7 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 \end{tabular}}
 \end{table}
 
-\begin{table}[]
+\begin{table}
 \centering
 \caption{Prototype I Performance For Varying Model Size}
 \label{DCPIvsModSize}
@@ -418,7 +418,7 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 \end{table}
 
 
-\begin{table}[]
+\begin{table}
 \centering
 \caption{Prototype II Performance For Varying Model Size}
 \label{DCPIIvsModSize}
@@ -437,7 +437,7 @@ After comparing the performance of distributed cuttlefish vs non-distributed cut
 
 While implementing the distributed cuttlefish prototype II, two designs were possible for distribution of print jobs and merging of the partial slices. In the first design, the transformation of the print objects in the print bed calculated by the \textit{PrintJobOrganizer} at the master is sent without modification to the slaves and the slaves generate the partial slices with print objects placed with the same transformation as sent by the master. This results in each slave generating partial slices with full slice height and width. At the master during merging process, the assigned material if not empty, is written from the partial slices to the full slices. After running the test-cases, it was seen that the performance of prototype II was comparatively bad with respect to prototype I. The major difference between the two prototypes is the communication of information between the master and slaves nodes. As the master nodes sent the print jobs having  print objects with the transformation, each of the slaves had to do processing of slices with the full slice height and width. Also, as each slave sent back the partial slices in form of stream of bytes, the size of the message to be sent increased considerably given that each partial slice had the full slice dimension with material EMPTY\_VOXEL assigned to rest of the slice where there was no object placed.  To fix this performance issue, a new design of prototype II was implemented where in the slave nodes rearranged the print objects again by running the \textit{PrintJobOrganizer} component after receiving the print objects from the master. Due to this, new transformation for the print objects was applied which resulted in the partial slices being much smaller as the print objects were placed close to the origin and hence the messages (containing the serialized compressed slices) communicated by the slave nodes were smaller. \newline
 
-\begin{table}[]
+\begin{table}
 \centering
 \caption{Prototype II: Design I vs Design II Different Models Input Set}
 \label{ProtoIIDesignIVsDesignIIDiffMod}
@@ -453,7 +453,7 @@ While implementing the distributed cuttlefish prototype II, two designs were pos
 \end{tabular}}
 \end{table}
 
-\begin{table}[]
+\begin{table}
 \centering
 \caption{Prototype II: Design I vs Design II Same Models Input Set}
 \label{ProtoIIDesignIVsDesignIISameMod}
@@ -469,7 +469,7 @@ While implementing the distributed cuttlefish prototype II, two designs were pos
 \end{tabular}}
 \end{table}
 
-\begin{figure}[]
+\begin{figure}
 \centering
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
@@ -486,7 +486,7 @@ While implementing the distributed cuttlefish prototype II, two designs were pos
 \end{subfigure}
 \end{figure}
 
-\begin{figure}[]
+\begin{figure}
 \centering
 \captionsetup[subfigure]{labelformat=empty}
 \begin{subfigure}
