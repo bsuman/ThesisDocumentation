@@ -5,7 +5,7 @@ set sourpath= D:\MRepo\3DPrinterDriver\slaveReports
 set slicePath= D:\MRepo\3DPrinterDriver\slicedbg\
 set Destpath= D:\MasterThesis\Documentation\ThesisDocumentation\Results\ScenarioIII-SameModels\ProtoII\Run1\
 
-set var=7
+set var=1
 set terminator=10
 :loop
 mpiexec -hosts 5 PC2215 PC2408 PC2339 PC2286 PC2179 -wdir \\pc2215\SharedFolder\MRepo\p3d_build\windows\bin\Release\ Cuttlefish.exe \\pc2215\SharedFolder\MasterThesis\Documentation\ThesisDocumentation\Results\ScenarioIII-SameModels\ProtoII\Run1\main_conf.json

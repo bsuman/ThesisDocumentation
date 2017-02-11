@@ -245,8 +245,10 @@ void MPI::Comm::Barrier() const = 0
 void Finalize()
 \end{lstlisting} 
 
-It might also be possible to use some other message passing communication mechanism other than MPI. The distributed system is connected through the enterprise network and messages could be exchanged through TCP/ UDP sockets or REST protocol. To make it possible to have various flavors of communication mechanism easily implementable, an interface exposing the necessary methods for message passing is provided. This interface acts as an abstraction layer such that the underlying communication mechanism is determined at run-time and the appropriate implementation is invoked. \newline
-The interface provided is called P3DNetworkComm which exposes the methods for initialization of the communication group, getter methods for information regarding the communication group members as well as the group, send/ receive methods for different types of data and to shut down the set up. The class P3DNetworkCommMPI class is the MPI specific implementation for the methods exposed by the interface. The user can select the communication mechanism via setting the value in the main configuration file for the tag {\lq}CommunicatorType{\rq} to the name of the implementation. The Figure \ref{fig:InterfaceDiagram} enlists the methods of the interface.
+\subsection{Communication Abstraction Layer} \label{Absl} 
+
+It is also possible to use some other message passing communication mechanism other than MPI. The distributed system is connected through the enterprise network and messages could be exchanged through TCP/ UDP sockets or REST protocol. To make it possible to have various flavors of communication mechanism easily implementable, an interface exposing the necessary methods for message passing is provided. This interface acts as an abstraction layer such that the underlying communication mechanism is determined at run-time and the appropriate implementation is invoked. The abstraction layer allows for cleaner replacement of different implementations of underlying communication mechanism. Developer writing an implementation for a new communication mechanism does not need to be necessarily aware of existing implementation or modify existing solution which allows for easy extension of different methodologies. \newline
+The interface provided is called P3DNetworkComm which exposes the methods for initialization of the communication group, getter methods for information regarding the communication group members as well as the group size, role of each node (if any) in the group, send/ receive methods for different types of data and to shut down the set up. The class P3DNetworkCommMPI class is the MPI specific implementation for the methods exposed by the interface. The user can select the communication mechanism by setting the value in the main configuration file for the tag {\lq}CommunicatorType{\rq} to the name of the implementation. The Figure \ref{fig:InterfaceDiagram} enlists the methods of the interface. 
 
 \begin{figure}[ht!]
 \centering
@@ -287,7 +289,7 @@ MPI can use TCP/IP as the underlying protocol for message passing in a cluster c
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=0.85]{WinSockProtocol.pdf}
+\includegraphics[scale=0.7]{WinSockProtocol.pdf}
 \caption{WinSocket Direct Protocol Behavior}
 \label{fig:WinsockProto}
 \end{figure}
