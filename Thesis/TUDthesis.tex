@@ -14,6 +14,7 @@
 \usepackage{mathtools}
 \usepackage{subfigure}
 \usepackage{titlesec}
+\usepackage{datenumber}
 \usetikzlibrary{shapes.geometric, arrows}
 \tikzstyle{startstop} = [circle,minimum width=2.5cm, minimum height=1cm,text centered, draw=black, fill=red!30]
 \tikzstyle{io} = [trapezium,text centered, text width=2.5cm,trapezium left angle=70, trapezium right angle=110, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
@@ -36,7 +37,6 @@
     \or November\or Dezember%
   \fi\ \number\year%
 }
-
 \newcommand*{\fancyreflstlabelprefix}{lst}
 \fancyrefaddcaptions{english}{
   \providecommand*{\freflstname}{listing}
@@ -76,19 +76,32 @@
 %\listoftables
 
 \begin{document}
-  \thesistitle{A distributed 3D Print Driver}%
+  \thesistitle{A Distributed 3D Print Driver}%
     {}
   \author{Suman Bidarahalli}
   \birthplace{India}
-  \referee []{Prof. Dr. Arjan Kuijper  }|{Ph. D. Alan Brunton }
+  \referee{Prof. Dr. Arjan Kuijper}{Ph. D. Alan Brunton}
   \department{Fachbereich Informatik}
   \group{Graphisch-Interaktive Systeme}
-  
-  \dateofexam{\today}{\today}
   \makethesistitle
 
 \abstract
 Determining material arrangements to control high-resolution multi-material 3D printers for reproducing shape and visual attributes of a 3D model (e.g. spatially-varying color, translucency and gloss) requires large computational effort. Today\textquotesingle s resolution and print tray sizes allow prints with more than \begin{math}10^{12}  \end{math} voxels each filled with one of the available printing materials (today up to 7 materials can be combined in a single print). Cuttlefish, a 3D printing pipeline, processes the input in a serial fashion leading to increased computation time for higher number of models. Distributed computing is one way of achieving better performance for large computations. Through this master thesis, we have developed a distributed version of the cuttlefish printer driver in which the computational task is distributed amongst multiple nodes in the cluster and the resulting partial output is merged to generate the full slices. The architecture supports streaming, which is required to rapidly start the print before the full computation is finished, as cuttlefish processes the input in small parts and generates chunk-wise output. Finally, the comparison of the performance achieved by the distributed vs the non-distributed cuttlefish version is established to get a better understanding of the advantages and the challenges of distributed computing.\newpage
+
+\chapter*{Ehrenw\"ortliche Erkl\"arung}
+Hiermit versichere ich, die vorliegende Masterarbeit ohne Hilfe Dritter und nur mit den angegebenen Quellen
+und Hilfsmitteln angefertigt zu haben. Alle Stellen, die aus den Quellen entnommen wurden, sind als solche
+kenntlich gemacht worden. Diese Arbeit hat in dieser oder \"ahnlicher Form noch keiner Pr\"ufungsbeh\"orde vorgelegen.
+Die schriftliche Fassung stimmt mit der elektronischen Fassung \"uberein.
+
+\vspace{1.5cm}
+	
+\noindent Darmstadt, den \date{\today}  \hspace{8.5cm} \author{Suman Bidarahalli}
+\newpage
+
+\chapter*{Acknowledgment}
+I would first like to thank my thesis supervisors Ph. D. Alan Brunton and Marco Dennst{\"a}dt for guiding me throughout the thesis. They consistently allowed this thesis to be my own work, but steered me in the right the direction whenever they thought I needed it. The door to Prof. Dr. Arjan Kuijper's office was always open whenever I ran into a trouble spot or had a question about my research or writing. I would also like to thank Ph. D. Philipp Urban for his continued support and encouragement. I offer my sincere appreciation for the learning opportunities bestowed on me by them which helped me to mould myself to go beyond my limits. It would not have been possible for me to accomplish my thesis without the help and cooperation of my colleagues (Can, Tejas, Andrea, Chaitra, Rutwik) who not only provided me with their workstations for running the test-cases but also motivated me during my thesis. I am eternally grateful to my parents for having faith in my capabilities. Finally, my heartiest thanks to my sister, Suguna, for her unfailing love and support during my thesis. 
+\newpage
 
 \tableofcontents
 \newpage

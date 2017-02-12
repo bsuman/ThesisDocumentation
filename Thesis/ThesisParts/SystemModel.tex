@@ -121,12 +121,14 @@ On receiving the sub-tasks from the master, the slave nodes start doing their sh
 
 \subsubsection{Slave Node Printing Software Components }
 
-\begin{figure}[t]
+\begin{figure}[b]
 \centering
 \includegraphics[scale=0.6]{SlavePSPI.pdf}
 \caption{Slave Node Printing Software Components For Prototype I }
 \label{fig:SlavePS}
 \end{figure}
+
+The slave nodes in the cluster (i.e. all nodes other than the master are considered slave nodes) perform the assigned task and report back the results to the master node. To do so, the slaves nodes have to first wait until the master has divided the task submitted by the user into smaller sub-tasks. Once receiving the input, the slave nodes run the whole printing software (similar to the non-distributed cuttlefish version) with just one minor change. As the slave nodes report the partial output to the master, they do not need to run the output component, for example the \textit{Bitmapproducer}. The partial output which is reported by the slaves to master is in form of \textit{slices} and hence, the slave printing software running on the slave nodes does not contain the output component, instead it runs a component called the \textit{SlaveReporter} which, as the name suggests, reports the partial output in a chunk-wise fashion back to the master. Figure \ref{fig:SlavePS} shows the components of the printing software running on the slave node for Prototype I and Figure \ref{fig:SlavePSII} for Prototype II.
 
 \begin{figure}[t]
 \centering
@@ -134,7 +136,5 @@ On receiving the sub-tasks from the master, the slave nodes start doing their sh
 \caption{Slave Node Printing Software Components For Prototype II }
 \label{fig:SlavePSII}
 \end{figure}
-
-The slave nodes in the cluster (i.e. all nodes other than the master are considered slave nodes) perform the assigned task and report back the results to the master node. To do so, the slaves nodes have to first wait until the master has divided the task submitted by the user into smaller sub-tasks. Once receiving the input, the slave nodes run the whole printing software (similar to the non-distributed cuttlefish version) with just one minor change. As the slave nodes report the partial output to the master, they do not need to run the output component, for example the \textit{Bitmapproducer}. The partial output which is reported by the slaves to master is in form of \textit{slices} and hence, the slave printing software running on the slave nodes does not contain the output component, instead it runs a component called the \textit{SlaveReporter} which, as the name suggests, reports the partial output in a chunk-wise fashion back to the master. Figure \ref{fig:SlavePS} shows the components of the printing software running on the slave node for Prototype I and Figure \ref{fig:SlavePSII} for Prototype II.
 
 \clearpage
