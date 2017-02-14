@@ -1,4 +1,4 @@
-\chapter{Implementation}
+\chapter{Implementation} \label{impl}
 
 The design for the prototype I and prototype II detailed in the chapter \ref{DA} were implemented through iterative development process where the design for prototype I was drafted and implemented first, followed by the prototype II. This chapter details the procedure which was followed during the development and implementation of the thesis.  
 
@@ -59,7 +59,7 @@ mpiexec -hosts 2 PC2215 PC2286 -wdir \\pc2215\bin\Release\ Cuttlefish.exe \\pc22
 	
 \section{Introduction to New Components}
 
-After the set-up and installation, the next step was the implementation of the prototype I followed by the implementation of prototype II. The components of both the prototypes are discussed in detail in the chapter \ref{DA}. Each of the new component is inherited from the class called as the \textit{PrintingComponent} and is registered using the component name. During the creation of the pipeline i.e. when the component configuration is parsed, each of the component is created and initialized with the required parameter values. The parameter values for each component are set in the configuration file. The Figure \ref{fig:Componentdiagram} summarizes the new components (underlined component names) introduced during the implementation of the thesis.
+After the set-up and installation, the next step was the implementation of the prototype I followed by the implementation of prototype II. The components of both the prototypes are discussed in detail in the Chapter \ref{DA}. Each of the new component is inherited from the class called as the \textit{PrintingComponent} and is registered using the component name. During the creation of the pipeline i.e. when the component configuration is parsed, each of the component is created and initialized with the required parameter values. The parameter values for each component are set in the configuration file. The Figure \ref{fig:Componentdiagram} summarizes the new components (underlined component names) introduced during the implementation of the thesis.
 
 \begin{figure}[ht!]
 \centering
@@ -389,4 +389,6 @@ The various stages of the thesis involved steps similar to a software developmen
 
 After the prototype I design shortcomings were brought to light, modification to the design of prototype I lead to a new design which helped to overcome the faced issues and is referred throughout the thesis as {\lq}Prototype II{\rq}. As prototype II was developed over the prototype I design, the implementation required lesser time in comparison to prototype I. The testing of prototype II lead to defining some corner cases and making modifications to the code to handle the corner cases. Throughout the different stages of thesis, a weekly meeting with the supervisors was conducted to provide an update on the progress of thesis as well as to seek guidance.
 
+\section{Summary}
 
+This Chapter details the various implementation specifics, the libraries used to perform parsing of JSON files, compression and decompression. It also gives an overview about the various APIs, interface structure and newly implemented components. It describes the MPI methods used as well as their behavior in different scenarios. It provides a brief comparison between different protocols which could used for communication between the nodes and justifies the use of MPI to certain extent. The implementation is tested and the results are presented in the Chapter \ref{RSA}. 
