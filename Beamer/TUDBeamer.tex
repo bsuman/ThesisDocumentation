@@ -108,7 +108,7 @@
 
 \subsection{Problem Statement}
 
-\begin{frame}[t]{Why do we need a Distributed $3$D Print Driver?}
+\begin{frame}[t]{Requirement and Derived Goals}
 \begin{columns}
     \begin{column}{0.45\textwidth}
     \centering
@@ -120,10 +120,16 @@
     \begin{column}{0.55\textwidth}
     \centering
     \begin{itemize}
-    \item Bigger prints require large amount of computational effort 
-    \item Single workstation is limited in terms of resources  
-		\item Existing Cuttlefish application designed to run on single machine 
-    \item Distributed computing is one way of achieving better performance for large computations 
+    \item \textbf{Requirement}
+		\begin{itemize}
+		\item Provide Cuttlefish as cloud service
+		\item Scaling of cluster nodes and fault tolerance
+		\end{itemize} 
+    \item \textbf{Derived Goals}
+		\begin{itemize}
+		\item Due application specific limitations, changed to cluster computing
+		\item Creating a distributed version of cuttlefish with an abstraction layer 
+		\end{itemize} 
 		\end{itemize} 
     \end{column}
   \end{columns}
@@ -131,22 +137,22 @@
 
 \section{Solution}
 
-\subsection{What is a Distributed system? }
-\begin{frame} {Infrastructure for distribution}
-\begin{columns}
-  \begin{column}{0.50\textwidth}
-  \centering
-	\begin{figure}[!ht]
-			\includegraphics[width=0.90\textwidth]{DistributeIII.PNG}
-			\caption{Distributed System}
-			\label{Fig:DS}
-		\end{figure}
-	\end{column}
-	\begin{column}{0.50\textwidth}
-		 A \textbf{\textit{Distributed System}} is a cluster of AS where in each AS is connected to other by a network and primarily communicate via message passing
-	\end{column}
-\end{columns}
-\end{frame}
+%\subsection{What is a Distributed system? }
+%\begin{frame} {Infrastructure for distribution}
+%\begin{columns}
+  %\begin{column}{0.50\textwidth}
+  %\centering
+	%\begin{figure}[!ht]
+			%\includegraphics[width=0.90\textwidth]{DistributeIII.PNG}
+			%\caption{Distributed System}
+			%\label{Fig:DS}
+		%\end{figure}
+	%\end{column}
+	%\begin{column}{0.50\textwidth}
+		 %A \textbf{\textit{Distributed System}} is a cluster of AS where in each AS is connected to other by a network and primarily communicate via message passing
+	%\end{column}
+%\end{columns}
+%\end{frame}
 
 \begin{frame}{Currently used Distributed System}
 \begin{columns}
@@ -240,6 +246,15 @@
     \end{column}
   \end{columns}
   \end{frame}
+	
+\begin{frame}{Distribution of Sub-Tasks Using Cost Function}
+\begin{itemize}
+	\item For each object \textit{i}, compute volume
+	\item Volume of the object \begin{math}V^i= w*h*l\end{math}
+	\item Total Volume(k objects)=\begin{math}\sum\limits_{i=1}^{k}{V^i}\end{math}
+	\item Threshold (for cluster size n-1)=\begin{math}(\sum\limits_{i=1}^{k}{V^i})/(n-1)\end{math}
+\end{itemize}
+\end{frame}	
 
 %\begin{frame}{Chosen distribution}
     %\begin{itemize}
@@ -277,13 +292,13 @@
 \end{frame}
 
 \begin{frame}{Modified Component Architecture- Prototype I}
-\begin{block}{Streaming Architecture- Master Printing Software }
+\begin{block}{Master Printing Software }
 	\begin{figure}[!ht]
 		\includegraphics[width=0.9\textwidth]{MSPSPI.png}
 		\label{Fig:MasterPSPl}
 	\end{figure}
 \end{block}
-	\begin{block}{Streaming Architecture- Slave Printing Software }
+	\begin{block}{Slave Printing Software }
 	\begin{figure}[!ht]
 		\includegraphics[width=0.8\textwidth]{SlavePSPI.png}
 		\label{Fig:SlavePSPI}
@@ -292,13 +307,13 @@
 \end{frame}
 
 \begin{frame}{Modified Component Architecture- Prototype II}
-\begin{block}{Streaming Architecture- Master Printing Software }
+\begin{block}{Master Printing Software }
 	\begin{figure}[!ht]
 		\includegraphics[width=0.9\textwidth]{MSPSPII.png}
 		\label{Fig:MasterPSPIl}
 	\end{figure}
 \end{block}
-	\begin{block}{Streaming Architecture- Slave Printing Software }
+	\begin{block}{Slave Printing Software }
 	\begin{figure}[!ht]
 		\includegraphics[width=0.8\textwidth]{SlavePSPII.png}
 		\label{Fig:SlavePSPII}
@@ -306,24 +321,14 @@
 \end{block}
 \end{frame}
 
-\begin{frame}{Distribution of Sub-Tasks Using Cost Function}
-\begin{itemize}
-	\item For each object \textit{i}, compute \begin{math}b_{min}^i\end{math} and \begin{math}b_{max}^i\end{math}
-	\item Calculate the width(w), height(h),and length(l)
-	\begin{itemize}
-		\item w=\begin{math}(b_{max}^i).y-(b_{min}^i).y\end{math} 
-		\item h=\begin{math}(b_{max}^i).z-(b_{min}^i).z\end{math}
-		\item l=\begin{math}(b_{max}^i).x-(b_{min}^i).x\end{math}
-	\end{itemize}
-	\item Volume of the object \begin{math}V^i= w*h*l\end{math}
-	\item Total Volume(k objects)=\begin{math}\sum\limits_{i=1}^{k}{V^i}\end{math}
-	\item Threshold (for cluster size n-1)=\begin{math}(\sum\limits_{i=1}^{k}{V^i})/(n-1)\end{math}
-\end{itemize}
-\end{frame}		
-
-\begin{frame}{Producer-Consumer}
+%\begin{frame}{Producer-Consumer}
+	%\begin{figure}
+		%\includegraphics[width=0.9\textwidth]{ProducerConsumer.PNG}
+	%\end{figure}	
+%\end{frame}
+\begin{frame}{Abstraction Layer}
 	\begin{figure}
-		\includegraphics[width=0.9\textwidth]{ProducerConsumer.PNG}
+		\includegraphics[width=0.9\textwidth]{AbstractionLayer.PNG}
 	\end{figure}	
 \end{frame}
 
@@ -341,13 +346,7 @@
 	\end{figure}	
 \end{frame}
 
-\begin{frame}{Abstraction Layer}
-	\begin{figure}
-		\includegraphics[width=0.9\textwidth]{AbstractionLayer.PNG}
-	\end{figure}	
-\end{frame}
-
-\begin{frame}{Additional Tasks}
+\begin{frame}{Distributed Computing Tasks}
 \begin{block}{Serialization And Deserialization}
 	\begin{figure}[!ht]
 		\includegraphics[width=0.7\textwidth]{Ser-Deser.PNG}
@@ -361,8 +360,6 @@
 	\end{figure}
 \end{block}
 \end{frame}
-
-
 
 \section{Results}
 \subsection{Distributed Cuttlefish vs Non-Distributed Cuttlefish}
@@ -418,13 +415,12 @@
 \begin{frame}
   \frametitle<presentation>{Conclusion}
 	\begin{itemize}
-	\item Distributed Computing is useful to perform large-scale computation
-	\item Super-linear speed-up can be achieved through distributed cuttlefish
-	\item Prototype II scales better than Prototype I
-	\item Communication between the nodes affects the performance of Prototype II
-	\item Serialization and Deserialization affects the performance of Prototype I 
-	\item Component Configuration has significant impact on the performance
-	\end{itemize} 
+	\item \textbf{Super-linear speed-up} can be achieved by distributed cuttlefish
+	\item Prototype II has a better performance than Prototype I 
+	\item Receive function might become a bottleneck for Prototype II 
+	\item Disk I/O makes Prototype I slower 
+	\item Composition of the Master and Slave Printing Software affects the Prototype II performance
+\end{itemize} 
 \end{frame}
 
 
@@ -434,8 +430,10 @@
 	\begin{itemize}
 	\item Develop new approaches for cost function calculation 
 	\item Implementation of new communication mechanism 
-	\item Change in topology of the distributed system as well hardware acceleration
-	\item Replacing cluster computing with cloud computing
+		\begin{itemize}
+		\item Replacing cluster computing with cloud computing
+		\item Change in topology of the distributed system as well hardware acceleration
+		\end{itemize} 
 	\end{itemize} 
 \end{frame}
 \appendix
