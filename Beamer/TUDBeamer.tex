@@ -24,7 +24,9 @@
 \usetheme{Darmstadt}
 \usefonttheme[onlylarge]{structurebold}
 \setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamerfont*{page number in head}{size=\large}
 \setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
 
 
 % Standard packages
@@ -99,8 +101,8 @@
     \begin{itemize}
 			\item Today's $3$D Printers allow for multi-material high resolution prints
 			\item Multiple objects in varying size can be printed at a go
-			\item Voxel-level material assignment enables to reproduce high-fidelity appearance properties
-			\item Larger print objects are composed of huge number of voxels
+			%\item Voxel-level material assignment enables to reproduce high-fidelity appearance properties
+			\item Larger print objects are easily composed \begin{math} ~10^{12} \end{math} voxels
 		\end{itemize} 
     \end{column}
   \end{columns}
@@ -110,27 +112,26 @@
 
 \begin{frame}[t]{Requirement and Derived Goals}
 \begin{columns}
-    \begin{column}{0.45\textwidth}
+    \begin{column}{0.40\textwidth}
     \centering
     \begin{figure}[!ht]
 			\includegraphics[width=0.90\textwidth]{SillyImage}
 			\label{Fig:MythI}
 		\end{figure}
     \end{column}
-    \begin{column}{0.55\textwidth}
+    \begin{column}{0.60\textwidth}
     \centering
     \begin{itemize}
     \item \textbf{Requirement}
 		\begin{itemize}
-		\item Provide Cuttlefish as cloud service
-		\item Scaling of cluster nodes and fault tolerance
+		\item Provide Cuttlefish as a cloud service 
 		\end{itemize} 
     \item \textbf{Derived Goals}
 		\begin{itemize}
-		\item Due application specific limitations, changed to cluster computing
-		\item Creating a distributed version of cuttlefish with an abstraction layer 
+		\item Due application specific limitations, requirement changed to cluster computing
+		\item Creating a distributed version of Cuttlefish with an abstraction layer 
 		\end{itemize} 
-		\end{itemize} 
+		\end{itemize} 	
     \end{column}
   \end{columns}
 \end{frame}
@@ -167,8 +168,7 @@
 	\begin{column}{0.50\textwidth}
 	\begin{itemize}
 	\item The distributed system used is a cluster of heterogeneous systems 
-	\item The nodes are connected via local(Fraunhofer) network
-	\item All the nodes also have access to a shared network file system
+	\item The nodes are connected via local (Fraunhofer) network with an access to shared file system
 	\end{itemize}	
 	\end{column}
 \end{columns}
@@ -249,9 +249,9 @@
 	
 \begin{frame}{Distribution of Sub-Tasks Using Cost Function}
 \begin{itemize}
-	\item For each object \textit{i}, compute volume
-	\item Volume of the object \begin{math}V^i= w*h*l\end{math}
-	\item Total Volume(k objects)=\begin{math}\sum\limits_{i=1}^{k}{V^i}\end{math}
+	\item Threshold calculated using the bounding box volume of each object.
+	%\item Volume of the object \begin{math}V^i= w*h*l\end{math}
+	%\item Total Volume(k objects)=\begin{math}\sum\limits_{i=1}^{k}{V^i}\end{math}
 	\item Threshold (for cluster size n-1)=\begin{math}(\sum\limits_{i=1}^{k}{V^i})/(n-1)\end{math}
 \end{itemize}
 \end{frame}	
@@ -264,7 +264,7 @@
 %\end{frame}
 
 \subsection{Distributed Cuttlefish Application}
-\begin{frame}{Current Component Architecture}
+\begin{frame}
 \begin{block}{Streaming Architecture}
 	\begin{figure}[!ht]
 		\includegraphics[width=0.9\textwidth]{StreamingArchitectureI.PNG}
@@ -272,8 +272,14 @@
 		\label{Fig:CuttlefishPipelineFigure}
 	\end{figure}
 \end{block}
-		%\item Cuttlefish Streaming architecture enables to perform the computation serially in a chunk-wise manner for each print object 
-	\textbf{Goal}: To \textbf{retain the architecture} and is achieved by providing distinguished components to handle
+\begin{itemize} 
+	\item The computation is performed in a chunk-wise manner 
+	\item Enables to start printing the object as soon as the first chunk is processed
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{Architectural Goals}
+	\textbf{Goal}: To \textbf{retain the streaming architecture} by providing distinguished components to handle
 	\begin{itemize} 
 	\item  Distribution of sub-tasks 
 	\item  Distribution of partial results
@@ -281,14 +287,11 @@
 	\end{itemize} 
 \end{frame}
 
-
 \begin{frame}{Classification of Prototypes}
-\begin{block}{Distributed Cuttlefish Prototypes}
 	\begin{figure}[!ht]
 		\includegraphics[width=0.9\textwidth]{Prototypes.PNG}
 		\label{Fig:StreamingArchitectureI}
 	\end{figure}
-\end{block}
 \end{frame}
 
 \begin{frame}{Modified Component Architecture- Prototype I}
@@ -332,19 +335,19 @@
 	\end{figure}	
 \end{frame}
 
-\begin{frame}{Slave Reporter Component}
-	\begin{figure}
-		\includegraphics[width=0.50\textwidth]{SlaveReporter.pdf}
-		\label{Fig:SlaveReporter}
-	\end{figure}	
-\end{frame}
+%\begin{frame}{Slave Reporter Component}
+	%\begin{figure}
+		%\includegraphics[width=0.50\textwidth]{SlaveReporter.pdf}
+		%\label{Fig:SlaveReporter}
+	%\end{figure}	
+%\end{frame}
 
-\begin{frame}{Master Merger Component}
-	\begin{figure}
-		\includegraphics[width=0.55\textwidth]{MasterMerger.pdf}
-		\label{Fig:MasterMerger}
-	\end{figure}	
-\end{frame}
+%\begin{frame}{Master Merger Component}
+	%\begin{figure}
+		%\includegraphics[width=0.55\textwidth]{MasterMerger.pdf}
+		%\label{Fig:MasterMerger}
+	%\end{figure}	
+%\end{frame}
 
 \begin{frame}{Distributed Computing Tasks}
 \begin{block}{Serialization And Deserialization}
@@ -364,6 +367,41 @@
 \section{Results}
 \subsection{Distributed Cuttlefish vs Non-Distributed Cuttlefish}
 \begin{frame}
+\begin{table}
+\centering
+\caption{Distributed Cuttlefish Prototype I vs Non-Distributed Cuttlefish}
+\label{protoIvsND}
+\scalebox{0.45}{
+\begin{tabular}{|c|l|l|l|c|}
+\hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Number of \\ Head Models\\ 8cms\\ (Resolution:\\ 300 X 150 X 470)\end{tabular}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time (in Secs)\\  for Distributed \\ Cuttlefish Prototype I\\ (Cluster Size- 3)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time (in Secs) \\ for Non-Distributed\\ Cuttlefish\end{tabular}}} & \multicolumn{1}{c|}{\textbf{Speed-Up}} & \textbf{Efficiency} \\ \hline
+2                                                                                                                  & 173.35                                                                                                                                                    & 357.35                                                                                                                       & 2.06                              & 0.68           \\ \hline
+4                                                                                                                  & 363.39                                                                                                                                                    & 920.56                                                                                                                        & 2.53                              & 0.84          \\ \hline
+6                                                                                                                  & 585.32                                                                                                                                                    & 1651.17                                                                                                                      & 2.82                            & 0.94           \\ \hline
+8                                                                                                                  & 836.23                                                                                                                                                    & 4071.57                                                                                                                       & 4.86                              & 1.62           \\ \hline
+10                                                                                                                 & 1130.51                                                                                                                                                    & 4790.19                                                                                                                       & 4.23                              & 1.41          \\ \hline
+\end{tabular}}
+\end{table}
+
+\begin{table}
+\centering
+\caption{Distributed Cuttlefish Prototype II vs Non-Distributed Cuttlefish}
+\label{ProtoIISameModelsVsND}
+\scalebox{0.5}{
+\begin{tabular}{|c|l|l|l|c|}
+\hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Number of \\ Head -8 cm\\ (Resolution:\\ 300 X 150 X 470)\end{tabular}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time \\ (in secs)\\  for Distributed \\ Cuttlefish Prototype II\\ (Cluster Size- 3)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Total Execution Time\\ (in secs) \\ for Non-Distributed\\ Cuttlefish\end{tabular}}} & \multicolumn{1}{c|}{\textbf{Speed-Up}} & \textbf{Efficiency} \\ \hline
+2                                                                                                          & 102.55                                                                                                                                                                  & 357.35                                                                                                                                    & 3.48                            & 1.16         \\ \hline
+4                                                                                                          & 245.08                                                                                                                                                                  & 920.56                                                                                                                                    & 3.75                            & 1.25         \\ \hline
+6                                                                                                          & 440.41                                                                                                                                                                   & 1651.17                                                                                                                                   & 3.74                            & 1.24         \\ \hline
+8                                                                                                          & 708.70                                                                                                                                                                   & 4071.56                                                                                                                                    & 5.74                            & 1.91        \\ \hline
+10                                                                                                         & 1014.98                                                                                                                                                                 & 4790.19                                                                                                                                  & 4.71                            & 1.57         \\ \hline
+\end{tabular}}
+\end{table}
+
+\end{frame}
+
+\begin{frame}
 \begin{figure}[!ht]
 		\includegraphics[width=0.9\textwidth]{SUPIPIIvsNumMod.pdf}
 		\label{Fig:SUPIPIIvsNumMod}
@@ -378,48 +416,54 @@
 \end{figure}
 \end{frame}
 
-\subsection{Prototype II Increase in Speed-Up}
-\begin{frame}
-\begin{figure}[!ht]
-		\includegraphics[width=0.9\textwidth]{IncSpeedUpProtoIIVsCS.pdf}
-		\label{Fig:IncSpeedUpProtoIIVsCS}
-\end{figure}
-\end{frame}
+%\subsection{Prototype II Increase in Speed-Up}
+%\begin{frame}
+%\begin{figure}[!ht]
+		%\includegraphics[width=0.9\textwidth]{IncSpeedUpProtoIIVsCS.pdf}
+		%\label{Fig:IncSpeedUpProtoIIVsCS}
+%\end{figure}
+%\end{frame}
 
-\subsection{Profiling Prototype I}
-\begin{frame}
-\begin{figure}[!ht]
-		\includegraphics[width=0.9\textwidth]{DCPIvsCS.pdf}
-		\label{Fig:DCPIvsCS}
-\end{figure}
-\end{frame}
+%\subsection{Profiling Prototype I}
+%\begin{frame}
+%\begin{figure}[!ht]
+		%\includegraphics[width=0.9\textwidth]{DCPIvsCS.pdf}
+		%\label{Fig:DCPIvsCS}
+%\end{figure}
+%\end{frame}
 
-\subsection{Profiling Prototype II}
-\begin{frame}
-\begin{figure}[!ht]
-		\includegraphics[width=0.9\textwidth]{DCPIIvsSize.pdf}
-		\label{Fig:DCPIIvsSize}
-\end{figure}
-\end{frame}
+%\subsection{Profiling Prototype II}
+%\begin{frame}
+%\begin{figure}[!ht]
+		%\includegraphics[width=0.9\textwidth]{DCPIIvsSize.pdf}
+		%\label{Fig:DCPIIvsSize}
+%\end{figure}
+%\end{frame}
 
-\subsection{Prototype II: Design I vs Design II}
-\begin{frame}
-\begin{figure}[!ht]
-		\includegraphics[width=0.9\textwidth]{SUDIDIIvsNumMod.pdf}
-		\label{Fig:SUDIDIIvsNumMod}
-\end{figure}
-\end{frame}
+%\subsection{Prototype II: Design I vs Design II}
+%\begin{frame}
+%\begin{figure}[!ht]
+		%\includegraphics[width=0.9\textwidth]{SUDIDIIvsNumMod.pdf}
+		%\label{Fig:SUDIDIIvsNumMod}
+%\end{figure}
+%\end{frame}
 
 
 \section*{Conclusion}
 \begin{frame}
   \frametitle<presentation>{Conclusion}
 	\begin{itemize}
-	\item \textbf{Super-linear speed-up} can be achieved by distributed cuttlefish
+	\item \textbf{Super-linear speed-up} can be achieved by Distributed Cuttlefish
+	\begin{itemize}
+	\item Higher cache hits for smaller data
+	\item Parallel computation
+	\item Low overhead of distributed computing specific tasks 
+	\end{itemize}
 	\item Prototype II has a better performance than Prototype I 
-	\item Receive function might become a bottleneck for Prototype II 
-	\item Disk I/O makes Prototype I slower 
-	\item Composition of the Master and Slave Printing Software affects the Prototype II performance
+	\begin{itemize}
+	\item Costly serialization and deserialization through disk I/O 
+	\item Redundant input parsing
+	\end{itemize}
 \end{itemize} 
 \end{frame}
 
@@ -428,11 +472,10 @@
 \begin{frame}
   \frametitle<presentation>{Future Work}
 	\begin{itemize}
-	\item Develop new approaches for cost function calculation 
+	\item Use data-drive approach and user-defined constraints to form distribution function
 	\item Implementation of new communication mechanism 
 		\begin{itemize}
 		\item Replacing cluster computing with cloud computing
-		\item Change in topology of the distributed system as well hardware acceleration
 		\end{itemize} 
 	\end{itemize} 
 \end{frame}
